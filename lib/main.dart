@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:snumngo/bloc/authentication/bloc.dart';
 import 'package:snumngo/bloc/theme/bloc.dart';
 import 'package:snumngo/generated/l10n.dart';
+import 'package:snumngo/person/person.dart';
 import 'package:snumngo/repository/user_repository.dart';
 import 'package:snumngo/simple_bloc_delegate.dart';
 
@@ -75,7 +76,8 @@ class _MainScreen extends StatelessWidget {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (BuildContext context, AuthenticationState state) {
         if (state is UnAuthenticated) {
-          return LoginScreen(userRepository: userRepository);
+          return AddPerson();
+//          return LoginScreen(userRepository: userRepository);
         } else if (state is Authenticated) {
           return Container(
             child: Text("Authenticated"),
