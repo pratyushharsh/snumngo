@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:snumngo/bloc/authentication/bloc.dart';
 import 'package:snumngo/bloc/theme/bloc.dart';
+import 'package:snumngo/generated/l10n.dart';
 import 'package:snumngo/repository/user_repository.dart';
 import 'package:snumngo/simple_bloc_delegate.dart';
 
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
         builder: (BuildContext context, ThemeState state) {
       return MaterialApp(
         localizationsDelegates: [
+          S.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate

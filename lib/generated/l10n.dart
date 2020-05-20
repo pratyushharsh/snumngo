@@ -27,7 +27,14 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-
+  String get login {
+    return Intl.message(
+      'Login Detail',
+      name: 'login',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snumngo/bloc/authentication/authentication_bloc.dart';
 import 'package:snumngo/bloc/authentication/authentication_event.dart';
+import 'package:snumngo/generated/l10n.dart';
 import 'package:snumngo/login/bloc/bloc.dart';
 import 'package:snumngo/login/bloc/login_event.dart';
 import 'package:snumngo/repository/user_repository.dart';
@@ -179,7 +180,7 @@ class LoginButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(30.0),
       ),
       onPressed: _onPressed,
-      child: Text('Login'),
+      child: Text(S.of(context).login),
     );
   }
 }
