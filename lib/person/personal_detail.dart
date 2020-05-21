@@ -193,33 +193,36 @@ class _AddressWidget extends StatelessWidget {
         TextFormField(
           decoration: InputDecoration(labelText: S.of(context).muncipal),
         ),
-        TextFormField(
-          decoration: InputDecoration(labelText: S.of(context).district),
-        ),
         Row(
           children: <Widget>[
             Expanded(
-              flex: 3,
+              child: TextFormField(
+                decoration: InputDecoration(labelText: S.of(context).district),
+              ),
+            ),
+            SizedBox(width: 10,),
+            Expanded(
               child: TextFormField(
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(labelText: S.of(context).pincode),
               ),
             ),
-            Expanded(
-              flex: 5,
-              child: DropdownButtonFormField(
-                onChanged: stateOnChange,
-                value: state,
-                items: Constants.STATES.map<DropdownMenuItem<String>>((v) {
-                  return DropdownMenuItem<String>(
-                    value: v,
-                    child: Text(v),
-                  );
-                }).toList(),
-              ),
-            )
           ],
         ),
+        DropdownButtonFormField(
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(bottom: 0, top: 12),
+            labelText: S.of(context).state
+          ),
+          onChanged: stateOnChange,
+          value: state,
+          items: Constants.STATES.map<DropdownMenuItem<String>>((v) {
+            return DropdownMenuItem<String>(
+              value: v,
+              child: Text(Intl.message(v)),
+            );
+          }).toList(),
+        )
       ],
     );
   }

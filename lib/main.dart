@@ -23,7 +23,7 @@ void main() {
                 isTestMode: false,
                 locale: null,
                 themeMode: ThemeMode.system,
-                platform: defaultTargetPlatform)),
+                platform: defaultTargetPlatform))..add(ChangeLocale(locale: Locale("hi"))),
         ),
         BlocProvider(
           create: (context) =>
