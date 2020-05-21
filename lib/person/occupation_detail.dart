@@ -57,13 +57,9 @@ class _OccupationalDetailState extends State<OccupationalDetail> {
               );
             }).toList(),
           ),
-          Expanded(
-            child: Center(
-              child: AnimatedSwitcher(
-                duration: Duration(milliseconds: 500),
-                child: _buildOccupationDetail(context, occupation),
-              )
-            ),
+          AnimatedSwitcher(
+            duration: Duration(milliseconds: 500),
+            child: _buildOccupationDetail(context, occupation),
           )
         ],
       ),

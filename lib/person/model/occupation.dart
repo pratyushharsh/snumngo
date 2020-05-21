@@ -14,7 +14,7 @@ class ConstructionWorker {
 }
 
 class WastePicker {
-  String registerationNumber;
+  String registrationNumber;
   bool idIssueByInst;
 }
 

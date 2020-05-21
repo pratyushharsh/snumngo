@@ -39,6 +39,65 @@ class _PersonalDetailState extends State<PersonalDetail> {
       margin: EdgeInsets.all(12.0),
       child: ListView(
         children: <Widget>[
+          PersonalInfoWidget(),
+          AddressWidget(
+            stateOnChange: (val) {
+              setState(() {
+                state = val;
+              });
+            },
+            state: state,
+          ),
+          DisabilityWidget(
+            disable: _disable,
+            disableOnChange: (val) {
+              setState(() {
+                _disable = val;
+              });
+            },
+            disableCertOnChange: (cert) {
+              setState(() {
+                _disableCertNo = cert;
+              });
+            },
+          ),
+          AadharWidget(
+            aadharNo: _aadharNo,
+            onAadhaarChange: (val) {
+              setState(() {
+                _aadharNo = val;
+              });
+            },
+          ),
+          TextFormField(
+            decoration: InputDecoration(hintText: S.of(context).pan_no),
+          ),
+          VoterWidget(
+            voterId: _voterCard,
+            onVoterIdChange: (val) {
+              setState(() {
+                _voterCard = val;
+              });
+            },
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class PersonalInfoWidget extends StatelessWidget {
+
+  final Function onGenderChange;
+  final Function onDateChange;
+
+  const PersonalInfoWidget({Key key, this.onGenderChange, this.onDateChange}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
           TextFormField(
             decoration: InputDecoration(labelText: S.of(context).sno),
           ),
@@ -63,47 +122,27 @@ class _PersonalDetailState extends State<PersonalDetail> {
               Expanded(
                 flex: 3,
                 child: RadioListTile(
-                  onChanged: (val) {
-                    setState(() {
-                      _gender = val;
-                    });
-                  },
+                  onChanged: onGenderChange,
                   selected: true,
                   value: "M",
-                  groupValue: _gender,
+                  groupValue: "M",
                   title: Text(S.of(context).male),
                 ),
               ),
               Expanded(
                 flex: 3,
                 child: RadioListTile(
-                  onChanged: (val) {
-                    setState(() {
-                      _gender = "F";
-                    });
-                  },
+                  onChanged: onGenderChange,
                   value: "F",
-                  groupValue: _gender,
+                  groupValue: "M",
                   title: Text(S.of(context).female),
                 ),
               )
             ],
           ),
           _DOBWidget(
-            dob: _dob,
-            onDateChange: (val) {
-              setState(() {
-                _dob = val;
-              });
-            },
-          ),
-          _AddressWidget(
-            stateOnChange: (val) {
-              setState(() {
-                state = val;
-              });
-            },
-            state: state,
+            dob: DateTime.now(),
+            onDateChange: onDateChange,
           ),
           TextFormField(
             decoration: InputDecoration(labelText: S.of(context).fathers_name),
@@ -111,45 +150,13 @@ class _PersonalDetailState extends State<PersonalDetail> {
           TextFormField(
             decoration: InputDecoration(labelText: S.of(context).mothers_name),
           ),
-          _DisabilityWidget(
-            disable: _disable,
-            disableOnChange: (val) {
-              setState(() {
-                _disable = val;
-              });
-            },
-            disableCertOnChange: (cert) {
-              setState(() {
-                _disableCertNo = cert;
-              });
-            },
-          ),
-          _AadharWidget(
-            aadharNo: _aadharNo,
-            onAadhaarChange: (val) {
-              setState(() {
-                _aadharNo = val;
-              });
-            },
-          ),
-          TextFormField(
-            decoration: InputDecoration(hintText: S.of(context).pan_no),
-          ),
-          _VoterWidget(
-            voterId: _voterCard,
-            onVoterIdChange: (val) {
-              setState(() {
-                _voterCard = val;
-              });
-            },
-          )
         ],
       ),
     );
   }
 }
 
-class _AddressWidget extends StatelessWidget {
+class AddressWidget extends StatelessWidget {
   final Function houseOnChange;
   final Function streetOnChange;
   final Function cityOnChange;
@@ -161,7 +168,7 @@ class _AddressWidget extends StatelessWidget {
 
   final String state;
 
-  _AddressWidget(
+  AddressWidget(
       {Key key,
         this.houseOnChange,
         this.streetOnChange,
@@ -229,14 +236,14 @@ class _AddressWidget extends StatelessWidget {
   }
 }
 
-class _DisabilityWidget extends StatelessWidget {
+class DisabilityWidget extends StatelessWidget {
 
   final bool disable;
   final Function disableOnChange;
   final Function disableCertOnChange;
   final Function addDisablityCertificateImage;
 
-  const _DisabilityWidget({Key key, this.disable, this.disableOnChange, this.disableCertOnChange, this.addDisablityCertificateImage}) : super(key: key);
+  const DisabilityWidget({Key key, this.disable, this.disableOnChange, this.disableCertOnChange, this.addDisablityCertificateImage}) : super(key: key);
 
 
   @override
@@ -294,12 +301,12 @@ class _DisabilityWidget extends StatelessWidget {
   }
 }
 
-class _AadharWidget extends StatelessWidget {
+class AadharWidget extends StatelessWidget {
 
   final Function onAadhaarChange;
   final String aadharNo;
 
-  const _AadharWidget({Key key, this.onAadhaarChange, this.aadharNo}) : super(key: key);
+  const AadharWidget({Key key, this.onAadhaarChange, this.aadharNo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -349,12 +356,12 @@ class _AadharWidget extends StatelessWidget {
   }
 }
 
-class _VoterWidget extends StatelessWidget {
+class VoterWidget extends StatelessWidget {
 
   final Function onVoterIdChange;
   final String voterId;
 
-  const _VoterWidget({Key key, this.onVoterIdChange, this.voterId}) : super(key: key);
+  const VoterWidget({Key key, this.onVoterIdChange, this.voterId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
