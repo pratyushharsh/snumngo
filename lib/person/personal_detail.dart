@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:snumngo/config/constants.dart';
 import 'package:snumngo/generated/l10n.dart';
@@ -42,16 +43,16 @@ class _PersonalDetailState extends State<PersonalDetail> {
             decoration: InputDecoration(labelText: S.of(context).sno),
           ),
           TextFormField(
-            decoration: InputDecoration(labelText: S.of(context).name),
+            decoration: InputDecoration(labelText: S.of(context).name, icon: Icon(Icons.person)),
           ),
           TextFormField(
             keyboardType: TextInputType.phone,
-            decoration: InputDecoration(labelText: S.of(context).mobile_num),
+            decoration: InputDecoration(labelText: S.of(context).mobile_num, icon : Icon(Icons.phone)),
           ),
           TextFormField(
             keyboardType: TextInputType.phone,
             decoration:
-            InputDecoration(labelText: S.of(context).whatsapp_number),
+            InputDecoration(labelText: S.of(context).whatsapp_number, icon : Icon(FontAwesome.whatsapp)),
           ),
           Row(
             children: <Widget>[
