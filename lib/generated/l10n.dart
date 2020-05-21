@@ -15,8 +15,8 @@ class S {
     AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final String name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
-    final String localeName = Intl.canonicalizedLocale(name);
+    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name); 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       return S();
@@ -126,6 +126,15 @@ class S {
     );
   }
 
+  String get sno {
+    return Intl.message(
+      'S N #',
+      name: 'sno',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get mobile_num {
     return Intl.message(
       'Mobile Number',
@@ -135,10 +144,37 @@ class S {
     );
   }
 
+  String get whatsapp_number {
+    return Intl.message(
+      'WhatsApp Number',
+      name: 'whatsapp_number',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get gender {
     return Intl.message(
       'Gender',
       name: 'gender',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get male {
+    return Intl.message(
+      'Male',
+      name: 'male',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get female {
+    return Intl.message(
+      'Female',
+      name: 'female',
       desc: '',
       args: [],
     );
@@ -548,6 +584,348 @@ class S {
       args: [],
     );
   }
+
+  String get front_voter {
+    return Intl.message(
+      'Add Front Voter Id',
+      name: 'front_voter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get back_voter {
+    return Intl.message(
+      'Add Back Voter Id',
+      name: 'back_voter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get andaman_and_nicobar_islands {
+    return Intl.message(
+      'Andaman and Nicobar Islands',
+      name: 'andaman_and_nicobar_islands',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get andhra_pradesh {
+    return Intl.message(
+      'Andhra Pradesh',
+      name: 'andhra_pradesh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get arunachal_pradesh {
+    return Intl.message(
+      'Arunachal Pradesh',
+      name: 'arunachal_pradesh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get assam {
+    return Intl.message(
+      'Assam',
+      name: 'assam',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get bihar {
+    return Intl.message(
+      'Bihar',
+      name: 'bihar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get chandigarh {
+    return Intl.message(
+      'Chandigarh',
+      name: 'chandigarh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get chhattisgarh {
+    return Intl.message(
+      'Chhattisgarh',
+      name: 'chhattisgarh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get daman {
+    return Intl.message(
+      'Dadra and Nagar Haveli and Daman and Diu',
+      name: 'daman',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get delhi_ncr {
+    return Intl.message(
+      'Delhi NCR',
+      name: 'delhi_ncr',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get goa {
+    return Intl.message(
+      'Goa',
+      name: 'goa',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get gujarat {
+    return Intl.message(
+      'Gujarat',
+      name: 'gujarat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get haryana {
+    return Intl.message(
+      'Haryana',
+      name: 'haryana',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get himachal_pradesh {
+    return Intl.message(
+      'Himachal Pradesh',
+      name: 'himachal_pradesh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get jammu_and_kashmir {
+    return Intl.message(
+      'Jammu and Kashmir',
+      name: 'jammu_and_kashmir',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get jharkhand {
+    return Intl.message(
+      'Jharkhand',
+      name: 'jharkhand',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get karnataka {
+    return Intl.message(
+      'Karnataka',
+      name: 'karnataka',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get kerala {
+    return Intl.message(
+      'Kerala',
+      name: 'kerala',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get ladakh {
+    return Intl.message(
+      'Ladakh',
+      name: 'ladakh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get lakshadweep {
+    return Intl.message(
+      'Lakshadweep',
+      name: 'lakshadweep',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get madhya_pradesh {
+    return Intl.message(
+      'Madhya Pradesh',
+      name: 'madhya_pradesh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get maharashtra {
+    return Intl.message(
+      'Maharashtra',
+      name: 'maharashtra',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get manipur {
+    return Intl.message(
+      'Manipur',
+      name: 'manipur',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get meghalaya {
+    return Intl.message(
+      'Meghalaya',
+      name: 'meghalaya',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get mizoram {
+    return Intl.message(
+      'Mizoram',
+      name: 'mizoram',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get nagaland {
+    return Intl.message(
+      'Nagaland',
+      name: 'nagaland',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get odisha {
+    return Intl.message(
+      'Odisha',
+      name: 'odisha',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get puducherry {
+    return Intl.message(
+      'Puducherry',
+      name: 'puducherry',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get punjab {
+    return Intl.message(
+      'Punjab',
+      name: 'punjab',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get rajasthan {
+    return Intl.message(
+      'Rajasthan',
+      name: 'rajasthan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get sikkim {
+    return Intl.message(
+      'Sikkim',
+      name: 'sikkim',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get tamil_nadu {
+    return Intl.message(
+      'Tamil Nadu',
+      name: 'tamil_nadu',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get telangana {
+    return Intl.message(
+      'Telangana',
+      name: 'telangana',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get tripura {
+    return Intl.message(
+      'Tripura',
+      name: 'tripura',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get uttar_pradesh {
+    return Intl.message(
+      'Uttar Pradesh',
+      name: 'uttar_pradesh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get uttarakhand {
+    return Intl.message(
+      'Uttarakhand',
+      name: 'uttarakhand',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get west_bengal {
+    return Intl.message(
+      'West Bengal',
+      name: 'west_bengal',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -568,7 +946,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   bool _isSupported(Locale locale) {
     if (locale != null) {
-      for (Locale supportedLocale in supportedLocales) {
+      for (var supportedLocale in supportedLocales) {
         if (supportedLocale.languageCode == locale.languageCode) {
           return true;
         }
