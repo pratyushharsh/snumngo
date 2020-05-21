@@ -25,7 +25,7 @@ class _PersonalDetailState extends State<PersonalDetail> {
   String municipal;
   String district;
   String pincode;
-  String state = "none";
+  String state;
 
   @override
   void initState() {

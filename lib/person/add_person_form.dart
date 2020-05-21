@@ -11,9 +11,6 @@ class _AddPersonFormState extends State<AddPersonForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      onChanged: () {
-        print("changed");
-      },
       child: TabBarView(
         children: <Widget>[PersonalDetail(), OccupationalDetail()],
       ),

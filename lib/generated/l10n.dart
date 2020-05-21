@@ -432,6 +432,15 @@ class S {
     );
   }
 
+  String get strt_vndr_fssai {
+    return Intl.message(
+      'Have you taken FSSAI training',
+      name: 'strt_vndr_fssai',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get strt_vndr_fssai_trni {
     return Intl.message(
       'Do you have registration certificate of FSSAI',
@@ -598,6 +607,186 @@ class S {
     return Intl.message(
       'Add Back Voter Id',
       name: 'back_voter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get select_occupation {
+    return Intl.message(
+      'Select Occupation',
+      name: 'select_occupation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get doms_wkr {
+    return Intl.message(
+      'Domestic Worker',
+      name: 'doms_wkr',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get home_wkr {
+    return Intl.message(
+      'Home Based Worker',
+      name: 'home_wkr',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get rskw_pllr {
+    return Intl.message(
+      'Rickshaw Puller',
+      name: 'rskw_pllr',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get agri_lbr {
+    return Intl.message(
+      'Agricultural Laborer',
+      name: 'agri_lbr',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get others {
+    return Intl.message(
+      'Others',
+      name: 'others',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get dom_wkr_rwa {
+    return Intl.message(
+      'Are you essayed by RWA ?',
+      name: 'dom_wkr_rwa',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get dom_wkr_rwa_id {
+    return Intl.message(
+      'Registration number',
+      name: 'dom_wkr_rwa_id',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get dom_wkr_police_verify {
+    return Intl.message(
+      'Have you got a police verification',
+      name: 'dom_wkr_police_verify',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get dom_wkr_police_verify_date {
+    return Intl.message(
+      'Enter date if police verification has taken place',
+      name: 'dom_wkr_police_verify_date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get dom_wkr_inst_id {
+    return Intl.message(
+      'ID card / identity card issued by the entity or institution',
+      name: 'dom_wkr_inst_id',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get home_wkr_artisans {
+    return Intl.message(
+      'Do you have an ARTISANS card',
+      name: 'home_wkr_artisans',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get home_wkr_artisans_card {
+    return Intl.message(
+      'ARTISANS Card Number',
+      name: 'home_wkr_artisans_card',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get home_wkr_artisans_cred_card {
+    return Intl.message(
+      'Do you have an ARTISANS credit card',
+      name: 'home_wkr_artisans_cred_card',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get home_wkr_indus_aadhaar {
+    return Intl.message(
+      'Do you have an industry adhar card',
+      name: 'home_wkr_indus_aadhaar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get rskw_pllr_surveyed {
+    return Intl.message(
+      'Are you a surveyed rickshaw puller?',
+      name: 'rskw_pllr_surveyed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get rskw_pllr_lic {
+    return Intl.message(
+      'Have you got a rickshaw license from theMunicipal body',
+      name: 'rskw_pllr_lic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get rskw_pllr_lic_no {
+    return Intl.message(
+      'License No',
+      name: 'rskw_pllr_lic_no',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get agri_lbr_aware_min_wage {
+    return Intl.message(
+      'Do you know about minimum wage',
+      name: 'agri_lbr_aware_min_wage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get agri_lbr_min_wage {
+    return Intl.message(
+      'Do you get minimum wage',
+      name: 'agri_lbr_min_wage',
       desc: '',
       args: [],
     );
