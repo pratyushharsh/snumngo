@@ -2,48 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:snumngo/person/occupation_detail.dart';
 import 'package:snumngo/person/personal_detail.dart';
 
-import 'model/person.dart';
 
-class AddPersonForm extends StatelessWidget {
-
-  Person person;
-
+class AddPersonForm extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Form(
-      child: TabBarView(
-        children: <Widget>[PersonalDetail(), OccupationalDetail(), MyStepper()],
-      ),
-    );
-  }
+  _AddPersonFormState createState() => _AddPersonFormState();
 }
 
-class MyStepper extends StatefulWidget {
-  @override
-  _MyStepperState createState() => _MyStepperState();
-}
-
-class _MyStepperState extends State<MyStepper> {
+class _AddPersonFormState extends State<AddPersonForm> {
 
   int _currentStep = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Stepper(
-      physics: ClampingScrollPhysics(),
-      steps: _mySteps(),
-      currentStep: this._currentStep,
-      onStepTapped: (step) {
-        setState(() {
-          _currentStep = step;
-        });
-      },
-      onStepContinue: () {
+    return Form(
+      child: Stepper(
+        physics: ClampingScrollPhysics(),
+        steps: _mySteps(),
+        currentStep: this._currentStep,
+        onStepTapped: (step) {
+          setState(() {
+            _currentStep = step;
+          });
+        },
+        onStepContinue: () {
 
-      },
-      onStepCancel: () {
+        },
+        onStepCancel: () {
 
-      },
+        },
+      ),
     );
   }
 
