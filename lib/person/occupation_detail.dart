@@ -16,19 +16,19 @@ class _OccupationalDetailState extends State<OccupationalDetail> {
   _buildOccupationDetail(context, occupation) {
     switch(occupation) {
       case "strt_vndr":
-        return StreetVendor();
+        return StreetVendorWidget();
       case "cns_wkr":
-        return ConstructionWorker();
+        return ConstructionWorkerWidget();
       case "wst_pkr":
-        return WastePicker();
+        return WastePickerWidget();
       case "doms_wkr":
-        return DomesticWorker();
+        return DomesticWorkerWidget();
       case "home_wkr":
-        return HomeBasedWorker();
+        return HomeBasedWorkerWidget();
       case "rskw_pllr":
-        return RickShawPuller();
+        return RickShawPullerWidget();
       case "agri_lbr":
-        return AgricultureLabour();
+        return AgricultureLabourWidget();
       case "others":
       default:
         return Container(child: Text("Select An Occupation from the dropdown Above"));
@@ -101,7 +101,7 @@ class _Affiliated extends StatelessWidget {
   }
 }
 
-class StreetVendor extends StatelessWidget {
+class StreetVendorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -219,7 +219,7 @@ class StreetVendor extends StatelessWidget {
   }
 }
 
-class ConstructionWorker extends StatelessWidget {
+class ConstructionWorkerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -276,7 +276,7 @@ class ConstructionWorker extends StatelessWidget {
   }
 }
 
-class WastePicker extends StatelessWidget {
+class WastePickerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -328,7 +328,7 @@ class WastePicker extends StatelessWidget {
   }
 }
 
-class DomesticWorker extends StatelessWidget {
+class DomesticWorkerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -399,7 +399,7 @@ class DomesticWorker extends StatelessWidget {
   }
 }
 
-class HomeBasedWorker extends StatelessWidget {
+class HomeBasedWorkerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -465,7 +465,7 @@ class HomeBasedWorker extends StatelessWidget {
   }
 }
 
-class RickShawPuller extends StatelessWidget {
+class RickShawPullerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -517,7 +517,7 @@ class RickShawPuller extends StatelessWidget {
   }
 }
 
-class AgricultureLabour extends StatelessWidget {
+class AgricultureLabourWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
