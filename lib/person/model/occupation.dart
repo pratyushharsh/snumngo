@@ -10,17 +10,17 @@ class StreetVendor  extends Equatable implements Occupation {
   final bool fssaiTrainingCertificate;
   final String otherOrganization;
 
-  StreetVendor({this.surveyed, this.municipalId, this.certificateNo, this.placeEmployee, this.foodVendor, this.fssaiTraining, this.fssaiTrainingCertificate, this.otherOrganization});
+  StreetVendor({this.surveyed = false, this.municipalId, this.certificateNo, this.placeEmployee, this.foodVendor = false, this.fssaiTraining = false, this.fssaiTrainingCertificate = false, this.otherOrganization});
 
   StreetVendor copyWith({ bool surveyed, String municipalId, String certificateNo, String placeEmployee, bool foodVendor, bool fssaiTraining, bool fssaiTrainingCertificate, String otherOrganization }) {
     return StreetVendor(
-      surveyed: surveyed ?? this.surveyed ?? false,
+      surveyed: surveyed ?? this.surveyed,
       municipalId: municipalId ?? this.municipalId ,
       certificateNo: certificateNo ?? this.certificateNo,
       placeEmployee: placeEmployee ?? this.placeEmployee,
-      foodVendor: foodVendor ?? this.foodVendor ?? false,
-      fssaiTraining: fssaiTraining ?? this.fssaiTraining ?? false,
-      fssaiTrainingCertificate: fssaiTrainingCertificate ?? this.fssaiTrainingCertificate ?? false,
+      foodVendor: foodVendor ?? this.foodVendor,
+      fssaiTraining: fssaiTraining ?? this.fssaiTraining,
+      fssaiTrainingCertificate: fssaiTrainingCertificate ?? this.fssaiTrainingCertificate,
       otherOrganization: otherOrganization ?? this.otherOrganization,
     );
   }
@@ -93,12 +93,12 @@ class WastePicker  extends Equatable implements Occupation {
   final bool idIssueByInst;
   final String otherOrganization;
 
-  WastePicker({this.registrationNumber, this.idIssueByInst, this.otherOrganization});
+  WastePicker({this.registrationNumber, this.idIssueByInst = false, this.otherOrganization});
 
   WastePicker copyWith({ String registrationNumber, bool idIssueByInst, String otherOrganization }) {
     return WastePicker(
       registrationNumber: registrationNumber ?? this.registrationNumber,
-      idIssueByInst: idIssueByInst ?? this.idIssueByInst  ?? false,
+      idIssueByInst: idIssueByInst ?? this.idIssueByInst,
       otherOrganization: otherOrganization ?? this.otherOrganization,
     );
   }
@@ -129,19 +129,21 @@ class DomesticWorker  extends Equatable implements Occupation {
   final String rwaNumber;
   final DateTime verifyTime;
   final String otherOrganization;
+  final String instituteId;
 
-  DomesticWorker({this.rwaNumber, this.verifyTime, this.otherOrganization});
+  DomesticWorker({this.rwaNumber, this.verifyTime, this.otherOrganization, this.instituteId,});
 
-  DomesticWorker copyWith({ String rwaNumber, DateTime verifyTime, String otherOrganization }) {
+  DomesticWorker copyWith({ String rwaNumber, DateTime verifyTime, String otherOrganization, String instituteId }) {
     return DomesticWorker(
       rwaNumber: rwaNumber ?? this.rwaNumber,
       verifyTime: verifyTime ?? this.verifyTime,
       otherOrganization: otherOrganization ?? this.otherOrganization,
+      instituteId: instituteId ?? this.instituteId
     );
   }
 
   @override
-  List<Object> get props => [rwaNumber, verifyTime, otherOrganization];
+  List<Object> get props => [rwaNumber, verifyTime, otherOrganization, instituteId];
 
   @override
   String type() {
@@ -168,13 +170,13 @@ class HomeBasedWorker  extends Equatable implements Occupation {
   final bool artisanAadharCard;
   final String otherOrganization;
 
-  HomeBasedWorker({this.artisanNo, this.artisanCreditCard, this.artisanAadharCard, this.otherOrganization});
+  HomeBasedWorker({this.artisanNo, this.artisanCreditCard = false, this.artisanAadharCard = false, this.otherOrganization});
 
   HomeBasedWorker copyWith({ String artisanNo, bool artisanCreditCard, bool artisanAadharCard, String otherOrganization }) {
     return HomeBasedWorker(
       artisanNo: artisanNo ?? this.artisanNo,
-      artisanCreditCard: artisanCreditCard ?? this.artisanCreditCard ?? false,
-      artisanAadharCard: artisanAadharCard ?? this.artisanAadharCard ?? false,
+      artisanCreditCard: artisanCreditCard ?? this.artisanCreditCard,
+      artisanAadharCard: artisanAadharCard ?? this.artisanAadharCard,
       otherOrganization: otherOrganization ?? this.otherOrganization,
     );
   }
@@ -207,11 +209,11 @@ class RickShawPuller  extends Equatable implements Occupation {
   final String licenceNo;
   final String otherOrganization;
 
-  RickShawPuller({this.surveyedLabour, this.licenceNo, this.otherOrganization});
+  RickShawPuller({this.surveyedLabour = false, this.licenceNo, this.otherOrganization});
 
   RickShawPuller copyWith({ bool surveyedLabour, String licenceNo, String otherOrganization }) {
     return RickShawPuller(
-      surveyedLabour: surveyedLabour ?? this.surveyedLabour ?? false,
+      surveyedLabour: surveyedLabour ?? this.surveyedLabour,
       licenceNo: licenceNo ?? this.licenceNo,
       otherOrganization: otherOrganization ?? this.otherOrganization,
     );
@@ -244,12 +246,12 @@ class AgricultureLabour  extends Equatable implements Occupation {
   final bool getMinimumWage;
   final String otherOrganization;
 
-  AgricultureLabour({this.minimumWageAware, this.getMinimumWage, this.otherOrganization});
+  AgricultureLabour({this.minimumWageAware = false, this.getMinimumWage = false, this.otherOrganization});
 
   AgricultureLabour copyWith({ bool minimumWageAware, bool getMinimumWage, String otherOrganization }) {
     return AgricultureLabour(
-      minimumWageAware: minimumWageAware ?? this.minimumWageAware ?? false,
-      getMinimumWage: getMinimumWage ?? this.getMinimumWage ?? false,
+      minimumWageAware: minimumWageAware ?? this.minimumWageAware,
+      getMinimumWage: getMinimumWage ?? this.getMinimumWage,
       otherOrganization: otherOrganization ?? this.otherOrganization,
     );
   }

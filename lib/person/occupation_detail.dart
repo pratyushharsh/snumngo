@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:snumngo/config/constants.dart';
 import 'package:snumngo/generated/l10n.dart';
+import 'package:snumngo/person/model/models.dart';
 
 class OccupationalDetail extends StatefulWidget {
   @override
@@ -11,13 +12,25 @@ class OccupationalDetail extends StatefulWidget {
 
 class _OccupationalDetailState extends State<OccupationalDetail> {
   String occupation;
+  Occupation occp;
+
+  onWelfareChange(val) {
+    print(val);
+    setState(() {
+      ConstructionWorker cw = occp;
+      occp = cw.copyWith(registeredNo: val);
+    });
+  }
 
   _buildOccupationDetail(context, occupation) {
     switch (occupation) {
       case "strt_vndr":
         return StreetVendorWidget();
       case "cns_wkr":
-        return ConstructionWorkerWidget();
+        occp = ConstructionWorker();
+        return ConstructionWorkerWidget(
+          worker: occp,
+        );
       case "wst_pkr":
         return WastePickerWidget();
       case "doms_wkr":
@@ -79,6 +92,17 @@ class _OccupationalDetailState extends State<OccupationalDetail> {
 }
 
 class _Affiliated extends StatelessWidget {
+  final bool aafilOtherOrg;
+  final Function onAffilatedChange;
+  final Function onOrgNameChange;
+
+  const _Affiliated(
+      {Key key,
+      @required this.aafilOtherOrg,
+      @required this.onAffilatedChange,
+      @required this.onOrgNameChange})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -92,21 +116,47 @@ class _Affiliated extends StatelessWidget {
             Flexible(
               flex: 1,
               child: Switch(
-                value: true,
+                value: aafilOtherOrg,
+                onChanged: onAffilatedChange,
               ),
             )
           ],
         ),
-        Text(S.of(context).affiliated_with),
-        TextFormField(
+        aafilOtherOrg ? Text(S.of(context).affiliated_with) : Container(),
+        aafilOtherOrg ? TextFormField(
+          onChanged: onOrgNameChange,
           decoration: InputDecoration(labelText: "Organization Name"),
-        ),
+        ) : Container(),
       ],
     );
   }
 }
 
-class StreetVendorWidget extends StatelessWidget {
+class StreetVendorWidget extends StatefulWidget {
+  @override
+  _StreetVendorWidgetState createState() => _StreetVendorWidgetState();
+}
+
+class _StreetVendorWidgetState extends State<StreetVendorWidget> {
+
+  bool municipalId = false;
+  bool municipalCertificate = false;
+  bool affilOtherOrg = false;
+
+  StreetVendor sv = StreetVendor();
+
+  onIdChange(val) {
+    setState(() {
+      sv = sv.copyWith(municipalId: val);
+    });
+  }
+
+  onMunicipalCertificateChange(val) {
+    setState(() {
+      sv = sv.copyWith(certificateNo: val);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -124,7 +174,12 @@ class StreetVendorWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: true,
+                    value: sv.surveyed,
+                    onChanged: (val) {
+                      setState(() {
+                        sv = sv.copyWith(surveyed: val);
+                      });
+                    },
                   ),
                 )
               ],
@@ -138,15 +193,21 @@ class StreetVendorWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: true,
+                    value: municipalId,
+                    onChanged: (val) {
+                      setState(() {
+                        municipalId = val;
+                      });
+                    },
                   ),
                 )
               ],
             ),
-            TextFormField(
+            municipalId ? TextFormField(
+              onChanged: onIdChange,
               decoration:
                   InputDecoration(labelText: S.of(context).strt_vndr_id_no),
-            ),
+            ) : Container(),
             Row(
               children: <Widget>[
                 Expanded(
@@ -156,16 +217,27 @@ class StreetVendorWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: true,
+                    value: municipalCertificate,
+                    onChanged: (val) {
+                      setState(() {
+                        municipalCertificate = val;
+                      });
+                    },
                   ),
                 )
               ],
             ),
-            TextFormField(
+            municipalCertificate ? TextFormField(
+              onChanged: onMunicipalCertificateChange,
               decoration: InputDecoration(
                   labelText: S.of(context).strt_vndr_muni_cert_no),
-            ),
+            ) : Container(),
             TextFormField(
+              onChanged: (val) {
+                setState(() {
+                  sv = sv.copyWith(placeEmployee: val);
+                });
+              },
               decoration:
                   InputDecoration(labelText: S.of(context).strt_vndr_plc_emp),
             ),
@@ -178,7 +250,12 @@ class StreetVendorWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: true,
+                    value: sv.foodVendor,
+                    onChanged: (val) {
+                      setState(() {
+                        sv = sv.copyWith(foodVendor: val);
+                      });
+                    },
                   ),
                 )
               ],
@@ -192,7 +269,12 @@ class StreetVendorWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: true,
+                    value: sv.fssaiTraining,
+                    onChanged: (val) {
+                      setState(() {
+                        sv = sv.copyWith(fssaiTraining: val);
+                      });
+                    },
                   ),
                 )
               ],
@@ -206,12 +288,29 @@ class StreetVendorWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: true,
+                    value: sv.fssaiTrainingCertificate,
+                    onChanged: (val) {
+                      setState(() {
+                        sv = sv.copyWith(fssaiTrainingCertificate: val);
+                      });
+                    },
                   ),
                 )
               ],
             ),
-            _Affiliated()
+            _Affiliated(
+              aafilOtherOrg: affilOtherOrg,
+              onAffilatedChange: (val) {
+                setState(() {
+                  affilOtherOrg = val;
+                });
+              },
+              onOrgNameChange: (val) {
+                setState(() {
+                   sv = sv.copyWith(otherOrganization: val);
+                });
+              },
+            )
           ],
         ),
       ),
@@ -219,7 +318,23 @@ class StreetVendorWidget extends StatelessWidget {
   }
 }
 
-class ConstructionWorkerWidget extends StatelessWidget {
+class ConstructionWorkerWidget extends StatefulWidget {
+  final ConstructionWorker worker;
+
+  const ConstructionWorkerWidget({Key key, this.worker}) : super(key: key);
+
+  @override
+  _ConstructionWorkerWidgetState createState() =>
+      _ConstructionWorkerWidgetState();
+}
+
+class _ConstructionWorkerWidgetState extends State<ConstructionWorkerWidget> {
+  bool registeredWelfare = false;
+  bool haveLabourCard = false;
+  bool affilOtherOrg = false;
+
+  ConstructionWorker consWkr = ConstructionWorker();
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -238,15 +353,27 @@ class ConstructionWorkerWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: true,
+                    value: registeredWelfare,
+                    onChanged: (val) {
+                      setState(() {
+                        registeredWelfare = val;
+                      });
+                    },
                   ),
                 )
               ],
             ),
-            TextFormField(
-              decoration:
-                  InputDecoration(labelText: S.of(context).cns_wkr_rgst_no),
-            ),
+            registeredWelfare
+                ? TextFormField(
+                    decoration: InputDecoration(
+                        labelText: S.of(context).cns_wkr_rgst_no),
+                    onChanged: (val) {
+                      setState(() {
+                        consWkr = consWkr.copyWith(registeredNo: val);
+                      });
+                    },
+                  )
+                : Container(),
             Row(
               children: <Widget>[
                 Expanded(
@@ -256,16 +383,40 @@ class ConstructionWorkerWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: true,
+                    value: haveLabourCard,
+                    onChanged: (val) {
+                      setState(() {
+                        haveLabourCard = val;
+                      });
+                    },
                   ),
                 )
               ],
             ),
-            TextFormField(
-              decoration:
-                  InputDecoration(labelText: S.of(context).cns_wkr_lbr_card_no),
-            ),
-            _Affiliated()
+            haveLabourCard
+                ? TextFormField(
+                    decoration: InputDecoration(
+                        labelText: S.of(context).cns_wkr_lbr_card_no),
+              onChanged: (val) {
+                setState(() {
+                  consWkr = consWkr.copyWith(laborNumber: val);
+                });
+              },
+                  )
+                : Container(),
+            _Affiliated(
+              aafilOtherOrg: affilOtherOrg,
+              onAffilatedChange: (val) {
+                setState(() {
+                  affilOtherOrg = val;
+                });
+              },
+              onOrgNameChange: (val) {
+                setState(() {
+                  consWkr = consWkr.copyWith(otherOrganization: val);
+                });
+              },
+            )
           ],
         ),
       ),
@@ -273,7 +424,17 @@ class ConstructionWorkerWidget extends StatelessWidget {
   }
 }
 
-class WastePickerWidget extends StatelessWidget {
+class WastePickerWidget extends StatefulWidget {
+  @override
+  _WastePickerWidgetState createState() => _WastePickerWidgetState();
+}
+
+class _WastePickerWidgetState extends State<WastePickerWidget> {
+  bool affilOtherOrg = false;
+  bool municipalRegistered = false;
+
+  WastePicker wp = WastePicker();
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -292,15 +453,25 @@ class WastePickerWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: true,
+                    value: municipalRegistered,
+                    onChanged: (val) {
+                      setState(() {
+                        municipalRegistered = val;
+                      });
+                    },
                   ),
                 )
               ],
             ),
-            TextFormField(
+            municipalRegistered ? TextFormField(
+              onChanged: (val) {
+                setState(() {
+                  wp = wp.copyWith(registrationNumber: val);
+                });
+              },
               decoration:
                   InputDecoration(labelText: S.of(context).wst_pkr_rgst_no),
-            ),
+            ) : Container(),
             Row(
               children: <Widget>[
                 Expanded(
@@ -310,12 +481,29 @@ class WastePickerWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: true,
+                    value: wp.idIssueByInst,
+                    onChanged: (val) {
+                      setState(() {
+                        wp = wp.copyWith(idIssueByInst: val);
+                      });
+                    },
                   ),
                 )
               ],
             ),
-            _Affiliated()
+            _Affiliated(
+              aafilOtherOrg: affilOtherOrg,
+              onAffilatedChange: (val) {
+                setState(() {
+                  affilOtherOrg = val;
+                });
+              },
+              onOrgNameChange: (val) {
+                setState(() {
+                  wp = wp.copyWith(otherOrganization: val);
+                });
+              },
+            )
           ],
         ),
       ),
@@ -323,7 +511,19 @@ class WastePickerWidget extends StatelessWidget {
   }
 }
 
-class DomesticWorkerWidget extends StatelessWidget {
+class DomesticWorkerWidget extends StatefulWidget {
+
+  @override
+  _DomesticWorkerWidgetState createState() => _DomesticWorkerWidgetState();
+}
+
+class _DomesticWorkerWidgetState extends State<DomesticWorkerWidget> {
+  bool affilOtherOrg = false;
+  bool policeVerify = false;
+  bool rwaRgst = false;
+
+  DomesticWorker dw = DomesticWorker();
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -342,15 +542,20 @@ class DomesticWorkerWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: true,
+                    value: rwaRgst,
+                    onChanged: (val) {
+                      setState(() {
+                        rwaRgst = val;
+                      });
+                    },
                   ),
                 )
               ],
             ),
-            TextFormField(
+            rwaRgst ? TextFormField(
               decoration:
                   InputDecoration(labelText: S.of(context).dom_wkr_rwa_id),
-            ),
+            ) : Container(),
             Row(
               children: <Widget>[
                 Expanded(
@@ -360,30 +565,47 @@ class DomesticWorkerWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: true,
+                    value: policeVerify,
+                    onChanged: (val) {
+                      setState(() {
+                        policeVerify = val;
+                        print(val);
+                        print(dw.verifyTime);
+
+                        dw = dw.copyWith(verifyTime: null);
+                      });
+                    },
                   ),
                 )
               ],
             ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 4,
-                  child: Text(S.of(context).dom_wkr_police_verify_date),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: Switch(
-                    value: true,
-                  ),
-                )
-              ],
-            ),
+            policeVerify ? PoliceVerifyWidget(verifyTime: dw.verifyTime, onDateChange: (val) {
+              setState(() {
+                dw = dw.copyWith(verifyTime: val);
+              });
+            },) : Container(),
             TextFormField(
+              onChanged: (val) {
+                setState(() {
+                  dw = dw.copyWith(instituteId: val);
+                });
+              },
               decoration:
                   InputDecoration(labelText: S.of(context).dom_wkr_inst_id),
             ),
-            _Affiliated()
+            _Affiliated(
+              aafilOtherOrg: affilOtherOrg,
+              onAffilatedChange: (val) {
+                setState(() {
+                  affilOtherOrg = val;
+                });
+              },
+              onOrgNameChange: (val) {
+                setState(() {
+                  dw = dw.copyWith(otherOrganization: val);
+                });
+              },
+            )
           ],
         ),
       ),
@@ -391,7 +613,17 @@ class DomesticWorkerWidget extends StatelessWidget {
   }
 }
 
-class HomeBasedWorkerWidget extends StatelessWidget {
+class HomeBasedWorkerWidget extends StatefulWidget {
+  @override
+  _HomeBasedWorkerWidgetState createState() => _HomeBasedWorkerWidgetState();
+}
+
+class _HomeBasedWorkerWidgetState extends State<HomeBasedWorkerWidget> {
+  bool affilOtherOrg = false;
+  bool artisianCard = false;
+
+  HomeBasedWorker hw = HomeBasedWorker();
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -410,15 +642,25 @@ class HomeBasedWorkerWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: true,
+                    value: artisianCard,
+                    onChanged: (val) {
+                      setState(() {
+                        artisianCard = val;
+                      });
+                    },
                   ),
                 )
               ],
             ),
-            TextFormField(
+            artisianCard ? TextFormField(
+              onChanged: (val) {
+                setState(() {
+                  hw = hw.copyWith(artisanNo: val);
+                });
+              },
               decoration: InputDecoration(
                   labelText: S.of(context).home_wkr_artisans_card),
-            ),
+            ) : Container(),
             Row(
               children: <Widget>[
                 Expanded(
@@ -428,7 +670,12 @@ class HomeBasedWorkerWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: true,
+                    value: hw.artisanCreditCard,
+                    onChanged: (val) {
+                      setState(() {
+                        hw = hw.copyWith(artisanCreditCard: val);
+                      });
+                    },
                   ),
                 )
               ],
@@ -442,12 +689,29 @@ class HomeBasedWorkerWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: true,
+                    value: hw.artisanAadharCard,
+                    onChanged: (val) {
+                      setState(() {
+                        hw = hw.copyWith(artisanAadharCard: val);
+                      });
+                    },
                   ),
                 )
               ],
             ),
-            _Affiliated()
+            _Affiliated(
+              aafilOtherOrg: affilOtherOrg,
+              onAffilatedChange: (val) {
+                setState(() {
+                  affilOtherOrg = val;
+                });
+              },
+              onOrgNameChange: (val) {
+                setState(() {
+                  hw = hw.copyWith(otherOrganization: val);
+                });
+              },
+            )
           ],
         ),
       ),
@@ -455,7 +719,17 @@ class HomeBasedWorkerWidget extends StatelessWidget {
   }
 }
 
-class RickShawPullerWidget extends StatelessWidget {
+class RickShawPullerWidget extends StatefulWidget {
+  @override
+  _RickShawPullerWidgetState createState() => _RickShawPullerWidgetState();
+}
+
+class _RickShawPullerWidgetState extends State<RickShawPullerWidget> {
+
+  RickShawPuller rp = RickShawPuller();
+  bool rskwLsc = false;
+  bool affilOtherOrg = false;
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -474,7 +748,12 @@ class RickShawPullerWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: true,
+                    value: rp.surveyedLabour,
+                    onChanged: (val) {
+                      setState(() {
+                        rp = rp.copyWith(surveyedLabour: val);
+                      });
+                    },
                   ),
                 )
               ],
@@ -488,16 +767,33 @@ class RickShawPullerWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: true,
+                    value: rskwLsc,
+                    onChanged: (val) {
+                      setState(() {
+                        rskwLsc = val;
+                      });
+                    },
                   ),
                 )
               ],
             ),
-            TextFormField(
+            rskwLsc? TextFormField(
               decoration:
                   InputDecoration(labelText: S.of(context).rskw_pllr_lic_no),
-            ),
-            _Affiliated()
+            ) : Container(),
+            _Affiliated(
+              aafilOtherOrg: affilOtherOrg,
+              onAffilatedChange: (val) {
+                setState(() {
+                  affilOtherOrg = val;
+                });
+              },
+              onOrgNameChange: (val) {
+                setState(() {
+                  rp = rp.copyWith(otherOrganization: val);
+                });
+              },
+            )
           ],
         ),
       ),
@@ -505,7 +801,16 @@ class RickShawPullerWidget extends StatelessWidget {
   }
 }
 
-class AgricultureLabourWidget extends StatelessWidget {
+class AgricultureLabourWidget extends StatefulWidget {
+  @override
+  _AgricultureLabourWidgetState createState() => _AgricultureLabourWidgetState();
+}
+
+class _AgricultureLabourWidgetState extends State<AgricultureLabourWidget> {
+  bool affilOtherOrg = false;
+
+  AgricultureLabour al = AgricultureLabour();
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -523,7 +828,12 @@ class AgricultureLabourWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: true,
+                    value: al.minimumWageAware,
+                    onChanged: (val) {
+                      setState(() {
+                        al = al.copyWith(minimumWageAware: val);
+                      });
+                    },
                   ),
                 )
               ],
@@ -537,15 +847,68 @@ class AgricultureLabourWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: true,
+                    value: al.getMinimumWage,
+                    onChanged: (val) {
+                      setState(() {
+                        al = al.copyWith(getMinimumWage: val);
+                      });
+                    },
                   ),
                 )
               ],
             ),
-            _Affiliated()
+            _Affiliated(
+              aafilOtherOrg: affilOtherOrg,
+              onAffilatedChange: (val) {
+                setState(() {
+                  affilOtherOrg = val;
+                });
+              },
+              onOrgNameChange: (val) {
+                setState(() {
+                  al = al.copyWith(otherOrganization: val);
+                });
+              },
+            )
           ],
         ),
       ),
+    );
+  }
+}
+
+class PoliceVerifyWidget extends StatelessWidget {
+
+  final DateTime verifyTime;
+  final Function onDateChange;
+
+  const PoliceVerifyWidget({Key key, this.verifyTime, this.onDateChange}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Text(S.of(context).dom_wkr_police_verify_date),
+        ),
+        Expanded(
+          child: OutlineButton(
+            child: Text(DateFormat("dd-MMM-yyyy").format(verifyTime ?? DateTime.now())),
+            onPressed: () {
+              showDatePicker(
+                context: context,
+                initialDate: verifyTime ?? DateTime.now(),
+                firstDate: DateTime(1950),
+                lastDate: DateTime.now(),
+              ).then((value) {
+                if (value != null)
+                  onDateChange(value);
+              });
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+          ),
+        )
+      ],
     );
   }
 }

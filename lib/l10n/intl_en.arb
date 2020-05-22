@@ -74,7 +74,7 @@
 	"dom_wkr_rwa": "Are you essayed by RWA ?",
 	"dom_wkr_rwa_id": "Registration number",
 	"dom_wkr_police_verify": "Have you got a police verification",
-	"dom_wkr_police_verify_date": "Enter date if police verification has taken place",
+	"dom_wkr_police_verify_date": "Police verification date",
 	"dom_wkr_inst_id": "ID card / identity card issued by the entity or institution",
 	"home_wkr_artisans": "Do you have an ARTISANS card",
 	"home_wkr_artisans_card": "ARTISANS Card Number",

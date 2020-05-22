@@ -6,13 +6,18 @@ import 'package:snumngo/generated/l10n.dart';
 
 import 'model/person.dart';
 
-class PersonalInfoWidget extends StatelessWidget {
+class PersonalInfoWidget extends StatefulWidget {
 
   final Function onGenderChange;
   final Function onDateChange;
 
   const PersonalInfoWidget({Key key, this.onGenderChange, this.onDateChange}) : super(key: key);
 
+  @override
+  _PersonalInfoWidgetState createState() => _PersonalInfoWidgetState();
+}
+
+class _PersonalInfoWidgetState extends State<PersonalInfoWidget> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -42,7 +47,7 @@ class PersonalInfoWidget extends StatelessWidget {
               Expanded(
                 flex: 4,
                 child: RadioListTile(
-                  onChanged: onGenderChange,
+                  onChanged: widget.onGenderChange,
                   selected: true,
                   value: "M",
                   groupValue: "M",
@@ -52,7 +57,7 @@ class PersonalInfoWidget extends StatelessWidget {
               Expanded(
                 flex: 5,
                 child: RadioListTile(
-                  onChanged: onGenderChange,
+                  onChanged: widget.onGenderChange,
                   value: "F",
                   groupValue: "M",
                   title: Text(S.of(context).female),
@@ -62,7 +67,7 @@ class PersonalInfoWidget extends StatelessWidget {
           ),
           _DOBWidget(
             dob: DateTime.now(),
-            onDateChange: onDateChange,
+            onDateChange: widget.onDateChange,
           ),
           TextFormField(
             decoration: InputDecoration(labelText: S.of(context).fathers_name),

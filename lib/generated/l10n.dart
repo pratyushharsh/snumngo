@@ -695,7 +695,7 @@ class S {
 
   String get dom_wkr_police_verify_date {
     return Intl.message(
-      'Enter date if police verification has taken place',
+      'Police verification date',
       name: 'dom_wkr_police_verify_date',
       desc: '',
       args: [],

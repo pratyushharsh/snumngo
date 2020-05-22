@@ -56,7 +56,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dob" : MessageLookupByLibrary.simpleMessage("Date of Birth"),
     "dom_wkr_inst_id" : MessageLookupByLibrary.simpleMessage("ID card / identity card issued by the entity or institution"),
     "dom_wkr_police_verify" : MessageLookupByLibrary.simpleMessage("Have you got a police verification"),
-    "dom_wkr_police_verify_date" : MessageLookupByLibrary.simpleMessage("Enter date if police verification has taken place"),
+    "dom_wkr_police_verify_date" : MessageLookupByLibrary.simpleMessage("Police verification date"),
     "dom_wkr_rwa" : MessageLookupByLibrary.simpleMessage("Are you essayed by RWA ?"),
     "dom_wkr_rwa_id" : MessageLookupByLibrary.simpleMessage("Registration number"),
     "doms_wkr" : MessageLookupByLibrary.simpleMessage("Domestic Worker"),

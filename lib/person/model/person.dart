@@ -1,9 +1,11 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:snumngo/person/model/occupation.dart';
 
 import 'address.dart';
 
-class Person  extends Equatable{
+@immutable
+class Person {
   final PersonalInfo personalInfo;
   final Address address;
   final Occupation occupation;
@@ -22,9 +24,6 @@ class Person  extends Equatable{
     );
   }
 
-  @override
-  List<Object> get props => [personalInfo, address, occupation, aadhaarBank, panVoterDetail];
-
 //  PersonEntity toEntity() {
 //    return PersonEntity(personalInfo: personalInfo, address: address, occupation: occupation, aadhaarBank: aadhaarBank, panVoterDetail: panVoterDetail);
 //  }
@@ -40,7 +39,8 @@ class Person  extends Equatable{
 //  }
 }
 
-class PersonalInfo  extends Equatable{
+@immutable
+class PersonalInfo {
   final String sno;
   final String name;
   final String mobile;
@@ -65,9 +65,6 @@ class PersonalInfo  extends Equatable{
     );
   }
 
-  @override
-  List<Object> get props => [sno, name, mobile, whatsapp, gender, dob, fatherName, motherName];
-
 //  PersonalInfoEntity toEntity() {
 //    return PersonalInfoEntity(sno: sno, name: name, mobile: mobile, whatsapp: whatsapp, gender: gender, dob: dob, fatherName: fatherName, motherName: motherName);
 //  }
@@ -87,7 +84,8 @@ class PersonalInfo  extends Equatable{
 
 }
 
-class AadharBankDetail  extends Equatable{
+@immutable
+class AadharBankDetail {
   final String aadhaarNo;
   final String frontUrl;
   final String backUrl;
@@ -110,9 +108,7 @@ class AadharBankDetail  extends Equatable{
     );
   }
 
-  @override
-  List<Object> get props => [aadhaarNo, frontUrl, backUrl, bankLinked, bankName, accountNumber, ifscCode];
-//
+
 //  AadharBankDetailEntity toEntity() {
 //    return AadharBankDetailEntity(aadhaar: aadhaar, frontUrl: frontUrl, backUrl: backUrl, bankLinked: bankLinked, bankName: bankName, accountNumber: accountNumber, ifscCode: ifscCode);
 //  }
@@ -130,7 +126,8 @@ class AadharBankDetail  extends Equatable{
 //  }
 }
 
-class PanVoterDetail  extends Equatable{
+@immutable
+class PanVoterDetail {
   final String pancard;
   final String panUrl;
   final String voterCard;
@@ -149,9 +146,6 @@ class PanVoterDetail  extends Equatable{
     );
   }
 
-  @override
-  List<Object> get props => [pancard, panUrl, voterCard, voterUrlFront, voterUrlBack];
-
 //  PanVoterDetailEntity toEntity() {
 //    return PanVoterDetailEntity(pancard: pancard, panUrl: panUrl, voterCard: voterCard, voterUrlFront: voterUrlFront, voterUrlBack: voterUrlBack);
 //  }
@@ -165,5 +159,4 @@ class PanVoterDetail  extends Equatable{
 //      voterUrlBack: entity.voterUrlBack,
 //    );
 //  }
-
 }
