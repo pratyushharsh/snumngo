@@ -4,6 +4,16 @@ import 'package:snumngo/person/model/occupation.dart';
 import 'package:snumngo/person/model/person.dart';
 
 @immutable
-abstract class PersonState {}
+abstract class PersonState {
+  final Person person;
+  PersonState(this.person);
+}
 
-class InitialPersonState extends PersonState {}
+class InitialPersonState extends PersonState {
+  InitialPersonState(Person person) : super(person);
+
+}
+
+class EditingPersonalState extends PersonState {
+  EditingPersonalState(Person person) : super(person);
+}

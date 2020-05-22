@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:snumngo/person/model/models.dart';
 import 'package:snumngo/person/model/occupation.dart';
 
 import 'address.dart';
@@ -11,23 +12,26 @@ class Person {
   final Occupation occupation;
   final AadharBankDetail aadhaarBank;
   final PanVoterDetail panVoterDetail;
+  final Disability disability;
 
-  Person({this.personalInfo, this.address, this.occupation, this.aadhaarBank, this.panVoterDetail});
+  Person({this.personalInfo, this.address, this.occupation, this.aadhaarBank, this.panVoterDetail, this.disability});
 
-  Person copyWith({ PersonalInfo personalInfo, Address address, Occupation occupation, AadharBankDetail aadhaarBank, PanVoterDetail panVoterDetail }) {
+  Person copyWith({ PersonalInfo personalInfo, Address address, Occupation occupation, AadharBankDetail aadhaarBank, PanVoterDetail panVoterDetail, Disability disability }) {
     return Person(
       personalInfo: personalInfo ?? this.personalInfo,
       address: address ?? this.address,
       occupation: occupation ?? this.occupation,
       aadhaarBank: aadhaarBank ?? this.aadhaarBank,
       panVoterDetail: panVoterDetail ?? this.panVoterDetail,
+      disability: disability ?? this.disability
     );
   }
 
   @override
   String toString() {
-    return 'Person{personalInfo: $personalInfo, address: $address, occupation: $occupation, aadhaarBank: $aadhaarBank, panVoterDetail: $panVoterDetail}';
+    return 'Person{personalInfo: $personalInfo, address: $address, occupation: $occupation, aadhaarBank: $aadhaarBank, panVoterDetail: $panVoterDetail, disability: $disability}';
   }
+
 
 //  PersonEntity toEntity() {
 //    return PersonEntity(personalInfo: personalInfo, address: address, occupation: occupation, aadhaarBank: aadhaarBank, panVoterDetail: panVoterDetail);
@@ -109,7 +113,7 @@ class AadharBankDetail {
     return 'AadharBankDetail{aadhaarNo: $aadhaarNo, frontUrl: $frontUrl, backUrl: $backUrl, bankLinked: $bankLinked, bankName: $bankName, accountNumber: $accountNumber, ifscCode: $ifscCode}';
   }
 
-  AadharBankDetail({this.aadhaarNo, this.frontUrl, this.backUrl, this.bankLinked, this.bankName, this.accountNumber, this.ifscCode});
+  AadharBankDetail({this.aadhaarNo, this.frontUrl, this.backUrl, this.bankLinked = false, this.bankName, this.accountNumber, this.ifscCode});
 
   AadharBankDetail copyWith({ String aadhaarNo, String frontUrl, String backUrl, bool bankLinked, String bankName, String accountNumber, String ifscCode }) {
     return AadharBankDetail(
@@ -179,4 +183,25 @@ class PanVoterDetail {
 //      voterUrlBack: entity.voterUrlBack,
 //    );
 //  }
+}
+
+class Disability {
+  final bool disable;
+  final String certificateNo;
+  final String certificateUrl;
+
+  Disability({this.disable = false, this.certificateNo, this.certificateUrl});
+
+  Disability copyWith({bool disable, String cerificateNo, String certificateUrl }) {
+    return Disability(
+      disable: disable ?? this.disable,
+      certificateNo: cerificateNo ?? this.certificateNo,
+      certificateUrl: certificateUrl ?? this.certificateUrl
+    );
+  }
+
+  @override
+  String toString() {
+    return 'Disability{disable: $disable, certificateNo: $certificateNo, certificateUrl: $certificateUrl}';
+  }
 }

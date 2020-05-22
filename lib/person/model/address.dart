@@ -30,6 +30,12 @@ class Address  extends Equatable{
   @override
   List<Object> get props => [houseNo, street, city, ward, municipal, district, pincode, state];
 
+  @override
+  String toString() {
+    return 'Address{houseNo: $houseNo, street: $street, city: $city, ward: $ward, municipal: $municipal, district: $district, pincode: $pincode, state: $state}';
+  }
+
+
 //  AddressEntity toEntity() {
 //    return AddressEntity(houseNo: houseNo, street: street, city: city, ward: ward, municipal: municipal, district: district, pincode: pincode, state: state);
 //  }

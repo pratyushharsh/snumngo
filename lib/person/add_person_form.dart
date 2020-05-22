@@ -13,6 +13,8 @@ class AddPersonForm extends StatefulWidget {
 
 class _AddPersonFormState extends State<AddPersonForm> {
 
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   int _currentStep = 0;
   Person person = Person();
   int _changed = 0;
@@ -20,8 +22,10 @@ class _AddPersonFormState extends State<AddPersonForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: _formKey,
       autovalidate: true,
       onChanged: () {
+        _formKey.currentState;
         print("${_changed++}");
       },
       child: Stepper(
@@ -81,7 +85,7 @@ class _AddPersonFormState extends State<AddPersonForm> {
       ),
       Step(
           title: Text("Aadhaar Detail"),
-          content: AadharBankWidget(person: person,),
+          content: AadharBankWidget(),
           isActive: _currentStep >= 3,
           state: getState(3)
       ),
