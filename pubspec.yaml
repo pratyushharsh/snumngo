@@ -31,6 +31,7 @@ dependencies:
   rxdart:
   firebase_auth: ^0.16.0
   flutter_icons: ^1.1.0
+  provider:
 
 
   # The following adds the Cupertino Icons font to your application.

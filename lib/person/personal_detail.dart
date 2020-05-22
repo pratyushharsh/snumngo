@@ -1,42 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:snumngo/config/constants.dart';
 import 'package:snumngo/generated/l10n.dart';
+import 'package:snumngo/person/bloc/bloc.dart';
 
 import 'model/person.dart';
 
-class PersonalInfoWidget extends StatefulWidget {
+class PersonalInfoWidget extends StatelessWidget {
 
-  final Function onGenderChange;
-  final Function onDateChange;
+  String sno;
 
-  const PersonalInfoWidget({Key key, this.onGenderChange, this.onDateChange}) : super(key: key);
-
-  @override
-  _PersonalInfoWidgetState createState() => _PersonalInfoWidgetState();
-}
-
-class _PersonalInfoWidgetState extends State<PersonalInfoWidget> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
+
+    return BlocBuilder<PersonBloc, PersonState>(
+      builder: (context, state) => Column(
         children: <Widget>[
           TextFormField(
             decoration: InputDecoration(labelText: S.of(context).sno),
+            onChanged: (val) {
+              sno = val;
+            },
+            onEditingComplete: () {
+              BlocProvider.of(context).add(UpdateSno(sno));
+            },
           ),
           TextFormField(
-            decoration: InputDecoration(labelText: S.of(context).name, icon: Icon(Icons.person)),
+            decoration: InputDecoration(labelText: S.of(context).name, icon: Icon(Icons.person),),
+            onChanged: (val) {
+//              BlocProvider.of<PersonBloc>(context).updatePersonalInfo(pi.copyWith(name: val));
+            },
           ),
           TextFormField(
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(labelText: S.of(context).mobile_num, icon : Icon(Icons.phone)),
+            onChanged: (val) {
+//              BlocProvider.of<PersonBloc>(context).updatePersonalInfo(pi.copyWith(mobile: val));
+            },
           ),
           TextFormField(
             keyboardType: TextInputType.phone,
             decoration:
             InputDecoration(labelText: S.of(context).whatsapp_number, icon : Icon(FontAwesome.whatsapp)),
+            onChanged: (val) {
+//              BlocProvider.of<PersonBloc>(context).updatePersonalInfo(pi.copyWith(whatsapp: val));
+            },
           ),
           Row(
             children: <Widget>[
@@ -47,8 +57,9 @@ class _PersonalInfoWidgetState extends State<PersonalInfoWidget> {
               Expanded(
                 flex: 4,
                 child: RadioListTile(
-                  onChanged: widget.onGenderChange,
-                  selected: true,
+                  onChanged: (val) {
+//                    BlocProvider.of<PersonBloc>(context).updatePersonalInfo(pi.copyWith(gender: val));
+                  },
                   value: "M",
                   groupValue: "M",
                   title: Text(S.of(context).male),
@@ -57,7 +68,9 @@ class _PersonalInfoWidgetState extends State<PersonalInfoWidget> {
               Expanded(
                 flex: 5,
                 child: RadioListTile(
-                  onChanged: widget.onGenderChange,
+                  onChanged: (val) {
+//                    BlocProvider.of<PersonBloc>(context).updatePersonalInfo(pi.copyWith(gender: val));
+                  },
                   value: "F",
                   groupValue: "M",
                   title: Text(S.of(context).female),
@@ -67,13 +80,23 @@ class _PersonalInfoWidgetState extends State<PersonalInfoWidget> {
           ),
           _DOBWidget(
             dob: DateTime.now(),
-            onDateChange: widget.onDateChange,
+            onDateChange: (val) {
+//              setState(() {
+////              pi = pi.copyWith(dob: val);
+//              });
+            },
           ),
           TextFormField(
             decoration: InputDecoration(labelText: S.of(context).fathers_name),
+            onChanged: (val) {
+
+            },
           ),
           TextFormField(
             decoration: InputDecoration(labelText: S.of(context).mothers_name),
+            onChanged: (val) {
+
+            },
           ),
         ],
       ),

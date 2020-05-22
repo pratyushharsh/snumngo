@@ -24,6 +24,11 @@ class Person {
     );
   }
 
+  @override
+  String toString() {
+    return 'Person{personalInfo: $personalInfo, address: $address, occupation: $occupation, aadhaarBank: $aadhaarBank, panVoterDetail: $panVoterDetail}';
+  }
+
 //  PersonEntity toEntity() {
 //    return PersonEntity(personalInfo: personalInfo, address: address, occupation: occupation, aadhaarBank: aadhaarBank, panVoterDetail: panVoterDetail);
 //  }
@@ -50,7 +55,7 @@ class PersonalInfo {
   final String fatherName;
   final String motherName;
 
-  PersonalInfo({this.sno, this.name, this.mobile, this.whatsapp, this.gender, this.dob, this.fatherName, this.motherName});
+  PersonalInfo({this.sno, this.name, this.mobile, this.whatsapp, this.gender = "M", this.dob, this.fatherName, this.motherName});
 
   PersonalInfo copyWith({ String sno, String name, String mobile, String whatsapp, String gender, DateTime dob, String fatherName, String motherName }) {
     return PersonalInfo(
@@ -63,6 +68,11 @@ class PersonalInfo {
       fatherName: fatherName ?? this.fatherName,
       motherName: motherName ?? this.motherName,
     );
+  }
+
+  @override
+  String toString() {
+    return 'PersonalInfo{sno: $sno, name: $name, mobile: $mobile, whatsapp: $whatsapp, gender: $gender, dob: $dob, fatherName: $fatherName, motherName: $motherName}';
   }
 
 //  PersonalInfoEntity toEntity() {
@@ -93,6 +103,11 @@ class AadharBankDetail {
   final String bankName;
   final String accountNumber;
   final String ifscCode;
+
+  @override
+  String toString() {
+    return 'AadharBankDetail{aadhaarNo: $aadhaarNo, frontUrl: $frontUrl, backUrl: $backUrl, bankLinked: $bankLinked, bankName: $bankName, accountNumber: $accountNumber, ifscCode: $ifscCode}';
+  }
 
   AadharBankDetail({this.aadhaarNo, this.frontUrl, this.backUrl, this.bankLinked, this.bankName, this.accountNumber, this.ifscCode});
 
@@ -133,6 +148,11 @@ class PanVoterDetail {
   final String voterCard;
   final String voterUrlFront;
   final String voterUrlBack;
+
+  @override
+  String toString() {
+    return 'PanVoterDetail{pancard: $pancard, panUrl: $panUrl, voterCard: $voterCard, voterUrlFront: $voterUrlFront, voterUrlBack: $voterUrlBack}';
+  }
 
   PanVoterDetail({this.pancard, this.panUrl, this.voterCard, this.voterUrlFront, this.voterUrlBack});
 
