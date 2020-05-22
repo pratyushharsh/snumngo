@@ -4,87 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:snumngo/config/constants.dart';
 import 'package:snumngo/generated/l10n.dart';
 
-class PersonalDetail extends StatefulWidget {
-  @override
-  _PersonalDetailState createState() => _PersonalDetailState();
-}
-
-class _PersonalDetailState extends State<PersonalDetail> {
-  DateTime _dob = new DateTime.now();
-
-  bool _disable = false;
-  String _disableCertNo;
-
-  String _aadharNo;
-  String _voterCard;
-  String _gender = "F";
-
-  String house;
-  String street;
-  String city;
-  String ward;
-  String municipal;
-  String district;
-  String pincode;
-  String state;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(12.0),
-      child: ListView(
-        children: <Widget>[
-          PersonalInfoWidget(),
-          AddressWidget(
-            stateOnChange: (val) {
-              setState(() {
-                state = val;
-              });
-            },
-            state: state,
-          ),
-          DisabilityWidget(
-            disable: _disable,
-            disableOnChange: (val) {
-              setState(() {
-                _disable = val;
-              });
-            },
-            disableCertOnChange: (cert) {
-              setState(() {
-                _disableCertNo = cert;
-              });
-            },
-          ),
-          AadharWidget(
-            aadharNo: _aadharNo,
-            onAadhaarChange: (val) {
-              setState(() {
-                _aadharNo = val;
-              });
-            },
-          ),
-          TextFormField(
-            decoration: InputDecoration(hintText: S.of(context).pan_no),
-          ),
-          VoterWidget(
-            voterId: _voterCard,
-            onVoterIdChange: (val) {
-              setState(() {
-                _voterCard = val;
-              });
-            },
-          )
-        ],
-      ),
-    );
-  }
-}
+import 'model/person.dart';
 
 class PersonalInfoWidget extends StatelessWidget {
 
@@ -120,7 +40,7 @@ class PersonalInfoWidget extends StatelessWidget {
                 child: Text(S.of(context).gender),
               ),
               Expanded(
-                flex: 3,
+                flex: 4,
                 child: RadioListTile(
                   onChanged: onGenderChange,
                   selected: true,
@@ -130,7 +50,7 @@ class PersonalInfoWidget extends StatelessWidget {
                 ),
               ),
               Expanded(
-                flex: 3,
+                flex: 5,
                 child: RadioListTile(
                   onChanged: onGenderChange,
                   value: "F",
@@ -185,7 +105,6 @@ class AddressWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Text("Address Details"),
         TextFormField(
           decoration: InputDecoration(labelText: S.of(context).house),
         ),
@@ -238,12 +157,11 @@ class AddressWidget extends StatelessWidget {
 
 class DisabilityWidget extends StatelessWidget {
 
-  final bool disable;
   final Function disableOnChange;
   final Function disableCertOnChange;
   final Function addDisablityCertificateImage;
 
-  const DisabilityWidget({Key key, this.disable, this.disableOnChange, this.disableCertOnChange, this.addDisablityCertificateImage}) : super(key: key);
+  const DisabilityWidget({Key key, this.disableOnChange, this.disableCertOnChange, this.addDisablityCertificateImage}) : super(key: key);
 
 
   @override
@@ -259,14 +177,13 @@ class DisabilityWidget extends StatelessWidget {
             Flexible(
               flex: 1,
               child: SwitchListTile(
-                value: disable,
+                value: true,
                 onChanged: disableOnChange,
               ),
             )
           ],
         ),
-        disable
-            ? Row(
+        Row(
           children: <Widget>[
             Expanded(
               flex: 2,
@@ -295,32 +212,47 @@ class DisabilityWidget extends StatelessWidget {
             )
           ],
         )
-            : Container(),
       ],
     );
   }
 }
 
-class AadharWidget extends StatelessWidget {
+class AadharBankWidget extends StatefulWidget {
 
-  final Function onAadhaarChange;
-  final String aadharNo;
+  final Person person;
 
-  const AadharWidget({Key key, this.onAadhaarChange, this.aadharNo}) : super(key: key);
+  const AadharBankWidget({Key key, this.person}) : super(key: key);
+
+  @override
+  _AadharBankWidgetState createState() => _AadharBankWidgetState();
+}
+
+class _AadharBankWidgetState extends State<AadharBankWidget> {
+
+  AadharBankDetail aadhar;
+
+  bool aadhaarLink = false;
+
+  void onAadhaarChange(aadharNo) {
+    setState(() {
+      aadhar = aadhar.copyWith(aadhaarNo: aadharNo);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    aadhar = widget.person.aadhaarBank ?? AadharBankDetail();
+
     return Column(
       children: <Widget>[
         TextFormField(
-          onChanged: onAadhaarChange,
+          onChanged: this.onAadhaarChange,
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
             labelText: S.of(context).aadhar_no,
           ),
         ),
-        aadharNo != null && aadharNo.isNotEmpty
-            ? Row(
+        Row(
           children: <Widget>[
             Expanded(
               child: Container(
@@ -349,24 +281,66 @@ class AadharWidget extends StatelessWidget {
               ),
             ),
           ],
-        )
-            : Container(),
+        ),
+        Row(
+          children: <Widget>[
+            Expanded(
+              flex: 2,
+              child: Text(S.of(context).aadhaar_link),
+            ),
+            Flexible(
+              flex: 1,
+              child: SwitchListTile(
+                value: aadhaarLink,
+                onChanged: (val) {
+                  setState(() {
+                    aadhaarLink = val;
+                  });
+                },
+              ),
+            )
+          ],
+        ),
+        aadhaarLink ? Container(
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: S.of(context).bank_name,
+                ),
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: S.of(context).bank_acc_no,
+                ),
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: S.of(context).ifcs,
+                ),
+              ),
+            ],
+          ),
+        ) : Container()
       ],
     );
   }
 }
 
-class VoterWidget extends StatelessWidget {
+class PanVoterWidget extends StatelessWidget {
 
   final Function onVoterIdChange;
   final String voterId;
 
-  const VoterWidget({Key key, this.onVoterIdChange, this.voterId}) : super(key: key);
+  const PanVoterWidget({Key key, this.onVoterIdChange, this.voterId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        TextFormField(
+          decoration: InputDecoration(hintText: S.of(context).pan_no),
+        ),
         TextFormField(
           onChanged: onVoterIdChange,
           decoration: InputDecoration(hintText: S.of(context).voter_card),
@@ -421,14 +395,12 @@ class _DOBWidget extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Expanded(
-            flex: 2,
             child: Text(
               S.of(context).dob,
               maxLines: 2,
             ),
           ),
           Expanded(
-            flex: 1,
             child: OutlineButton(
               child: Text(DateFormat("dd-MMM-yyyy").format(dob)),
               onPressed: () {

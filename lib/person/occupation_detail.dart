@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:snumngo/config/constants.dart';
@@ -9,12 +10,10 @@ class OccupationalDetail extends StatefulWidget {
 }
 
 class _OccupationalDetailState extends State<OccupationalDetail> {
-
   String occupation;
 
-
   _buildOccupationDetail(context, occupation) {
-    switch(occupation) {
+    switch (occupation) {
       case "strt_vndr":
         return StreetVendorWidget();
       case "cns_wkr":
@@ -31,7 +30,18 @@ class _OccupationalDetailState extends State<OccupationalDetail> {
         return AgricultureLabourWidget();
       case "others":
       default:
-        return Container(child: Text("Select An Occupation from the dropdown Above"));
+        return Card(
+          margin: EdgeInsets.only(top: 10),
+          child: Container(
+            padding: EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                  hintText: "Add Your Occupation Or Choose from the Dropdown"),
+              maxLines: 4,
+              keyboardType: TextInputType.multiline,
+            ),
+          ),
+        );
     }
   }
 
@@ -46,6 +56,7 @@ class _OccupationalDetailState extends State<OccupationalDetail> {
             onChanged: (val) {
               setState(() {
                 occupation = val;
+                FocusScope.of(context).requestFocus(FocusNode());
               });
             },
             hint: Text(S.of(context).select_occupation),
@@ -88,9 +99,7 @@ class _Affiliated extends StatelessWidget {
         ),
         Text(S.of(context).affiliated_with),
         TextFormField(
-          decoration: InputDecoration(
-              labelText: "Organization Name"
-          ),
+          decoration: InputDecoration(labelText: "Organization Name"),
         ),
       ],
     );
@@ -101,12 +110,10 @@ class StreetVendorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(12.0),
+      margin: EdgeInsets.only(top: 10),
       child: Container(
-        margin: EdgeInsets.all(6),
         padding: EdgeInsets.all(8.0),
-        child: ListView(
-          shrinkWrap: true,
+        child: Column(
           children: <Widget>[
             Row(
               children: <Widget>[
@@ -137,9 +144,8 @@ class StreetVendorWidget extends StatelessWidget {
               ],
             ),
             TextFormField(
-              decoration: InputDecoration(
-                labelText: S.of(context).strt_vndr_id_no
-              ),
+              decoration:
+                  InputDecoration(labelText: S.of(context).strt_vndr_id_no),
             ),
             Row(
               children: <Widget>[
@@ -157,13 +163,11 @@ class StreetVendorWidget extends StatelessWidget {
             ),
             TextFormField(
               decoration: InputDecoration(
-                  labelText: S.of(context).strt_vndr_muni_cert_no
-              ),
+                  labelText: S.of(context).strt_vndr_muni_cert_no),
             ),
             TextFormField(
-              decoration: InputDecoration(
-                  labelText: S.of(context).strt_vndr_plc_emp
-              ),
+              decoration:
+                  InputDecoration(labelText: S.of(context).strt_vndr_plc_emp),
             ),
             Row(
               children: <Widget>[
@@ -219,12 +223,11 @@ class ConstructionWorkerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(12.0),
+      margin: EdgeInsets.only(top: 10),
       child: Container(
         margin: EdgeInsets.all(5),
         padding: EdgeInsets.all(8),
-        child: ListView(
-          shrinkWrap: true,
+        child: Column(
           children: <Widget>[
             Row(
               children: <Widget>[
@@ -241,9 +244,8 @@ class ConstructionWorkerWidget extends StatelessWidget {
               ],
             ),
             TextFormField(
-              decoration: InputDecoration(
-                  labelText: S.of(context).cns_wkr_rgst_no
-              ),
+              decoration:
+                  InputDecoration(labelText: S.of(context).cns_wkr_rgst_no),
             ),
             Row(
               children: <Widget>[
@@ -260,9 +262,8 @@ class ConstructionWorkerWidget extends StatelessWidget {
               ],
             ),
             TextFormField(
-              decoration: InputDecoration(
-                  labelText: S.of(context).cns_wkr_lbr_card_no
-              ),
+              decoration:
+                  InputDecoration(labelText: S.of(context).cns_wkr_lbr_card_no),
             ),
             _Affiliated()
           ],
@@ -276,12 +277,11 @@ class WastePickerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(12),
+      margin: EdgeInsets.only(top: 10),
       child: Container(
         margin: EdgeInsets.all(5),
         padding: EdgeInsets.all(8),
-        child: ListView(
-          shrinkWrap: true,
+        child: Column(
           children: <Widget>[
             Row(
               children: <Widget>[
@@ -298,9 +298,8 @@ class WastePickerWidget extends StatelessWidget {
               ],
             ),
             TextFormField(
-              decoration: InputDecoration(
-                  labelText: S.of(context).wst_pkr_rgst_no
-              ),
+              decoration:
+                  InputDecoration(labelText: S.of(context).wst_pkr_rgst_no),
             ),
             Row(
               children: <Widget>[
@@ -328,12 +327,11 @@ class DomesticWorkerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(12),
+      margin: EdgeInsets.only(top: 10),
       child: Container(
         margin: EdgeInsets.all(5),
         padding: EdgeInsets.all(8),
-        child: ListView(
-          shrinkWrap: true,
+        child: Column(
           children: <Widget>[
             Row(
               children: <Widget>[
@@ -350,9 +348,8 @@ class DomesticWorkerWidget extends StatelessWidget {
               ],
             ),
             TextFormField(
-              decoration: InputDecoration(
-                  labelText: S.of(context).dom_wkr_rwa_id
-              ),
+              decoration:
+                  InputDecoration(labelText: S.of(context).dom_wkr_rwa_id),
             ),
             Row(
               children: <Widget>[
@@ -383,9 +380,8 @@ class DomesticWorkerWidget extends StatelessWidget {
               ],
             ),
             TextFormField(
-              decoration: InputDecoration(
-                  labelText: S.of(context).dom_wkr_inst_id
-              ),
+              decoration:
+                  InputDecoration(labelText: S.of(context).dom_wkr_inst_id),
             ),
             _Affiliated()
           ],
@@ -399,12 +395,11 @@ class HomeBasedWorkerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(12),
+      margin: EdgeInsets.only(top: 10),
       child: Container(
         margin: EdgeInsets.all(5),
         padding: EdgeInsets.all(8),
-        child: ListView(
-          shrinkWrap: true,
+        child: Column(
           children: <Widget>[
             Row(
               children: <Widget>[
@@ -422,8 +417,7 @@ class HomeBasedWorkerWidget extends StatelessWidget {
             ),
             TextFormField(
               decoration: InputDecoration(
-                  labelText: S.of(context).home_wkr_artisans_card
-              ),
+                  labelText: S.of(context).home_wkr_artisans_card),
             ),
             Row(
               children: <Widget>[
@@ -465,12 +459,11 @@ class RickShawPullerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(12),
+      margin: EdgeInsets.only(top: 10),
       child: Container(
-        margin: EdgeInsets.all(5),
+        width: double.infinity,
         padding: EdgeInsets.all(8),
-        child: ListView(
-          shrinkWrap: true,
+        child: Column(
           children: <Widget>[
             Row(
               children: <Widget>[
@@ -501,9 +494,8 @@ class RickShawPullerWidget extends StatelessWidget {
               ],
             ),
             TextFormField(
-              decoration: InputDecoration(
-                labelText: S.of(context).rskw_pllr_lic_no
-              ),
+              decoration:
+                  InputDecoration(labelText: S.of(context).rskw_pllr_lic_no),
             ),
             _Affiliated()
           ],
@@ -517,12 +509,10 @@ class AgricultureLabourWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(12),
+      margin: EdgeInsets.only(top: 10),
       child: Container(
-        margin: EdgeInsets.all(5),
         padding: EdgeInsets.all(8),
-        child: ListView(
-          shrinkWrap: true,
+        child: Column(
           children: <Widget>[
             Row(
               children: <Widget>[

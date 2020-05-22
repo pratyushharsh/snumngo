@@ -88,7 +88,7 @@ class PersonalInfo  extends Equatable{
 }
 
 class AadharBankDetail  extends Equatable{
-  final String aadhaar;
+  final String aadhaarNo;
   final String frontUrl;
   final String backUrl;
   final bool bankLinked;
@@ -96,11 +96,11 @@ class AadharBankDetail  extends Equatable{
   final String accountNumber;
   final String ifscCode;
 
-  AadharBankDetail({this.aadhaar, this.frontUrl, this.backUrl, this.bankLinked, this.bankName, this.accountNumber, this.ifscCode});
+  AadharBankDetail({this.aadhaarNo, this.frontUrl, this.backUrl, this.bankLinked, this.bankName, this.accountNumber, this.ifscCode});
 
-  AadharBankDetail copyWith({ String aadhaar, String frontUrl, String backUrl, bool bankLinked, String bankName, String accountNumber, String ifscCode }) {
+  AadharBankDetail copyWith({ String aadhaarNo, String frontUrl, String backUrl, bool bankLinked, String bankName, String accountNumber, String ifscCode }) {
     return AadharBankDetail(
-      aadhaar: aadhaar ?? this.aadhaar,
+      aadhaarNo: aadhaarNo ?? this.aadhaarNo,
       frontUrl: frontUrl ?? this.frontUrl,
       backUrl: backUrl ?? this.backUrl,
       bankLinked: bankLinked ?? this.bankLinked,
@@ -111,7 +111,7 @@ class AadharBankDetail  extends Equatable{
   }
 
   @override
-  List<Object> get props => [aadhaar, frontUrl, backUrl, bankLinked, bankName, accountNumber, ifscCode];
+  List<Object> get props => [aadhaarNo, frontUrl, backUrl, bankLinked, bankName, accountNumber, ifscCode];
 //
 //  AadharBankDetailEntity toEntity() {
 //    return AadharBankDetailEntity(aadhaar: aadhaar, frontUrl: frontUrl, backUrl: backUrl, bankLinked: bankLinked, bankName: bankName, accountNumber: accountNumber, ifscCode: ifscCode);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:snumngo/person/occupation_detail.dart';
 import 'package:snumngo/person/personal_detail.dart';
 
+import 'model/person.dart';
 
 class AddPersonForm extends StatefulWidget {
   @override
@@ -11,13 +12,14 @@ class AddPersonForm extends StatefulWidget {
 class _AddPersonFormState extends State<AddPersonForm> {
 
   int _currentStep = 0;
+  Person person = Person();
 
   @override
   Widget build(BuildContext context) {
     return Form(
       child: Stepper(
         physics: ClampingScrollPhysics(),
-        steps: _mySteps(),
+        steps: _mySteps(person),
         currentStep: this._currentStep,
         onStepTapped: (step) {
           setState(() {
@@ -34,7 +36,7 @@ class _AddPersonFormState extends State<AddPersonForm> {
     );
   }
 
-  List<Step> _mySteps() {
+  List<Step> _mySteps(Person person) {
     List<Step> _steps = [
       Step(
         title: Text("Personal Detail"),
@@ -42,7 +44,7 @@ class _AddPersonFormState extends State<AddPersonForm> {
         isActive: _currentStep >= 0,
       ),
       Step(
-        title: Text("Address"),
+        title: Text("Address Details"),
         content: AddressWidget(),
         isActive: _currentStep >= 1,
       ),
@@ -53,12 +55,12 @@ class _AddPersonFormState extends State<AddPersonForm> {
       ),
       Step(
           title: Text("Aadhaar Detail"),
-          content: AadharWidget(),
+          content: AadharBankWidget(person: person,),
           isActive: _currentStep >= 3
       ),
       Step(
           title: Text("Pan Voter"),
-          content: VoterWidget(),
+          content: PanVoterWidget(),
           isActive: _currentStep >= 3
       ),
       Step(
@@ -66,6 +68,11 @@ class _AddPersonFormState extends State<AddPersonForm> {
         content: OccupationalDetail(),
         isActive: _currentStep >= 2,
       ),
+      Step(
+        title: Text("Finish and Upload"),
+        content: Text("Submit Detail"),
+        subtitle: Text("Subtitle")
+      )
     ];
     return _steps;
   }
