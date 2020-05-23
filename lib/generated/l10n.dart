@@ -792,6 +792,78 @@ class S {
     );
   }
 
+  String get select_ur_language {
+    return Intl.message(
+      'Select Your Langugae',
+      name: 'select_ur_language',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get select_language {
+    return Intl.message(
+      'Select Language',
+      name: 'select_language',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get settings {
+    return Intl.message(
+      'Settings',
+      name: 'settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get personal_detail {
+    return Intl.message(
+      'Personal Detail',
+      name: 'personal_detail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get address_detail {
+    return Intl.message(
+      'Address Details',
+      name: 'address_detail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get aadhar_detail {
+    return Intl.message(
+      'Aadhaar Detail',
+      name: 'aadhar_detail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get pan_voter_detail {
+    return Intl.message(
+      'Pan Voter',
+      name: 'pan_voter_detail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get occupation_detail {
+    return Intl.message(
+      'Occupation Detail',
+      name: 'occupation_detail',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get andaman_and_nicobar_islands {
     return Intl.message(
       'Andaman and Nicobar Islands',

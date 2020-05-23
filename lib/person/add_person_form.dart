@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snumngo/generated/l10n.dart';
 import 'package:snumngo/person/bloc/bloc.dart';
 import 'package:snumngo/person/occupation_detail.dart';
 import 'package:snumngo/person/personal_detail.dart';
@@ -66,37 +67,37 @@ class _AddPersonFormState extends State<AddPersonForm> {
   List<Step> _mySteps(Person person) {
     List<Step> _steps = [
       Step(
-        title: Text("Personal Detail"),
+        title: Text(S.of(context).personal_detail),
         content: PersonalInfoWidget(),
         isActive: _currentStep >= 0,
         state: getState(0)
       ),
       Step(
-        title: Text("Address Details"),
+        title: Text(S.of(context).address_detail),
         content: AddressWidget(),
         isActive: _currentStep >= 1,
           state: getState(1)
       ),
       Step(
-          title: Text("Disability Cerificate"),
+          title: Text(S.of(context).disability),
           content: DisabilityWidget(),
           isActive: _currentStep >= 2,
           state: getState(2)
       ),
       Step(
-          title: Text("Aadhaar Detail"),
+          title: Text(S.of(context).aadhar_detail),
           content: AadharBankWidget(),
           isActive: _currentStep >= 3,
           state: getState(3)
       ),
       Step(
-          title: Text("Pan Voter"),
+          title: Text(S.of(context).pan_voter_detail),
           content: PanVoterWidget(),
           isActive: _currentStep >= 4,
           state: getState(4)
       ),
       Step(
-          title: Text("Occupation Detail"),
+          title: Text(S.of(context).occupational_detail),
           content: OccupationalDetail(),
           isActive: _currentStep >= 5,
           state: getState(5)

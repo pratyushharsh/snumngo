@@ -8,7 +8,7 @@ class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Settings"),
+        title: Text(S.of(context).settings),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -18,14 +18,14 @@ class Settings extends StatelessWidget {
               Row(
                 children: <Widget>[
                   Expanded(
-                    child: Text("Select Your Language"),
+                    child: Text(S.of(context).select_ur_language),
                   ),
                   Expanded(
                     child: BlocBuilder<ThemeBloc, ThemeState>(
                       builder: (context, state) {
                         return DropdownButton(
                           isExpanded: true,
-                          hint: Text('Select Language'),
+                          hint: Text(S.of(context).select_language),
                           value: state.locale,
                           onChanged: (val) {
                             BlocProvider.of<ThemeBloc>(context)
