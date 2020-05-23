@@ -268,6 +268,13 @@ class AadharBankWidget extends StatelessWidget {
         return Column(
           children: <Widget>[
             TextFormField(
+              maxLength: 12,
+              validator: (value) {
+                if (value.length < 12)
+                  return 'Enter Valid Aadhaar';
+                return null;
+              },
+              initialValue: ab.aadhaarNo,
               onChanged: (val) {
                 pb.add(AadharNumberUpdate(val));
               },
@@ -284,9 +291,10 @@ class AadharBankWidget extends StatelessWidget {
                           child: Column(
                             children: <Widget>[
                               ImagePickAndCrop(
+                                imageHeight: 80,
                                 imageUrl: ab.frontUrl,
                                 onImageSelected: (file) {
-                                  pb.add(AadharUrlFrontUpdate(file));
+                                  if (file != null) pb.add(AadharUrlFrontUpdate(file));
                                 },
                               ),
                               Text(S.of(context).front_aadhar)
@@ -300,9 +308,10 @@ class AadharBankWidget extends StatelessWidget {
                           child: Column(
                             children: <Widget>[
                               ImagePickAndCrop(
+                                imageHeight: 80,
                                 imageUrl: ab.backUrl,
                                 onImageSelected: (file) {
-                                  pb.add(AadharUrlBackUpdate(file));
+                                  if (file != null) pb.add(AadharUrlBackUpdate(file));
                                 },
                               ),
                               Text(S.of(context).back_aadhar)
@@ -457,13 +466,17 @@ class ImagePickAndCrop extends StatelessWidget {
   final String imageUrl;
   final double ratioX;
   final double ratioY;
+  final double imageHeight;
+  final double imageWidth;
 
   ImagePickAndCrop(
       {Key key,
       @required this.onImageSelected,
       @required this.imageUrl,
       this.ratioX,
-      this.ratioY})
+      this.ratioY,
+      this.imageHeight,
+      this.imageWidth})
       : assert(!((ratioX != null) ^ (ratioY != null))),
         super(key: key);
 
@@ -501,17 +514,17 @@ class ImagePickAndCrop extends StatelessWidget {
 
     return Container(
       color: Colors.black12,
+      width: imageWidth,
+      height: imageHeight,
       child: Stack(
         children: <Widget>[
           image != null ? Image.file(
             image,
-            fit: BoxFit.contain,
-//            width: 100,
-            height: 100,
+            fit: BoxFit.fill,
           ) : Container(),
           Container(
-//            height: 100,
-            width: 100,
+            height: imageHeight,
+            width: imageWidth ?? double.infinity,
             child: OutlineButton(
               child: Icon(
                 FontAwesome.image,

@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:snumngo/bloc/authentication/bloc.dart';
 import 'package:snumngo/bloc/theme/bloc.dart';
+import 'package:snumngo/config/router.dart';
+import 'package:snumngo/dashboard/screen.dart';
 import 'package:snumngo/generated/l10n.dart';
 import 'package:snumngo/person/person.dart';
 import 'package:snumngo/repository/user_repository.dart';
@@ -59,29 +61,27 @@ class MyApp extends StatelessWidget {
         localeResolutionCallback: (locale, supportedLocales) {
           return locale;
         },
-        home: _MainScreen(userRepository: _userRepository,),
+        onGenerateRoute: Router.generateRoute,
+        home: MainScreen(userRepository: _userRepository,),
       );
     });
   }
 }
 
-class _MainScreen extends StatelessWidget {
+class MainScreen extends StatelessWidget {
 
   final UserRepository userRepository;
 
-  const _MainScreen({Key key, this.userRepository}) : super(key: key);
+  const MainScreen({Key key, this.userRepository}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (BuildContext context, AuthenticationState state) {
         if (state is UnAuthenticated) {
-          return AddPerson();
-//          return LoginScreen(userRepository: userRepository);
+          return LoginScreen(userRepository: userRepository);
         } else if (state is Authenticated) {
-          return Container(
-            child: Text("Authenticated"),
-          );
+          return DashBoard();
         } else {
           return Container();
         }
