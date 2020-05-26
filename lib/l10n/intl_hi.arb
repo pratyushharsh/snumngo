@@ -120,5 +120,13 @@
 	"rskw_pllr_lic_no": "लाइसेंस नंबर",
 	"rskw_pllr_surveyed": "क्या आप एक सर्वे रिक्शा चालक हैं?",
 	"select_occupation": "व्यवसाय का चयन करें",
-	"strt_vndr_fssai": "क्या आपने FSSAI की ट्रेनिंग ली है"
+	"strt_vndr_fssai": "क्या आपने FSSAI की ट्रेनिंग ली है",
+	"aadhar_detail": "आधार विस्तार",
+	"address_detail": "पते का विवरण",
+	"occupation_detail": "व्यापम विस्तार",
+	"pan_voter_detail": "पान वोटर",
+	"personal_detail": "व्यक्तिगत जानकारी",
+	"select_language": "भाषा चुनिए",
+	"select_ur_language": "अपने Langugae का चयन करें",
+	"settings": "सेटिंग्स"
 }

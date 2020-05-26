@@ -23,6 +23,12 @@ class PersonalInfoWidget extends StatelessWidget {
 
         return Column(
           children: <Widget>[
+            Center(
+              child: CircleAvatar(
+                child: Icon(Icons.person, size: 30,),
+                radius: 40,
+              ),
+            ),
             TextFormField(
               initialValue: pi.sno,
               decoration: InputDecoration(labelText: S.of(context).sno),
@@ -238,8 +244,11 @@ class DisabilityWidget extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: Container(
+                          padding: EdgeInsets.all(5),
                             alignment: Alignment.center,
                             child: ImagePickAndCrop(
+                              imageHeight: 100,
+                              imageWidth: 100,
                               ratioX: 5,
                               ratioY: 5,
                               imageUrl: state.person.disability.certificateUrl,
@@ -468,7 +477,6 @@ class ImagePickAndCrop extends StatelessWidget {
   final double ratioY;
   final double imageHeight;
   final double imageWidth;
-
   ImagePickAndCrop(
       {Key key,
       @required this.onImageSelected,
