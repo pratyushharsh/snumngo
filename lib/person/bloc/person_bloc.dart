@@ -1,10 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:snumngo/person/model/models.dart';
+import 'package:snumngo/repository/workers_repo.dart';
 import './bloc.dart';
 
 class PersonBloc extends Bloc<PersonEvent, PersonState> {
+
+  final WorkersRepository workersRepo;
+
   Person person = Person(
       personalInfo: PersonalInfo(),
       address: Address(),
@@ -12,6 +17,8 @@ class PersonBloc extends Bloc<PersonEvent, PersonState> {
       disability: Disability(),
       panVoterDetail: PanVoterDetail(),
       aadhaarBank: AadharBankDetail());
+
+  PersonBloc(this.workersRepo);
 
   updateAddress(Address address) {
     person = person.copyWith(address: address);
@@ -112,6 +119,21 @@ class PersonBloc extends Bloc<PersonEvent, PersonState> {
     yield EditingPersonalState(person);
   }
 
+  Stream<PersonState> _updatePanCardDetailEvent(PanVoterEvent event) async* {
+    if (event is UpdatePanCardNo) {
+      person = person.copyWith(panVoterDetail: person.panVoterDetail.copyWith(pancard: event.pancard));
+    } else if (event is UpdateVoteIdNo) {
+      person = person.copyWith(panVoterDetail: person.panVoterDetail.copyWith(voterCard: event.voterId));
+    } else if (event is UpdateVoterFrontUrl) {
+      person = person.copyWith(panVoterDetail: person.panVoterDetail.copyWith(voterUrlFront: event.voterfrontUrl?.path));
+    } else if (event is UpdateVoterBackUrl) {
+      person = person.copyWith(panVoterDetail: person.panVoterDetail.copyWith(voterUrlBack: event.voterBackUrl?.path));
+    } else if (event is UpdatePanUrl) {
+      person = person.copyWith(panVoterDetail: person.panVoterDetail.copyWith(panUrl: event.panUrl?.path));
+    }
+    yield EditingPersonalState(person);
+  }
+
   updateOccupation(Occupation occupation) {
     person = person.copyWith(occupation: occupation);
   }
@@ -131,7 +153,22 @@ class PersonBloc extends Bloc<PersonEvent, PersonState> {
       yield* _updateDisabilityEvent(event);
     } else if (event is AadharEvent) {
       yield* _updateAadhaarEvent(event);
+    } else if (event is AddNewPerson) {
+      yield* _mapAddNewPerson();
+    } else if (event is PanVoterEvent) {
+      yield* _updatePanCardDetailEvent(event);
     }
   }
 
+  Future<bool> addNewPerson(Person p) async {
+    await workersRepo.addPerson(p);
+    return true;
+  }
+
+  Stream<PersonState> _mapAddNewPerson() async* {
+    yield AddingNewPerson(person);
+//    await Future.delayed(Duration(seconds: 2));
+    await workersRepo.addPerson(person);
+    yield AddedNewPersonState(person);
+  }
 }

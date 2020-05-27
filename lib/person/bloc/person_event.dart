@@ -167,3 +167,37 @@ class BankIfscUpdate extends AadharEvent {
 
   BankIfscUpdate(this.ifscCode);
 }
+
+class PanVoterEvent extends PersonEvent {}
+
+class UpdatePanCardNo extends PanVoterEvent {
+  final String pancard;
+
+  UpdatePanCardNo(this.pancard);
+}
+
+class UpdateVoteIdNo extends PanVoterEvent {
+  final String voterId;
+
+  UpdateVoteIdNo(this.voterId);
+}
+
+class UpdateVoterFrontUrl extends PanVoterEvent {
+  final File voterfrontUrl;
+
+  UpdateVoterFrontUrl(this.voterfrontUrl);
+}
+
+class UpdateVoterBackUrl extends PanVoterEvent {
+  final File voterBackUrl;
+
+  UpdateVoterBackUrl(this.voterBackUrl);
+}
+
+class UpdatePanUrl extends PanVoterEvent {
+  final File panUrl;
+
+  UpdatePanUrl(this.panUrl);
+}
+
+class AddNewPerson extends PersonEvent {}

@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -8,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:snumngo/config/constants.dart';
 import 'package:snumngo/generated/l10n.dart';
+import 'package:snumngo/person/add_person_form.dart';
 import 'package:snumngo/person/bloc/bloc.dart';
 
 import 'model/person.dart';
@@ -25,18 +28,35 @@ class PersonalInfoWidget extends StatelessWidget {
           children: <Widget>[
             Center(
               child: CircleAvatar(
-                child: Icon(Icons.person, size: 30,),
+                child: Icon(
+                  Icons.person,
+                  size: 30,
+                ),
                 radius: 40,
               ),
             ),
             TextFormField(
               initialValue: pi.sno,
+              autovalidate: true,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'S No is Required';
+                }
+                return null;
+              },
               decoration: InputDecoration(labelText: S.of(context).sno),
               onChanged: (val) {
                 pb.add(UpdateSno(val));
               },
             ),
             TextFormField(
+              autovalidate: true,
+              validator: (value) {
+                if (value.length < 1) {
+                  return 'Username is Required';
+                }
+                return null;
+              },
               initialValue: pi.name,
               decoration: InputDecoration(
                 labelText: S.of(context).name,
@@ -183,6 +203,12 @@ class AddressWidget extends StatelessWidget {
             ],
           ),
           DropdownButtonFormField(
+            validator: (value) {
+              if (value == null) {
+                return 'Stare is Required';
+              }
+              return null;
+            },
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.only(bottom: 0, top: 12),
                 labelText: S.of(context).state),
@@ -244,7 +270,7 @@ class DisabilityWidget extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: Container(
-                          padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(5),
                             alignment: Alignment.center,
                             child: ImagePickAndCrop(
                               imageHeight: 100,
@@ -278,9 +304,11 @@ class AadharBankWidget extends StatelessWidget {
           children: <Widget>[
             TextFormField(
               maxLength: 12,
+              inputFormatters: [
+                WhitelistingTextInputFormatter.digitsOnly
+              ],
               validator: (value) {
-                if (value.length < 12)
-                  return 'Enter Valid Aadhaar';
+                if (value.isNotEmpty && value.length < 12) return 'Enter Valid Aadhaar';
                 return null;
               },
               initialValue: ab.aadhaarNo,
@@ -292,7 +320,8 @@ class AadharBankWidget extends StatelessWidget {
                 labelText: S.of(context).aadhar_no,
               ),
             ),
-            ab.aadhaarNo != null && ab.aadhaarNo.length > 0 ? Row(
+            ab.aadhaarNo != null && ab.aadhaarNo.length > 0
+                ? Row(
                     children: <Widget>[
                       Expanded(
                         child: Container(
@@ -303,7 +332,8 @@ class AadharBankWidget extends StatelessWidget {
                                 imageHeight: 80,
                                 imageUrl: ab.frontUrl,
                                 onImageSelected: (file) {
-                                  if (file != null) pb.add(AadharUrlFrontUpdate(file));
+                                  if (file != null)
+                                    pb.add(AadharUrlFrontUpdate(file));
                                 },
                               ),
                               Text(S.of(context).front_aadhar)
@@ -320,7 +350,8 @@ class AadharBankWidget extends StatelessWidget {
                                 imageHeight: 80,
                                 imageUrl: ab.backUrl,
                                 onImageSelected: (file) {
-                                  if (file != null) pb.add(AadharUrlBackUpdate(file));
+                                  if (file != null)
+                                    pb.add(AadharUrlBackUpdate(file));
                                 },
                               ),
                               Text(S.of(context).back_aadhar)
@@ -329,7 +360,8 @@ class AadharBankWidget extends StatelessWidget {
                         ),
                       ),
                     ],
-                  ) : Container(),
+                  )
+                : Container(),
             Row(
               children: <Widget>[
                 Expanded(
@@ -378,56 +410,87 @@ class AadharBankWidget extends StatelessWidget {
 }
 
 class PanVoterWidget extends StatelessWidget {
-  final Function onVoterIdChange;
-  final String voterId;
-
-  const PanVoterWidget({Key key, this.onVoterIdChange, this.voterId})
-      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          decoration: InputDecoration(hintText: S.of(context).pan_no),
-        ),
-        TextFormField(
-          onChanged: onVoterIdChange,
-          decoration: InputDecoration(hintText: S.of(context).voter_card),
-        ),
-        voterId != null && voterId.isNotEmpty
-            ? Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: <Widget>[
-                          Placeholder(
-                            fallbackHeight: 80,
-                          ),
-                          Text(S.of(context).front_voter)
-                        ],
-                      ),
+    return BlocBuilder<PersonBloc, PersonState>(
+      builder: (context, state) {
+
+        PanVoterDetail pvd = state.person.panVoterDetail;
+
+        PersonBloc pb = BlocProvider.of(context);
+        return Container(
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                onChanged: (val) {
+                  pb.add(UpdatePanCardNo(val));
+                },
+                decoration: InputDecoration(hintText: S.of(context).pan_no),
+              ),
+              pvd.pancard != null && pvd.pancard.isNotEmpty ?
+                  Container(
+                    margin: EdgeInsets.only(top: 10),
+                    child: ImagePickAndCrop(
+                      imageHeight: 100,
+                      onImageSelected: (file) {
+                        pb.add(UpdatePanUrl(file));
+                      },
+                      imageUrl: pvd.panUrl,
                     ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: <Widget>[
-                          Placeholder(
-                            fallbackHeight: 80,
+                  ) : Container(),
+              TextFormField(
+                onChanged: (val) {
+                  pb.add(UpdateVoteIdNo(val));
+                },
+                decoration: InputDecoration(hintText: S.of(context).voter_card),
+              ),
+              pvd.voterCard != null && pvd.voterCard.isNotEmpty
+                  ? Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.all(8.0),
+                            child: Column(
+                              children: <Widget>[
+                                ImagePickAndCrop(
+                                  imageHeight: 80,
+                                  imageUrl: pvd.voterUrlFront,
+                                  onImageSelected: (file) {
+                                    if (file != null)
+                                      pb.add(UpdateVoterFrontUrl(file));
+                                  },
+                                ),
+                                Text(S.of(context).front_voter)
+                              ],
+                            ),
                           ),
-                          Text(S.of(context).back_voter)
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            : Container(),
-      ],
+                        ),
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.all(8.0),
+                            child: Column(
+                              children: <Widget>[
+                                ImagePickAndCrop(
+                                  imageHeight: 80,
+                                  imageUrl: pvd.voterUrlBack,
+                                  onImageSelected: (file) {
+                                    if (file != null)
+                                      pb.add(UpdateVoterBackUrl(file));
+                                  },
+                                ),
+                                Text(S.of(context).back_voter)
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Container(),
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -526,10 +589,12 @@ class ImagePickAndCrop extends StatelessWidget {
       height: imageHeight,
       child: Stack(
         children: <Widget>[
-          image != null ? Image.file(
-            image,
-            fit: BoxFit.fill,
-          ) : Container(),
+          image != null
+              ? Image.file(
+                  image,
+                  fit: BoxFit.fill,
+                )
+              : Container(),
           Container(
             height: imageHeight,
             width: imageWidth ?? double.infinity,
@@ -548,32 +613,6 @@ class ImagePickAndCrop extends StatelessWidget {
       ),
     );
   }
-
-//  Center(
-//  child: image == null
-//  ? IconButton(
-//  iconSize: 150,
-//  alignment: Alignment.center,
-//  color: Colors.purple,
-//  icon: Icon(
-//  Icons.add,
-//  ),
-//  onPressed: () {
-//  _buildModal(context);
-//  },
-//  )
-//      : SizedBox(
-//  height: 80,
-//  width: 80,
-//  child: ClipRRect(
-//  borderRadius: BorderRadius.circular(15.0),
-//  // Add condition to  load image from firebase or from file
-//  child: Image.file(
-//  image,
-//  fit: BoxFit.contain,
-//  ),
-//  )),
-//  )
 
   _buildModal(BuildContext context) {
     showModalBottomSheet(

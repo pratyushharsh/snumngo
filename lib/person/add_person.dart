@@ -12,7 +12,7 @@ class AddPerson extends StatelessWidget {
         title: Text(S.of(context).person_detail),
       ),
       body: BlocProvider<PersonBloc>(
-        create: (BuildContext context) => PersonBloc(),
+        create: (BuildContext context) => PersonBloc(RepositoryProvider.of(context)),
         child: AddPersonForm(),
       )
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snumngo/person/add_person.dart';
+import 'package:snumngo/person/view_worker.dart';
 import 'package:snumngo/screen/settings.dart';
 import 'package:snumngo/workers/screen.dart';
 
@@ -9,6 +10,8 @@ class Router {
     switch (settings.name) {
       case '/workers':
         return MaterialPageRoute(builder: (_) => WorkersScreen());
+      case '/workersDetail':
+        return MaterialPageRoute(builder: (_) => WorkersDetailScreen());
       case '/addNewPerson':
         return MaterialPageRoute(builder: (_) => AddPerson());
       case '/settings':

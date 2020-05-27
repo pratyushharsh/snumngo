@@ -7,9 +7,10 @@ import 'package:snumngo/bloc/theme/bloc.dart';
 import 'package:snumngo/config/router.dart';
 import 'package:snumngo/dashboard/screen.dart';
 import 'package:snumngo/generated/l10n.dart';
-import 'package:snumngo/person/person.dart';
 import 'package:snumngo/repository/user_repository.dart';
+import 'package:snumngo/repository/workers_repo.dart';
 import 'package:snumngo/simple_bloc_delegate.dart';
+import 'package:snumngo/workers/search/search_bloc.dart';
 
 import 'login/login_screen.dart';
 
@@ -17,22 +18,34 @@ void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final UserRepository userRepository = UserRepository();
   runApp(
-    MultiBlocProvider(
+    MultiRepositoryProvider(
       providers: [
-        BlocProvider<ThemeBloc>(
-          create: (BuildContext context) => ThemeBloc()
-            ..add(InitialTheme(
-                isTestMode: false,
-                locale: null,
-                themeMode: ThemeMode.system,
-                platform: defaultTargetPlatform)),
-        ),
-        BlocProvider(
-          create: (context) =>
-          AuthenticationBloc(repository: userRepository)..add(AppStarted()),
+        RepositoryProvider<WorkersRepository>(
+          create: (context) => WorkersRepository(),
         )
       ],
-      child: MyApp(userRepository: userRepository,),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<ThemeBloc>(
+            create: (BuildContext context) => ThemeBloc()
+              ..add(InitialTheme(
+                  isTestMode: false,
+                  locale: null,
+                  themeMode: ThemeMode.system,
+                  platform: defaultTargetPlatform)),
+          ),
+          BlocProvider(
+            create: (context) =>
+            AuthenticationBloc(repository: userRepository)..add(AppStarted()),
+          ),
+          BlocProvider<SearchBloc>(
+            create: (context) => SearchBloc(
+                RepositoryProvider.of(context)
+            ),
+          )
+        ],
+        child: MyApp(userRepository: userRepository,),
+      ),
     ),
   );
 }

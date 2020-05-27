@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'dart:math';
+
+import 'package:snumngo/person/model/person.dart';
+import 'package:snumngo/workers/search/bloc.dart';
 
 class WorkersScreen extends StatelessWidget {
   @override
@@ -67,104 +70,137 @@ class SearchBar extends StatelessWidget {
 class PeopleList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        padding: EdgeInsets.only(top: 100),
-        itemCount: 30,
-        itemBuilder: (context, idx) {
-          return ListTile(
-            title: PeopleCard(),
+    return BlocBuilder<SearchBloc, SearchState>(
+      builder: (context, state) {
+        List<Person> wks = state.person;
+
+        if (wks.length == 0) {
+          return Card(
+            child: Center (
+              child: Text('Nothing To display'),
+            ),
           );
-        });
+        }
+
+        return ListView.builder(
+            padding: EdgeInsets.only(top: 100),
+            itemCount: wks.length,
+            itemBuilder: (context, idx) {
+              Person p = wks[idx];
+              return ListTile(
+                title: PeopleCard(
+                  sno: p.personalInfo.sno,
+                  fullname: p.personalInfo.name,
+                  gender: p.personalInfo.gender,
+                  phone: p.personalInfo.mobile,
+                ),
+              );
+            });
+      },
+    );
   }
 }
 
 class PeopleCard extends StatelessWidget {
-  var rdm = new Random();
+
+  final String sno;
+  final String fullname;
+  final String gender;
+  final String phone;
+
+  const PeopleCard({Key key, this.sno, this.fullname, this.gender, this.phone}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.all(0),
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: Row(
-          children: <Widget>[
-            Container(
-              alignment: Alignment.centerLeft,
-              child: CircleAvatar(
-                child: Icon(Icons.person),
-              ),
-            ),
-            Expanded(
-              flex: 4,
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text('SNO# ${rdm.nextInt(2147483647)}'),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 1),
-                      child: Row(
-                        children: <Widget>[
-                          rdm.nextInt(2) == 0
-                              ? Icon(
-                                  FontAwesome.mars,
-                                  color: Colors.blueAccent,
-                                )
-                              : Icon(
-                                  FontAwesome.venus,
-                                  color: Colors.pinkAccent,
-                                ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text('Pratyush Harsh'),
-                          Text('')
-                        ],
-                      ),
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                FontAwesome.whatsapp,
-                                color: Colors.green,
-                              ),
-                              SizedBox(
-                                width: 3,
-                              ),
-                              Text('+91${rdm.nextInt(1147483647) + 1000000000}')
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                FontAwesome.mobile_phone,
-                                color: Colors.blue,
-                              ),
-                              SizedBox(
-                                width: 3,
-                              ),
-                              Text('+91${rdm.nextInt(1147483647) + 1000000000}')
-                            ],
-                          ),
-                        )
-                      ],
-                    )
-                  ],
+      child: GestureDetector(
+        onTap: () {
+          Navigator.pushNamed(context, '/workersDetail');
+        },
+        child: Container(
+          padding: EdgeInsets.all(10),
+          child: Row(
+            children: <Widget>[
+              Container(
+                alignment: Alignment.centerLeft,
+                child: CircleAvatar(
+                  child: Icon(Icons.person),
                 ),
               ),
-            ),
-            Container(
-              alignment: Alignment.centerRight,
-              child: Icon(Icons.work),
-            )
-          ],
+              Expanded(
+                flex: 4,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text('SNO# $sno'),
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 1),
+                        child: Row(
+                          children: <Widget>[
+                            gender.compareTo('F') == 0
+                                ? Icon(
+                                    FontAwesome.mars,
+                                    color: Colors.blueAccent,
+                                  )
+                                : Icon(
+                                    FontAwesome.venus,
+                                    color: Colors.pinkAccent,
+                                  ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(fullname),
+                            Text('')
+                          ],
+                        ),
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Row(
+                              children: <Widget>[
+                                Icon(
+                                  FontAwesome.whatsapp,
+                                  color: Colors.green,
+                                ),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Text(
+                                    '+91$phone')
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Row(
+                              children: <Widget>[
+                                Icon(
+                                  FontAwesome.mobile_phone,
+                                  color: Colors.blue,
+                                ),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Text(
+                                    '+91$phone')
+                              ],
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                alignment: Alignment.centerRight,
+                child: Icon(Icons.work),
+              )
+            ],
+          ),
         ),
       ),
     );

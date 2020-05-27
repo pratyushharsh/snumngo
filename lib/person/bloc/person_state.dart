@@ -11,9 +11,16 @@ abstract class PersonState {
 
 class InitialPersonState extends PersonState {
   InitialPersonState(Person person) : super(person);
-
 }
 
 class EditingPersonalState extends PersonState {
   EditingPersonalState(Person person) : super(person);
+}
+
+class AddedNewPersonState extends PersonState {
+  AddedNewPersonState(Person person) : super(person);
+}
+
+class AddingNewPerson extends PersonState {
+  AddingNewPerson(Person person) : super(person);
 }
