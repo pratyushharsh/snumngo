@@ -116,7 +116,7 @@ class PeopleCard extends StatelessWidget {
       margin: EdgeInsets.all(0),
       child: GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, '/workersDetail');
+          Navigator.pushNamed(context, '/workersDetail', arguments: sno);
         },
         child: Container(
           padding: EdgeInsets.all(10),
@@ -140,7 +140,7 @@ class PeopleCard extends StatelessWidget {
                         padding: EdgeInsets.symmetric(vertical: 1),
                         child: Row(
                           children: <Widget>[
-                            gender.compareTo('F') == 0
+                            gender.compareTo('M') == 0
                                 ? Icon(
                                     FontAwesome.mars,
                                     color: Colors.blueAccent,

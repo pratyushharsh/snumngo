@@ -18,7 +18,7 @@ class WorkerBloc extends Bloc<WorkerEvent, WorkerState> {
     if (event is LoadWorker) {
       yield LoadingWorker();
       await Future.delayed(Duration(seconds: 2));
-      yield LoadedWorkerSuccess(_wkrRepo.getAllWorker());
+      yield LoadedWorkerSuccess(_wkrRepo.getWorker(event.sno));
     }
   }
 }

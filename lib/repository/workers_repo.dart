@@ -12,7 +12,7 @@ class WorkersRepository {
     return _persons;
   }
 
-  getWorker(String id) {
+  Person getWorker(String id) {
     return _persons.firstWhere((element) => element.personalInfo.sno.compareTo(id) == 0);
   }
 }

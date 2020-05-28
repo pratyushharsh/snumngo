@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:meta/meta.dart';
+import 'package:snumngo/person/model/models.dart';
 
 @immutable
 abstract class PersonEvent {}
@@ -198,6 +199,14 @@ class UpdatePanUrl extends PanVoterEvent {
   final File panUrl;
 
   UpdatePanUrl(this.panUrl);
+}
+
+class OccupationEvent extends PersonEvent {}
+
+class UpdateOccupation extends OccupationEvent {
+  final Occupation occupation;
+
+  UpdateOccupation(this.occupation);
 }
 
 class AddNewPerson extends PersonEvent {}

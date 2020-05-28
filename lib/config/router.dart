@@ -11,7 +11,8 @@ class Router {
       case '/workers':
         return MaterialPageRoute(builder: (_) => WorkersScreen());
       case '/workersDetail':
-        return MaterialPageRoute(builder: (_) => WorkersDetailScreen());
+        var sno =settings.arguments as String;
+        return MaterialPageRoute(builder: (_) => WorkersDetailScreen(sno: sno,));
       case '/addNewPerson':
         return MaterialPageRoute(builder: (_) => AddPerson());
       case '/settings':

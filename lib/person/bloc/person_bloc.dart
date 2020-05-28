@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:snumngo/person/model/models.dart';
 import 'package:snumngo/repository/workers_repo.dart';
 import './bloc.dart';
@@ -134,8 +133,9 @@ class PersonBloc extends Bloc<PersonEvent, PersonState> {
     yield EditingPersonalState(person);
   }
 
-  updateOccupation(Occupation occupation) {
+  Stream<PersonState> _updateOccupationEvent(Occupation occupation) async* {
     person = person.copyWith(occupation: occupation);
+    yield EditingPersonalState(person);
   }
 
   @override
@@ -157,6 +157,8 @@ class PersonBloc extends Bloc<PersonEvent, PersonState> {
       yield* _mapAddNewPerson();
     } else if (event is PanVoterEvent) {
       yield* _updatePanCardDetailEvent(event);
+    } else if (event is UpdateOccupation) {
+      yield* _updateOccupationEvent(event.occupation);
     }
   }
 

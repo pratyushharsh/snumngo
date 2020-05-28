@@ -13,12 +13,12 @@ abstract class WorkerState extends Equatable {
 class LoadingWorker extends WorkerState {}
 
 class LoadedWorkerSuccess extends WorkerState {
-  final List<Person> workers;
+  final Person worker;
 
-  const LoadedWorkerSuccess(this.workers);
+  const LoadedWorkerSuccess(this.worker);
 
   @override
-  List<Object> get props => [workers];
+  List<Object> get props => [worker];
 }
 
 class LoadingWorkerFailure extends WorkerState {}

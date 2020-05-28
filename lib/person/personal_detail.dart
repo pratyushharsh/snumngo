@@ -10,7 +10,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:snumngo/config/constants.dart';
 import 'package:snumngo/generated/l10n.dart';
-import 'package:snumngo/person/add_person_form.dart';
 import 'package:snumngo/person/bloc/bloc.dart';
 
 import 'model/person.dart';
@@ -329,7 +328,8 @@ class AadharBankWidget extends StatelessWidget {
                           child: Column(
                             children: <Widget>[
                               ImagePickAndCrop(
-                                imageHeight: 80,
+                                ratioY: 2.125,
+                                ratioX:  3.375,
                                 imageUrl: ab.frontUrl,
                                 onImageSelected: (file) {
                                   if (file != null)
@@ -347,7 +347,8 @@ class AadharBankWidget extends StatelessWidget {
                           child: Column(
                             children: <Widget>[
                               ImagePickAndCrop(
-                                imageHeight: 80,
+                                ratioY: 2.125,
+                                ratioX:  3.375,
                                 imageUrl: ab.backUrl,
                                 onImageSelected: (file) {
                                   if (file != null)
@@ -432,7 +433,8 @@ class PanVoterWidget extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.only(top: 10),
                     child: ImagePickAndCrop(
-                      imageHeight: 100,
+                      ratioY: 2.125,
+                      ratioX:  3.375,
                       onImageSelected: (file) {
                         pb.add(UpdatePanUrl(file));
                       },
@@ -454,7 +456,8 @@ class PanVoterWidget extends StatelessWidget {
                             child: Column(
                               children: <Widget>[
                                 ImagePickAndCrop(
-                                  imageHeight: 80,
+                                  ratioX: 21.25,
+                                  ratioY:  33.75,
                                   imageUrl: pvd.voterUrlFront,
                                   onImageSelected: (file) {
                                     if (file != null)
@@ -472,7 +475,8 @@ class PanVoterWidget extends StatelessWidget {
                             child: Column(
                               children: <Widget>[
                                 ImagePickAndCrop(
-                                  imageHeight: 80,
+                                  ratioX: 2.125,
+                                  ratioY:  3.375,
                                   imageUrl: pvd.voterUrlBack,
                                   onImageSelected: (file) {
                                     if (file != null)
@@ -599,10 +603,15 @@ class ImagePickAndCrop extends StatelessWidget {
             height: imageHeight,
             width: imageWidth ?? double.infinity,
             child: OutlineButton(
-              child: Icon(
-                FontAwesome.image,
-                color: Colors.black26,
-                size: 40,
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: Center(
+                  child: Icon(
+                    FontAwesome.image,
+                    color: Colors.black26,
+                    size: 40,
+                  ),
+                ),
               ),
               onPressed: () {
                 _buildModal(context);

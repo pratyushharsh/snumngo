@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:snumngo/config/constants.dart';
 import 'package:snumngo/generated/l10n.dart';
+import 'package:snumngo/person/bloc/bloc.dart';
 import 'package:snumngo/person/model/models.dart';
 
 class OccupationalDetail extends StatefulWidget {
@@ -12,13 +14,12 @@ class OccupationalDetail extends StatefulWidget {
 
 class _OccupationalDetailState extends State<OccupationalDetail> {
   String occupation;
-  Occupation occp;
+//  Occupation occp;
 
   onWelfareChange(val) {
-    print(val);
     setState(() {
-      ConstructionWorker cw = occp;
-      occp = cw.copyWith(registeredNo: val);
+//      ConstructionWorker cw = occp;
+//      occp = cw.copyWith(registeredNo: val);
     });
   }
 
@@ -27,10 +28,7 @@ class _OccupationalDetailState extends State<OccupationalDetail> {
       case "strt_vndr":
         return StreetVendorWidget();
       case "cns_wkr":
-        occp = ConstructionWorker();
-        return ConstructionWorkerWidget(
-          worker: occp,
-        );
+        return ConstructionWorkerWidget();
       case "wst_pkr":
         return WastePickerWidget();
       case "doms_wkr":
@@ -155,6 +153,12 @@ class _StreetVendorWidgetState extends State<StreetVendorWidget> {
     setState(() {
       sv = sv.copyWith(certificateNo: val);
     });
+  }
+
+  @override
+  void setState(fn) {
+    BlocProvider.of<PersonBloc>(context).add(UpdateOccupation(sv));
+    super.setState(fn);
   }
 
   @override
@@ -319,9 +323,6 @@ class _StreetVendorWidgetState extends State<StreetVendorWidget> {
 }
 
 class ConstructionWorkerWidget extends StatefulWidget {
-  final ConstructionWorker worker;
-
-  const ConstructionWorkerWidget({Key key, this.worker}) : super(key: key);
 
   @override
   _ConstructionWorkerWidgetState createState() =>
@@ -334,6 +335,12 @@ class _ConstructionWorkerWidgetState extends State<ConstructionWorkerWidget> {
   bool affilOtherOrg = false;
 
   ConstructionWorker consWkr = ConstructionWorker();
+
+  @override
+  void setState(fn) {
+    BlocProvider.of<PersonBloc>(context).add(UpdateOccupation(consWkr));
+    super.setState(fn);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -436,6 +443,12 @@ class _WastePickerWidgetState extends State<WastePickerWidget> {
   WastePicker wp = WastePicker();
 
   @override
+  void setState(fn) {
+    BlocProvider.of<PersonBloc>(context).add(UpdateOccupation(wp));
+    super.setState(fn);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.only(top: 10),
@@ -523,6 +536,12 @@ class _DomesticWorkerWidgetState extends State<DomesticWorkerWidget> {
   bool rwaRgst = false;
 
   DomesticWorker dw = DomesticWorker();
+
+  @override
+  void setState(fn) {
+    BlocProvider.of<PersonBloc>(context).add(UpdateOccupation(dw));
+    super.setState(fn);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -623,6 +642,12 @@ class _HomeBasedWorkerWidgetState extends State<HomeBasedWorkerWidget> {
   bool artisianCard = false;
 
   HomeBasedWorker hw = HomeBasedWorker();
+
+  @override
+  void setState(fn) {
+    BlocProvider.of<PersonBloc>(context).add(UpdateOccupation(hw));
+    super.setState(fn);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -731,6 +756,12 @@ class _RickShawPullerWidgetState extends State<RickShawPullerWidget> {
   bool affilOtherOrg = false;
 
   @override
+  void setState(fn) {
+    BlocProvider.of<PersonBloc>(context).add(UpdateOccupation(rp));
+    super.setState(fn);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.only(top: 10),
@@ -810,6 +841,12 @@ class _AgricultureLabourWidgetState extends State<AgricultureLabourWidget> {
   bool affilOtherOrg = false;
 
   AgricultureLabour al = AgricultureLabour();
+
+  @override
+  void setState(fn) {
+    BlocProvider.of<PersonBloc>(context).add(UpdateOccupation(al));
+    super.setState(fn);
+  }
 
   @override
   Widget build(BuildContext context) {

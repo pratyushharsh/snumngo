@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:equatable/equatable.dart';
 
 class StreetVendor  extends Equatable implements Occupation {
@@ -27,6 +29,19 @@ class StreetVendor  extends Equatable implements Occupation {
 
   @override
   List<Object> get props => [surveyed, municipalId, certificateNo, placeEmployee, foodVendor, fssaiTraining, fssaiTrainingCertificate, otherOrganization];
+
+  @override
+  HashMap<String, dynamic> getMap() {
+    HashMap<String, dynamic> _map = HashMap<String, dynamic>();
+    _map.putIfAbsent('surveyed_strt_vndr', () => surveyed);
+    _map.putIfAbsent('strt_vndr_id_no', () => municipalId);
+    _map.putIfAbsent('strt_vndr_muni_cert_no', () => certificateNo);
+    _map.putIfAbsent('strt_vndr_plc_emp', () => placeEmployee);
+    _map.putIfAbsent('strt_vndr_fssai', () => fssaiTraining);
+    _map.putIfAbsent('strt_vndr_fssai_trni', () => fssaiTrainingCertificate);
+    _map.putIfAbsent('r_u_affiliated_org', () => otherOrganization);
+    return _map;
+  }
 
   @override
   String type() {
@@ -74,6 +89,12 @@ class ConstructionWorker  extends Equatable implements Occupation {
     return "Construction Worker";
   }
 
+  @override
+  HashMap<String, dynamic> getMap() {
+    HashMap<String, dynamic> _map = HashMap<String, dynamic>();
+    return _map;
+  }
+
 //  ConstructionWorkerEntity toEntity() {
 //    return ConstructionWorkerEntity(registeredNo: registeredNo, laborNumber: laborNumber, otherOrganization: otherOrganization);
 //  }
@@ -111,6 +132,12 @@ class WastePicker  extends Equatable implements Occupation {
     return "Waste Picker";
   }
 
+  @override
+  HashMap<String, dynamic> getMap() {
+    HashMap<String, dynamic> _map = HashMap<String, dynamic>();
+    return _map;
+  }
+
 //  WastePickerEntity toEntity() {
 //    return WastePickerEntity(registrationNumber: registrationNumber, idIssueByInst: idIssueByInst, otherOrganization: otherOrganization);
 //  }
@@ -144,6 +171,12 @@ class DomesticWorker  extends Equatable implements Occupation {
 
   @override
   List<Object> get props => [rwaNumber, verifyTime, otherOrganization, instituteId];
+
+  @override
+  HashMap<String, dynamic> getMap() {
+    HashMap<String, dynamic> _map = HashMap<String, dynamic>();
+    return _map;
+  }
 
   @override
   String type() {
@@ -183,6 +216,12 @@ class HomeBasedWorker  extends Equatable implements Occupation {
 
   @override
   List<Object> get props => [artisanNo, artisanCreditCard, artisanAadharCard, otherOrganization];
+
+  @override
+  HashMap<String, dynamic> getMap() {
+    HashMap<String, dynamic> _map = HashMap<String, dynamic>();
+    return _map;
+  }
 
   @override
   String type() {
@@ -227,6 +266,12 @@ class RickShawPuller  extends Equatable implements Occupation {
     return "Risckhaw Puller";
   }
 
+  @override
+  HashMap<String, dynamic> getMap() {
+    HashMap<String, dynamic> _map = HashMap<String, dynamic>();
+    return _map;
+  }
+
 //  RickShawPullerEntity toEntity() {
 //    return RickShawPullerEntity(surveyedLabour: surveyedLabour, licenceNo: licenceNo, otherOrganization: otherOrganization);
 //  }
@@ -264,6 +309,12 @@ class AgricultureLabour  extends Equatable implements Occupation {
     return "Agriculture Labour";
   }
 
+  @override
+  HashMap<String, dynamic> getMap() {
+    HashMap<String, dynamic> _map = HashMap<String, dynamic>();
+    return _map;
+  }
+
 //  AgricultureLabourEntity toEntity() {
 //    return AgricultureLabourEntity(minimumWageAware: minimumWageAware, getMinimumWage: getMinimumWage, otherOrganization: otherOrganization);
 //  }
@@ -279,6 +330,12 @@ class AgricultureLabour  extends Equatable implements Occupation {
 }
 
 class Occupation {
+
+  HashMap<String, dynamic> getMap() {
+    HashMap<String, dynamic> _map = HashMap<String, dynamic>();
+    return _map;
+  }
+
   String type() {
     return "Others";
   }
