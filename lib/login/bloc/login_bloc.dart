@@ -62,6 +62,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Stream<LoginState> _mapPasswordChangedToState(String password) async* {
     yield state.update(
+//      isPasswordValid: Validators.isValidPassword(password),
       isPasswordValid: Validators.isValidPassword(password),
     );
   }
@@ -72,13 +73,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }) async* {
     yield LoginState.loading();
     try {
-      Future.delayed(Duration(seconds: 3));
-      if(password.compareTo("hello123") != 0) {
-        throw Exception();
-      }
-//      await _userRepository.signInWithCredentials(email, password);
+      await _userRepository.signInWithCredentials(email, password);
       yield LoginState.success();
-    } catch (_) {
+    } catch (e) {
+      print(e);
       yield LoginState.failure();
     }
   }

@@ -5,16 +5,8 @@ import 'package:snumngo/bloc/authentication/authentication_event.dart';
 import 'package:snumngo/generated/l10n.dart';
 import 'package:snumngo/login/bloc/bloc.dart';
 import 'package:snumngo/login/bloc/login_event.dart';
-import 'package:snumngo/repository/user_repository.dart';
-
 
 class LoginForm extends StatefulWidget {
-  final UserRepository _userRepository;
-
-  LoginForm({Key key, @required UserRepository userRepository})
-      : assert(userRepository != null),
-        _userRepository = userRepository,
-        super(key: key);
 
   State<LoginForm> createState() => _LoginFormState();
 }
@@ -24,8 +16,6 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _passwordController = TextEditingController();
 
   LoginBloc _loginBloc;
-
-  UserRepository get _userRepository => widget._userRepository;
 
   bool get isPopulated =>
       _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;

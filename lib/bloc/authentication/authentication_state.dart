@@ -12,12 +12,22 @@ abstract class AuthenticationState extends Equatable {
 class UnInitialized extends AuthenticationState {}
 
 class Authenticated extends AuthenticationState {
-  final String name;
+  final String email;
+  final String displayName;
+  final String photoUrl;
 
-  const Authenticated(this.name);
+  const Authenticated({this.email, this.displayName, this.photoUrl});
 
   @override
-  List<Object> get props => [name];
+  List<Object> get props => [email];
 }
 
 class UnAuthenticated extends AuthenticationState{}
+
+class UpdatingUser extends Authenticated {
+  final String email;
+  final String displayName;
+  final String photoUrl;
+
+  UpdatingUser({this.email, this.displayName, this.photoUrl});
+}

@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:snumngo/person/add_person.dart';
 import 'package:snumngo/person/view_worker.dart';
 import 'package:snumngo/screen/settings.dart';
+import 'package:snumngo/screen/user_detail.dart';
 import 'package:snumngo/workers/screen.dart';
 
 class Router {
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case '/userDetail':
+        return MaterialPageRoute(builder: (_) => UserDetail());
       case '/workers':
         return MaterialPageRoute(builder: (_) => WorkersScreen());
       case '/workersDetail':

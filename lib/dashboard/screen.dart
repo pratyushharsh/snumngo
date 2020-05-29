@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:snumngo/workers/search/bloc.dart';
+import 'package:snumngo/bloc/authentication/authentication_bloc.dart';
+import 'package:snumngo/bloc/authentication/bloc.dart';
 
 class DashBoard extends StatelessWidget {
+
+  final String currentUser;
+  final String userDisplayName;
+
+  const DashBoard({Key key, this.currentUser, this.userDisplayName}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,12 +20,12 @@ class DashBoard extends StatelessWidget {
           IconButton(
             icon: Icon(FontAwesome.sign_out),
             onPressed: () {
-              Navigator.pushReplacementNamed(context, '/');
+              BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
             },
           )
         ],
       ),
-      drawer: AppDrawer(),
+      drawer: AppDrawer(userEmail: currentUser, userDisplayName: userDisplayName,),
       body: Container(
         child: Text("User Dashboard"),
       ),
@@ -27,21 +34,34 @@ class DashBoard extends StatelessWidget {
 }
 
 class AppDrawer extends StatelessWidget {
+
+  final String userEmail;
+  final String userDisplayName;
+
+  const AppDrawer({Key key, this.userEmail, this.userDisplayName}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         children: <Widget>[
-          DrawerHeader(
-            child: Column(
-              children: <Widget>[
-                CircleAvatar(
-                  child: Icon(Icons.person),
-                  minRadius: 30,
-                ),
-                SizedBox(height: 10,),
-                Text("Pratyush Harsh", style: Theme.of(context).textTheme.button,)
-              ],
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, '/userDetail');
+            },
+            child: DrawerHeader(
+              curve: Curves.bounceIn,
+              child: Column(
+                children: <Widget>[
+                  CircleAvatar(
+                    child: Icon(Icons.person),
+                    minRadius: 30,
+                  ),
+                  SizedBox(height: 10,),
+                  Text(userDisplayName??"", style: Theme.of(context).textTheme.button,),
+                  Text(userEmail??"", style: Theme.of(context).textTheme.caption,)
+                ],
+              ),
             ),
           ),
           ListTile(

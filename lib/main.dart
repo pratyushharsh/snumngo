@@ -7,6 +7,7 @@ import 'package:snumngo/bloc/theme/bloc.dart';
 import 'package:snumngo/config/router.dart';
 import 'package:snumngo/dashboard/screen.dart';
 import 'package:snumngo/generated/l10n.dart';
+import 'package:snumngo/repository/cloud_storage.dart';
 import 'package:snumngo/repository/user_repository.dart';
 import 'package:snumngo/repository/workers_repo.dart';
 import 'package:snumngo/simple_bloc_delegate.dart';
@@ -16,13 +17,18 @@ import 'login/login_screen.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  final UserRepository userRepository = UserRepository();
   runApp(
     MultiRepositoryProvider(
       providers: [
+        RepositoryProvider<UserRepository>(
+          create: (context) => UserRepository(),
+        ),
         RepositoryProvider<WorkersRepository>(
           create: (context) => WorkersRepository(),
-        )
+        ),
+        RepositoryProvider<CloudStorageRepository>(
+          create: (context) => CloudStorageRepository(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -36,7 +42,7 @@ void main() {
           ),
           BlocProvider(
             create: (context) =>
-            AuthenticationBloc(repository: userRepository)..add(AppStarted()),
+            AuthenticationBloc(repository: RepositoryProvider.of(context))..add(AppStarted()),
           ),
           BlocProvider<SearchBloc>(
             create: (context) => SearchBloc(
@@ -44,20 +50,13 @@ void main() {
             ),
           )
         ],
-        child: MyApp(userRepository: userRepository,),
+        child: MyApp(),
       ),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-
-  final UserRepository _userRepository;
-
-  MyApp({Key key, @required UserRepository userRepository})
-      : assert(userRepository != null),
-        _userRepository = userRepository,
-        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +74,7 @@ class MyApp extends StatelessWidget {
           return locale;
         },
         onGenerateRoute: Router.generateRoute,
-        home: MainScreen(userRepository: _userRepository,),
+        home: MainScreen(),
       );
     });
   }
@@ -83,18 +82,14 @@ class MyApp extends StatelessWidget {
 
 class MainScreen extends StatelessWidget {
 
-  final UserRepository userRepository;
-
-  const MainScreen({Key key, this.userRepository}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (BuildContext context, AuthenticationState state) {
         if (state is UnAuthenticated) {
-          return LoginScreen(userRepository: userRepository);
+          return LoginScreen();
         } else if (state is Authenticated) {
-          return DashBoard();
+          return DashBoard(currentUser: state.email, userDisplayName: state.displayName,);
         } else {
           return Container();
         }

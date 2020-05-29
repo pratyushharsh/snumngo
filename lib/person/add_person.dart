@@ -11,8 +11,16 @@ class AddPerson extends StatelessWidget {
       appBar: AppBar(
         title: Text(S.of(context).person_detail),
       ),
-      body: BlocProvider<PersonBloc>(
-        create: (BuildContext context) => PersonBloc(RepositoryProvider.of(context)),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider<PersonBloc>(
+            create: (BuildContext context) => PersonBloc(RepositoryProvider.of(context)),
+          ),
+          BlocProvider<WorkerImageBloc>(create: (BuildContext context) => WorkerImageBloc(
+            cloudStorageRepository: RepositoryProvider.of(context)
+          ),
+          )
+        ],
         child: AddPersonForm(),
       )
     );
