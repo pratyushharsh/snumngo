@@ -54,3 +54,7 @@ class UploadImageStatus {
     );
   }
 }
+
+class UploadImageSuccess extends WorkerImageState {
+  UploadImageSuccess(UploadImageStatus uploadImageStatus) : super(uploadImageStatus);
+}

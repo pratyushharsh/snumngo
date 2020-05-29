@@ -8,6 +8,7 @@ import 'package:snumngo/generated/l10n.dart';
 import 'package:snumngo/person/model/models.dart';
 import 'package:snumngo/person/occupation_detail.dart';
 import 'package:snumngo/person/personal_detail.dart';
+import 'package:snumngo/workers/search/bloc.dart';
 
 import 'bloc/bloc.dart';
 
@@ -35,10 +36,12 @@ class _AddPersonFormState extends State<AddPersonForm> {
         currentStep: this._currentStep,
         onStepTapped: (step) {
           setState(() {
+            // @Todo not effective on final stepper if tapped
             _currentStep = step;
           });
         },
-        onStepContinue: () async {
+        onStepContinue: () {
+          // Todo only once for the button
           if (_currentStep == 6) {
             // Disable Button
             Person p = BlocProvider.of<PersonBloc>(context).person;
@@ -59,13 +62,6 @@ class _AddPersonFormState extends State<AddPersonForm> {
               wib.add(UploadDisabilityCertificate(
                   File(p.disability.certificateUrl)));
             }
-
-//            bool val =
-////                await BlocProvider.of<PersonBloc>(context).addNewPerson(p);
-//            if (val) {
-//              BlocProvider.of<SearchBloc>(context).add(RefreshSearch());
-//              Navigator.pop(context);
-//            }
           }
 
           if (validForms()) {
@@ -173,39 +169,60 @@ class _AddPersonFormState extends State<AddPersonForm> {
 }
 
 class ImageUpload extends StatelessWidget {
+  static int count = 0;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<WorkerImageBloc, WorkerImageState>(
         builder: (context, state) {
-      UploadImageStatus status = state.uploadImageStatus;
+      var s = state.uploadImageStatus;
+
+      if ((state is UploadImageSuccess) &&
+          (s.disability != null ? s.disability.isSuccessful : true) &&
+          (s.aadharFront != null ? s.aadharFront.isSuccessful : true) &&
+          (s.aadhaarBack != null ? s.aadhaarBack.isSuccessful : true)) {
+
+        BlocProvider.of<PersonBloc>(context)
+            .updateImageUrls(disabilityUrl: s.disabilityUrl, aadharBack: s.aadhaarBackUrl, aadharFront: s.aadharFrontUrl)
+            .then((value) =>
+                BlocProvider.of<PersonBloc>(context).addNewPerson(value))
+            .then((value) {
+          BlocProvider.of<SearchBloc>(context).add(RefreshSearch());
+          Navigator.pop(context);
+        });
+        return Row(
+          children: <Widget>[Text('All Done')],
+        );
+      }
+
       return Container(
         child: Column(
           children: <Widget>[
-            status.disability != null
+            s.disability != null
                 ? MyLinearProgressIndicator(
                     title: "Disability Certificate",
-                    task: status.disability,
-                    ref: status.disabilityUrl,
+                    task: s.disability,
+                    ref: s.disabilityUrl,
                   )
                 : Container(),
-            status.aadharFront != null
+            s.aadharFront != null
                 ? MyLinearProgressIndicator(
                     title: "Aadhaar Front",
-                    task: status.aadharFront,
-                    ref: status.aadharFrontUrl,
+                    task: s.aadharFront,
+                    ref: s.aadharFrontUrl,
                   )
                 : Container(),
-            status.aadhaarBack != null
+            s.aadhaarBack != null
                 ? MyLinearProgressIndicator(
                     title: "Aadhaar Back",
-                    task: status.aadhaarBack,
-                    ref: status.aadhaarBackUrl,
+                    task: s.aadhaarBack,
+                    ref: s.aadhaarBackUrl,
                   )
                 : Container(),
-            status.pancard != null
+            s.pancard != null
                 ? MyLinearProgressIndicator(
                     title: "Pancard Upload",
-                    task: status.pancard,
+                    task: s.pancard,
                   )
                 : Container()
           ],
@@ -224,47 +241,44 @@ class MyLinearProgressIndicator extends StatelessWidget {
       {Key key, @required this.task, this.title, this.ref})
       : super(key: key);
 
-  _printUrl(StorageReference ref) async {
-    var t = await ref.getDownloadURL();
-    print(t);
-  }
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<StorageTaskEvent>(
-        stream: task.events,
-        builder: (context, snapshot) {
-          var event = snapshot?.data?.snapshot;
-          double percent =
-              event != null ? event.bytesTransferred / event.totalByteCount : 0;
+      stream: task.events,
+      builder: (context, snapshot) {
+        var event = snapshot?.data?.snapshot;
+        double percent =
+            event != null ? event.bytesTransferred / event.totalByteCount : 0;
 
-          if (task.isInProgress) {
-            return Column(
-              children: <Widget>[
-                Text(title),
-                LinearProgressIndicator(
-                  value: percent,
-                )
-              ],
-            );
-          }
+        if (task.isInProgress) {
+          return Column(
+            children: <Widget>[
+              Text(title),
+              LinearProgressIndicator(
+                value: percent,
+              )
+            ],
+          );
+        }
 
-          if (task.isComplete) {
-            _printUrl(ref);
-            return Row(
-              children: <Widget>[
-                Text(title),
-                SizedBox(
-                  width: 10,
-                ),
-                Icon(
-                  Icons.done_all,
-                  color: Colors.green,
-                )
-              ],
-            );
-          }
-          return Container();
-        });
+        if (task.isSuccessful) {
+          BlocProvider.of<WorkerImageBloc>(context)
+              .add(WorkerUploadImageSuccess());
+          return Row(
+            children: <Widget>[
+              Text(title),
+              SizedBox(
+                width: 10,
+              ),
+              Icon(
+                Icons.done_all,
+                color: Colors.green,
+              )
+            ],
+          );
+        }
+        return Container();
+      },
+    );
   }
 }

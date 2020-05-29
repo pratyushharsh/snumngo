@@ -17,7 +17,10 @@ class WorkerImageBloc extends Bloc<WorkerImageEvent, WorkerImageState> {
   Stream<WorkerImageState> mapEventToState(
     WorkerImageEvent event,
   ) async* {
-    if (event is UploadProfileUrl) {
+    if (event is WorkerUploadImageSuccess) {
+      yield UploadingState(state.uploadImageStatus);
+      yield UploadImageSuccess(state.uploadImageStatus);
+    } else if (event is UploadProfileUrl) {
 
     } else if (event is UploadDisabilityCertificate) {
       Map<String, dynamic> res = cloudStorageRepository.uploadImage(image: event.fileUrl);

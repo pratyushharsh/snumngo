@@ -225,6 +225,7 @@ class AadhaarDetailSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(aadhaar);
     return DetailCard(
       child: Column(
         children: <Widget>[
@@ -239,7 +240,7 @@ class AadhaarDetailSection extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: aadhaar.frontUrl != null && aadhaar.frontUrl.isNotEmpty
-                    ? Image.file(File(aadhaar.frontUrl))
+                    ? Image.network(aadhaar.frontUrl)
                     : NoImageAvailable(),
               ),
               SizedBox(
@@ -247,7 +248,7 @@ class AadhaarDetailSection extends StatelessWidget {
               ),
               Expanded(
                 child: aadhaar.backUrl != null && aadhaar.backUrl.isNotEmpty
-                    ? Image.file(File(aadhaar.backUrl))
+                    ? Image.network(aadhaar.backUrl)
                     : NoImageAvailable(),
               ),
             ],

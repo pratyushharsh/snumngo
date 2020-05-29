@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:meta/meta.dart';
 import 'package:snumngo/person/model/models.dart';
 
@@ -123,6 +124,12 @@ class UpdateDisabilityCertificate extends DisabilityEvent {
   final File certificate;
 
   UpdateDisabilityCertificate(this.certificate);
+}
+
+class UpdateDisabilityCertificateUrl extends DisabilityEvent {
+  final StorageReference reference;
+
+  UpdateDisabilityCertificateUrl(this.reference);
 }
 
 class AadharEvent extends PersonEvent {}

@@ -1,4 +1,8 @@
 class Validators {
+  static final RegExp _imagePathExp = RegExp(
+    r'^.+\.(?:jpg|gif|png)$',
+  );
+
   static final RegExp _emailRegExp = RegExp(
     r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$',
   );
@@ -20,5 +24,9 @@ class Validators {
 
   static isValidPanCard(String pancardno) {
     return _pancardValidator.hasMatch(pancardno);
+  }
+
+  static isValidImagePath(String image) {
+    return _imagePathExp.hasMatch(image);
   }
 }

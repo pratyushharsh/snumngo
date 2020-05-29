@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snumngo/person/model/models.dart';
 import 'package:snumngo/repository/workers_repo.dart';
@@ -96,6 +97,11 @@ class PersonBloc extends Bloc<PersonEvent, PersonState> {
       File image = event.certificate;
       person = person.copyWith(
           disability: person.disability.copyWith(certificateUrl: image.path));
+    } else if (event is UpdateDisabilityCertificateUrl) {
+      var url = await event.reference.getDownloadURL();
+      print(url);
+      person = person.copyWith(
+          disability: person.disability.copyWith(certificateUrl: url.toString()));
     }
     yield EditingPersonalState(person);
   }
@@ -164,8 +170,17 @@ class PersonBloc extends Bloc<PersonEvent, PersonState> {
   }
 
   Future<bool> addNewPerson(Person p) async {
+    print(p);
+    await Future.delayed(Duration(seconds: 4));
     await workersRepo.addPerson(p);
     return true;
+  }
+
+  Future<Person> updateImageUrls({StorageReference disabilityUrl, StorageReference aadharFront, StorageReference aadharBack}) async {
+    person = await person.copyWith(
+        disability: person.disability.copyWith(certificateUrl: (await disabilityUrl?.getDownloadURL())?.toString()),
+    aadhaarBank: person.aadhaarBank.copyWith(frontUrl: (await aadharFront?.getDownloadURL())?.toString(), backUrl: (await aadharBack?.getDownloadURL())?.toString()));
+    return person;
   }
 
   Stream<PersonState> _mapAddNewPerson() async* {

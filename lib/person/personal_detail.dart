@@ -9,6 +9,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:snumngo/config/constants.dart';
+import 'package:snumngo/config/validator.dart';
 import 'package:snumngo/generated/l10n.dart';
 import 'package:snumngo/person/bloc/bloc.dart';
 
@@ -303,11 +304,10 @@ class AadharBankWidget extends StatelessWidget {
           children: <Widget>[
             TextFormField(
               maxLength: 12,
-              inputFormatters: [
-                WhitelistingTextInputFormatter.digitsOnly
-              ],
+              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
               validator: (value) {
-                if (value.isNotEmpty && value.length < 12) return 'Enter Valid Aadhaar';
+                if (value.isNotEmpty && value.length < 12)
+                  return 'Enter Valid Aadhaar';
                 return null;
               },
               initialValue: ab.aadhaarNo,
@@ -329,7 +329,7 @@ class AadharBankWidget extends StatelessWidget {
                             children: <Widget>[
                               ImagePickAndCrop(
                                 ratioY: 2.125,
-                                ratioX:  3.375,
+                                ratioX: 3.375,
                                 imageUrl: ab.frontUrl,
                                 onImageSelected: (file) {
                                   if (file != null)
@@ -348,7 +348,7 @@ class AadharBankWidget extends StatelessWidget {
                             children: <Widget>[
                               ImagePickAndCrop(
                                 ratioY: 2.125,
-                                ratioX:  3.375,
+                                ratioX: 3.375,
                                 imageUrl: ab.backUrl,
                                 onImageSelected: (file) {
                                   if (file != null)
@@ -411,12 +411,10 @@ class AadharBankWidget extends StatelessWidget {
 }
 
 class PanVoterWidget extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PersonBloc, PersonState>(
       builder: (context, state) {
-
         PanVoterDetail pvd = state.person.panVoterDetail;
 
         PersonBloc pb = BlocProvider.of(context);
@@ -429,18 +427,19 @@ class PanVoterWidget extends StatelessWidget {
                 },
                 decoration: InputDecoration(hintText: S.of(context).pan_no),
               ),
-              pvd.pancard != null && pvd.pancard.isNotEmpty ?
-                  Container(
-                    margin: EdgeInsets.only(top: 10),
-                    child: ImagePickAndCrop(
-                      ratioY: 2.125,
-                      ratioX:  3.375,
-                      onImageSelected: (file) {
-                        pb.add(UpdatePanUrl(file));
-                      },
-                      imageUrl: pvd.panUrl,
-                    ),
-                  ) : Container(),
+              pvd.pancard != null && pvd.pancard.isNotEmpty
+                  ? Container(
+                      margin: EdgeInsets.only(top: 10),
+                      child: ImagePickAndCrop(
+                        ratioY: 2.125,
+                        ratioX: 3.375,
+                        onImageSelected: (file) {
+                          pb.add(UpdatePanUrl(file));
+                        },
+                        imageUrl: pvd.panUrl,
+                      ),
+                    )
+                  : Container(),
               TextFormField(
                 onChanged: (val) {
                   pb.add(UpdateVoteIdNo(val));
@@ -457,7 +456,7 @@ class PanVoterWidget extends StatelessWidget {
                               children: <Widget>[
                                 ImagePickAndCrop(
                                   ratioX: 21.25,
-                                  ratioY:  33.75,
+                                  ratioY: 33.75,
                                   imageUrl: pvd.voterUrlFront,
                                   onImageSelected: (file) {
                                     if (file != null)
@@ -476,7 +475,7 @@ class PanVoterWidget extends StatelessWidget {
                               children: <Widget>[
                                 ImagePickAndCrop(
                                   ratioX: 2.125,
-                                  ratioY:  3.375,
+                                  ratioY: 3.375,
                                   imageUrl: pvd.voterUrlBack,
                                   onImageSelected: (file) {
                                     if (file != null)
@@ -584,8 +583,8 @@ class ImagePickAndCrop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    File image =
-        imageUrl != null && imageUrl.isNotEmpty ? File(imageUrl) : null;
+    print('Image url to display $imageUrl');
+    bool _validUrl = imageUrl != null ? Uri.parse(imageUrl).isAbsolute : false;
 
     return Container(
       color: Colors.black12,
@@ -593,12 +592,19 @@ class ImagePickAndCrop extends StatelessWidget {
       height: imageHeight,
       child: Stack(
         children: <Widget>[
-          image != null
-              ? Image.file(
-                  image,
+          _validUrl
+              ? Image.network(
+                  imageUrl,
                   fit: BoxFit.fill,
                 )
-              : Container(),
+              : imageUrl != null &&
+                      imageUrl.isNotEmpty &&
+                      Validators.isValidImagePath(imageUrl)
+                  ? Image.file(
+                      File(imageUrl),
+                      fit: BoxFit.fill,
+                    )
+                  : Container(),
           Container(
             height: imageHeight,
             width: imageWidth ?? double.infinity,

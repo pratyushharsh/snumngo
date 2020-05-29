@@ -45,3 +45,5 @@ class UploadVoterFront extends WorkerImageEvent {
 class UploadVoterBack extends WorkerImageEvent {
 
 }
+
+class WorkerUploadImageSuccess extends WorkerImageEvent {}
