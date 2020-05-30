@@ -8,7 +8,6 @@ import 'package:snumngo/generated/l10n.dart';
 import 'package:snumngo/person/model/models.dart';
 import 'package:snumngo/person/occupation_detail.dart';
 import 'package:snumngo/person/personal_detail.dart';
-import 'package:snumngo/workers/search/bloc.dart';
 
 import 'bloc/bloc.dart';
 
@@ -34,16 +33,16 @@ class _AddPersonFormState extends State<AddPersonForm> {
         physics: ClampingScrollPhysics(),
         steps: _mySteps(),
         currentStep: this._currentStep,
-        onStepTapped: (step) {
+        onStepTapped: (state is FinalUploadAndSubmit) ? null : (step) {
           setState(() {
             // @Todo not effective on final stepper if tapped
             _currentStep = step;
           });
         },
-        onStepContinue: () {
-          // Todo only once for the button
+        onStepContinue: !(state is FinalUploadAndSubmit) ? () {
+          // Todo only once for the button and when no image is uploaded
           if (_currentStep == 6) {
-            // Disable Button
+
             Person p = BlocProvider.of<PersonBloc>(context).person;
 
             WorkerImageBloc wib = BlocProvider.of(context);
@@ -62,6 +61,26 @@ class _AddPersonFormState extends State<AddPersonForm> {
               wib.add(UploadDisabilityCertificate(
                   File(p.disability.certificateUrl)));
             }
+
+            if (p.panVoterDetail.panUrl != null &&
+                p.panVoterDetail.panUrl.isNotEmpty) {
+              wib.add(UploadPancard(
+                  File(p.panVoterDetail.panUrl)));
+            }
+
+            if (p.panVoterDetail.voterUrlFront != null &&
+                p.panVoterDetail.voterUrlFront.isNotEmpty) {
+              wib.add(UploadVoterFront(
+                  File(p.panVoterDetail.voterUrlFront)));
+            }
+
+            if (p.panVoterDetail.voterUrlBack != null &&
+                p.panVoterDetail.voterUrlBack.isNotEmpty) {
+              wib.add(UploadVoterBack(
+                  File(p.panVoterDetail.voterUrlBack)));
+            }
+            BlocProvider.of<PersonBloc>(context).add(UploadingImageAndSubmitting());
+            wib.add(StartUploadingImages());
           }
 
           if (validForms()) {
@@ -71,8 +90,8 @@ class _AddPersonFormState extends State<AddPersonForm> {
                   : _mySteps().length - 1;
             });
           }
-        },
-        onStepCancel: () {
+        } : null,
+        onStepCancel: (state is FinalUploadAndSubmit) ? null : () {
           setState(() {
             _currentStep = _currentStep - 1 >= 0 ? _currentStep - 1 : 0;
           });
@@ -146,6 +165,7 @@ class _AddPersonFormState extends State<AddPersonForm> {
       Step(
           title: Text(S.of(context).pan_voter_detail),
           content: Form(
+            autovalidate: true,
             key: _panVoterFormKey,
             child: PanVoterWidget(),
           ),
@@ -177,17 +197,15 @@ class ImageUpload extends StatelessWidget {
         builder: (context, state) {
       var s = state.uploadImageStatus;
 
-      if ((state is UploadImageSuccess) &&
-          (s.disability != null ? s.disability.isSuccessful : true) &&
-          (s.aadharFront != null ? s.aadharFront.isSuccessful : true) &&
-          (s.aadhaarBack != null ? s.aadhaarBack.isSuccessful : true)) {
+      print('ImageUpload times ${count++} WorkerImageState $s');
+
+      if (state is AllImageUploaded) {
 
         BlocProvider.of<PersonBloc>(context)
             .updateImageUrls(disabilityUrl: s.disabilityUrl, aadharBack: s.aadhaarBackUrl, aadharFront: s.aadharFrontUrl)
             .then((value) =>
                 BlocProvider.of<PersonBloc>(context).addNewPerson(value))
             .then((value) {
-          BlocProvider.of<SearchBloc>(context).add(StartSearch());
           Navigator.pop(context);
         });
         return Row(
@@ -224,6 +242,18 @@ class ImageUpload extends StatelessWidget {
                     title: "Pancard Upload",
                     task: s.pancard,
                   )
+                : Container(),
+            s.voterFront != null
+              ? MyLinearProgressIndicator(
+              title: 'Voter Id Front',
+              task: s.voterFront,
+            )
+                : Container(),
+            s.voterBack != null
+              ? MyLinearProgressIndicator(
+              title: 'Voter Id Back',
+              task: s.voterBack,
+            )
                 : Container()
           ],
         ),

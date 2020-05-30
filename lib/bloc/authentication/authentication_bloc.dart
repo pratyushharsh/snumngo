@@ -58,7 +58,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
   Future<String> currentUser() async {
     FirebaseUser user = await _repository.getUser();
-    return await user.email;
+    return user.email;
   }
 
   Stream<AuthenticationState> _mapUpdateUserDisplayName(String displayName) async* {

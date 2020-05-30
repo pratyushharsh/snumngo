@@ -58,3 +58,7 @@ class UploadImageStatus {
 class UploadImageSuccess extends WorkerImageState {
   UploadImageSuccess(UploadImageStatus uploadImageStatus) : super(uploadImageStatus);
 }
+
+class AllImageUploaded extends WorkerImageState {
+  AllImageUploaded(UploadImageStatus uploadImageStatus) : super(uploadImageStatus);
+}

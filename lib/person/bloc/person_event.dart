@@ -216,4 +216,6 @@ class UpdateOccupation extends OccupationEvent {
   UpdateOccupation(this.occupation);
 }
 
-class AddNewPerson extends PersonEvent {}
+// class AddNewPerson extends PersonEvent {}
+
+class UploadingImageAndSubmitting extends PersonEvent {}

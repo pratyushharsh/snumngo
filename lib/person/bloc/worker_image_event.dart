@@ -9,6 +9,8 @@ abstract class WorkerImageEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class StartUploadingImages extends WorkerImageEvent{}
+
 class UploadProfileUrl extends WorkerImageEvent {
   final File profile;
 
@@ -35,15 +37,21 @@ class UploadAadhaarBack extends WorkerImageEvent {
 }
 
 class UploadPancard extends WorkerImageEvent {
+  final File fileUrl;
 
+  UploadPancard(this.fileUrl);
 }
 
 class UploadVoterFront extends WorkerImageEvent {
+  final File fileUrl;
 
+  UploadVoterFront(this.fileUrl);
 }
 
 class UploadVoterBack extends WorkerImageEvent {
+  final File fileUrl;
 
+  UploadVoterBack(this.fileUrl);
 }
 
 class WorkerUploadImageSuccess extends WorkerImageEvent {}

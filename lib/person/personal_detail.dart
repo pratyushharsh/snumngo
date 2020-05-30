@@ -67,20 +67,38 @@ class PersonalInfoWidget extends StatelessWidget {
               },
             ),
             TextFormField(
+              maxLength: 10,
+              inputFormatters: [
+                WhitelistingTextInputFormatter.digitsOnly
+              ],
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                   labelText: S.of(context).mobile_num, icon: Icon(Icons.phone)),
               onChanged: (val) {
                 pb.add(UpdateMobile(val));
               },
+              validator: (value) {
+                if (value.isNotEmpty && value.length < 10)
+                  return 'Enter Valid Number';
+                return null;
+              },
             ),
             TextFormField(
+              maxLength: 10,
+              inputFormatters: [
+                WhitelistingTextInputFormatter.digitsOnly
+              ],
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                   labelText: S.of(context).whatsapp_number,
                   icon: Icon(FontAwesome.whatsapp)),
               onChanged: (val) {
                 pb.add(UpdateWhatsapp(val));
+              },
+              validator: (value) {
+                if (value.isNotEmpty && value.length < 10)
+                  return 'Enter Valid Number';
+                return null;
               },
             ),
             Row(
@@ -193,10 +211,19 @@ class AddressWidget extends StatelessWidget {
               ),
               Expanded(
                 child: TextFormField(
+                  maxLength: 6,
+                  inputFormatters: [
+                    WhitelistingTextInputFormatter.digitsOnly
+                  ],
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(labelText: S.of(context).pincode),
                   onChanged: (val) {
                     pb.add(UpdatePincode(val));
+                  },
+                  validator: (value) {
+                    if (value.isNotEmpty && value.length < 6)
+                      return 'Not Valid Pincode';
+                    return null;
                   },
                 ),
               ),
@@ -422,10 +449,21 @@ class PanVoterWidget extends StatelessWidget {
           child: Column(
             children: <Widget>[
               TextFormField(
+                autovalidate: true,
+                textCapitalization: TextCapitalization.characters,
+                maxLength: 10,
+                inputFormatters: [
+                  WhitelistingTextInputFormatter(RegExp("[a-zA-Z0-9]")),
+                ],
                 onChanged: (val) {
                   pb.add(UpdatePanCardNo(val));
                 },
-                decoration: InputDecoration(hintText: S.of(context).pan_no),
+                decoration: InputDecoration(labelText: S.of(context).pan_no),
+                validator: (value) {
+                  if (value.isNotEmpty && !Validators.isValidPanCard(value))
+                    return 'Not Valid Pancard';
+                  return null;
+                },
               ),
               pvd.pancard != null && pvd.pancard.isNotEmpty
                   ? Container(
@@ -444,7 +482,7 @@ class PanVoterWidget extends StatelessWidget {
                 onChanged: (val) {
                   pb.add(UpdateVoteIdNo(val));
                 },
-                decoration: InputDecoration(hintText: S.of(context).voter_card),
+                decoration: InputDecoration(labelText: S.of(context).voter_card),
               ),
               pvd.voterCard != null && pvd.voterCard.isNotEmpty
                   ? Row(
@@ -556,8 +594,8 @@ class ImagePickAndCrop extends StatelessWidget {
 
   Future getImage(ImageSource imgSrc, BuildContext context) async {
     print('Opening camera');
-    var image = await ImagePicker.pickImage(source: imgSrc);
-    print(image.lengthSync());
+    var image = await ImagePicker().getImage(source: imgSrc);
+//    print(image.lengthSync());
     File croppedImage = await ImageCropper.cropImage(
       sourcePath: image.path,
 //      aspectRatioPresets: [
@@ -567,8 +605,8 @@ class ImagePickAndCrop extends StatelessWidget {
       aspectRatio: ratioX == null
           ? CropAspectRatio(ratioX: 3, ratioY: 2)
           : CropAspectRatio(ratioX: ratioX, ratioY: ratioY),
-      maxHeight: 200,
-      compressQuality: 15,
+      maxHeight: 400,
+      compressQuality: 50,
       cropStyle: CropStyle.rectangle,
     );
 //    image.deleteSync();
@@ -583,7 +621,6 @@ class ImagePickAndCrop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Image url to display $imageUrl');
     bool _validUrl = imageUrl != null ? Uri.parse(imageUrl).isAbsolute : false;
 
     return Container(

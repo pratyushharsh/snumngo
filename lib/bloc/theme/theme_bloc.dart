@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
 import './bloc.dart';
 
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {

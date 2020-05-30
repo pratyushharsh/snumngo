@@ -14,7 +14,6 @@ class OccupationalDetail extends StatefulWidget {
 
 class _OccupationalDetailState extends State<OccupationalDetail> {
   String occupation;
-//  Occupation occp;
 
   onWelfareChange(val) {
     setState(() {
@@ -64,6 +63,10 @@ class _OccupationalDetailState extends State<OccupationalDetail> {
         children: <Widget>[
           Text(S.of(context).occupation),
           DropdownButtonFormField(
+            validator: (val) {
+              if (val == null) return 'Choose An Occupation';
+              return null;
+            },
             onChanged: (val) {
               setState(() {
                 occupation = val;

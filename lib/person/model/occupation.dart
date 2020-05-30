@@ -91,6 +91,7 @@ class ConstructionWorker implements Occupation {
   @override
   HashMap<String, dynamic> getMap() {
     HashMap<String, dynamic> _map = HashMap<String, dynamic>();
+
     return _map;
   }
 
@@ -130,6 +131,9 @@ class WastePicker implements Occupation {
   @override
   HashMap<String, dynamic> getMap() {
     HashMap<String, dynamic> _map = HashMap<String, dynamic>();
+    _map.putIfAbsent('wst_pkr_rgst', () => registerationId != null);
+    _map.putIfAbsent('registerstion_number', () => registerationId);
+    _map.putIfAbsent('r_u_affiliated_org', () => otherOrg);
     return _map;
   }
 

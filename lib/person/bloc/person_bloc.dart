@@ -9,6 +9,9 @@ import './bloc.dart';
 
 class PersonBloc extends Bloc<PersonEvent, PersonState> {
 
+  @override
+  PersonState get initialState => InitialPersonState(person);
+
   final WorkersRepository workersRepo;
 
   Person person = Person(
@@ -98,44 +101,65 @@ class PersonBloc extends Bloc<PersonEvent, PersonState> {
       person = person.copyWith(
           disability: person.disability.copyWith(certificateUrl: image.path));
     } else if (event is UpdateDisabilityCertificateUrl) {
-      var url = await event.reference.getDownloadURL();
-      print(url);
+      Uri url = await event.reference.getDownloadURL();
       person = person.copyWith(
-          disability: person.disability.copyWith(certificateUrl: url.toString()));
+          disability:
+              person.disability.copyWith(certificateUrl: url.toString()));
     }
     yield EditingPersonalState(person);
   }
 
   Stream<PersonState> _updateAadhaarEvent(AadharEvent event) async* {
     if (event is AadharNumberUpdate) {
-      person = person.copyWith(aadhaarBank: person.aadhaarBank.copyWith(aadhaarNo: event.aadhaarNo));
+      person = person.copyWith(
+          aadhaarBank: person.aadhaarBank.copyWith(aadhaarNo: event.aadhaarNo));
     } else if (event is AadharUrlFrontUpdate) {
-      person = person.copyWith(aadhaarBank: person.aadhaarBank.copyWith(frontUrl: event.frontUrl.path));
+      person = person.copyWith(
+          aadhaarBank:
+              person.aadhaarBank.copyWith(frontUrl: event.frontUrl.path));
     } else if (event is AadharUrlBackUpdate) {
-      person = person.copyWith(aadhaarBank: person.aadhaarBank.copyWith(backUrl: event.backUrl.path));
+      person = person.copyWith(
+          aadhaarBank:
+              person.aadhaarBank.copyWith(backUrl: event.backUrl.path));
     } else if (event is AadharBankLinkedUpdate) {
-      person = person.copyWith(aadhaarBank: person.aadhaarBank.copyWith(bankLinked: event.bankLinked));
+      person = person.copyWith(
+          aadhaarBank:
+              person.aadhaarBank.copyWith(bankLinked: event.bankLinked));
     } else if (event is BankNameUpdate) {
-      person = person.copyWith(aadhaarBank: person.aadhaarBank.copyWith(bankName: event.bankName));
+      person = person.copyWith(
+          aadhaarBank: person.aadhaarBank.copyWith(bankName: event.bankName));
     } else if (event is BankAccountNoUpdate) {
-      person = person.copyWith(aadhaarBank: person.aadhaarBank.copyWith(accountNumber: event.accountNumber));
+      person = person.copyWith(
+          aadhaarBank:
+              person.aadhaarBank.copyWith(accountNumber: event.accountNumber));
     } else if (event is BankIfscUpdate) {
-      person = person.copyWith(aadhaarBank: person.aadhaarBank.copyWith(ifscCode: event.ifscCode));
+      person = person.copyWith(
+          aadhaarBank: person.aadhaarBank.copyWith(ifscCode: event.ifscCode));
     }
     yield EditingPersonalState(person);
   }
 
   Stream<PersonState> _updatePanCardDetailEvent(PanVoterEvent event) async* {
     if (event is UpdatePanCardNo) {
-      person = person.copyWith(panVoterDetail: person.panVoterDetail.copyWith(pancard: event.pancard));
+      person = person.copyWith(
+          panVoterDetail:
+              person.panVoterDetail.copyWith(pancard: event.pancard));
     } else if (event is UpdateVoteIdNo) {
-      person = person.copyWith(panVoterDetail: person.panVoterDetail.copyWith(voterCard: event.voterId));
+      person = person.copyWith(
+          panVoterDetail:
+              person.panVoterDetail.copyWith(voterCard: event.voterId));
     } else if (event is UpdateVoterFrontUrl) {
-      person = person.copyWith(panVoterDetail: person.panVoterDetail.copyWith(voterUrlFront: event.voterfrontUrl?.path));
+      person = person.copyWith(
+          panVoterDetail: person.panVoterDetail
+              .copyWith(voterUrlFront: event.voterfrontUrl?.path));
     } else if (event is UpdateVoterBackUrl) {
-      person = person.copyWith(panVoterDetail: person.panVoterDetail.copyWith(voterUrlBack: event.voterBackUrl?.path));
+      person = person.copyWith(
+          panVoterDetail: person.panVoterDetail
+              .copyWith(voterUrlBack: event.voterBackUrl?.path));
     } else if (event is UpdatePanUrl) {
-      person = person.copyWith(panVoterDetail: person.panVoterDetail.copyWith(panUrl: event.panUrl?.path));
+      person = person.copyWith(
+          panVoterDetail:
+              person.panVoterDetail.copyWith(panUrl: event.panUrl?.path));
     }
     yield EditingPersonalState(person);
   }
@@ -144,9 +168,6 @@ class PersonBloc extends Bloc<PersonEvent, PersonState> {
     person = person.copyWith(occupation: occupation);
     yield EditingPersonalState(person);
   }
-
-  @override
-  PersonState get initialState => InitialPersonState(person);
 
   @override
   Stream<PersonState> mapEventToState(
@@ -160,32 +181,58 @@ class PersonBloc extends Bloc<PersonEvent, PersonState> {
       yield* _updateDisabilityEvent(event);
     } else if (event is AadharEvent) {
       yield* _updateAadhaarEvent(event);
-    } else if (event is AddNewPerson) {
-      yield* _mapAddNewPerson();
     } else if (event is PanVoterEvent) {
       yield* _updatePanCardDetailEvent(event);
     } else if (event is UpdateOccupation) {
       yield* _updateOccupationEvent(event.occupation);
+    } else if (event is UploadingImageAndSubmitting) {
+      yield FinalUploadAndSubmit(state.person);
     }
   }
 
   Future<bool> addNewPerson(Person p) async {
-    print(p.toDocument());
     await workersRepo.addNewWorker(person);
     return true;
   }
 
-  Future<Person> updateImageUrls({StorageReference disabilityUrl, StorageReference aadharFront, StorageReference aadharBack}) async {
+  Future<Person> updateImageUrls({
+    StorageReference disabilityUrl,
+    StorageReference aadharFront,
+    StorageReference aadharBack,
+    StorageReference panUrl,
+    StorageReference voterFrontUrl,
+    StorageReference voterBackUrl,
+  }) async {
     person = await person.copyWith(
-        disability: person.disability.copyWith(certificateUrl: (await disabilityUrl?.getDownloadURL())?.toString()),
-    aadhaarBank: person.aadhaarBank.copyWith(frontUrl: (await aadharFront?.getDownloadURL())?.toString(), backUrl: (await aadharBack?.getDownloadURL())?.toString()));
+        disability: person.disability.copyWith(
+            certificateUrl:
+                modifyUri(await disabilityUrl?.getDownloadURL())?.toString()),
+        aadhaarBank: person.aadhaarBank.copyWith(
+            frontUrl:
+                modifyUri(await aadharFront?.getDownloadURL())?.toString(),
+            backUrl:
+                modifyUri(await aadharBack?.getDownloadURL())?.toString()),
+        panVoterDetail: person.panVoterDetail.copyWith(
+          panUrl: modifyUri(await panUrl?.getDownloadURL())?.toString(),
+          voterUrlFront: modifyUri(await voterFrontUrl?.getDownloadURL())?.toString(),
+          voterUrlBack: modifyUri(await voterBackUrl?.getDownloadURL())?.toString()
+        ));
     return person;
   }
 
-  Stream<PersonState> _mapAddNewPerson() async* {
-    yield AddingNewPerson(person);
-//    await Future.delayed(Duration(seconds: 2));
-    await workersRepo.addNewWorker(person);
-    yield AddedNewPersonState(person);
+
+  Uri modifyUri(String s) {
+    if (s == null || s.isEmpty) return null;
+    Uri uri = Uri.parse(s);
+    List<String> paths = uri.pathSegments;
+    List<String> newPaths = [];
+    for (String t in paths) {
+      if (t.endsWith('.jpg')) {
+        newPaths.add(t.replaceAll('.jpg', '_400x400.jpg'));
+      } else {
+        newPaths.add(t);
+      }
+    }
+    return uri.replace(pathSegments: newPaths);
   }
 }

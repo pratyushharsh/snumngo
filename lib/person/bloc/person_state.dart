@@ -24,3 +24,7 @@ class AddedNewPersonState extends PersonState {
 class AddingNewPerson extends PersonState {
   AddingNewPerson(Person person) : super(person);
 }
+
+class FinalUploadAndSubmit extends PersonState {
+  FinalUploadAndSubmit(Person person) : super(person);
+}

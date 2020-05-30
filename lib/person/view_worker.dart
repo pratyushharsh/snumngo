@@ -63,6 +63,12 @@ class _WorkersDetail extends StatelessWidget {
             AddressDetailSection(
               address: person.address,
             ),
+            if (person.disability.disable)
+            HeaderTag(
+              tag: "Disability Detail",
+            ),
+            if (person.disability.disable)
+              DisabilityDetailSection(disability: person.disability,),
             HeaderTag(
               tag: "Aadhaar Detail",
             ),
@@ -207,6 +213,31 @@ class AddressDetailSection extends StatelessWidget {
   }
 }
 
+class DisabilityDetailSection extends StatelessWidget {
+
+  final Disability disability;
+
+  const DisabilityDetailSection({Key key, this.disability}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DetailCard(
+      child: Column(
+        children: <Widget>[
+          KeyDesc(
+            tag: "Disability Certificate No",
+            desc: disability.certificateNo??"",
+          ),
+          disability.certificateUrl != null && disability.certificateUrl.isNotEmpty
+              ? Image.network(disability.certificateUrl)
+              : Container(),
+        ],
+      ),
+    );
+  }
+}
+
+
 class AadhaarDetailSection extends StatelessWidget {
   final AadharBankDetail aadhaar;
 
@@ -214,7 +245,6 @@ class AadhaarDetailSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(aadhaar);
     return DetailCard(
       child: Column(
         children: <Widget>[
