@@ -273,7 +273,7 @@ class _StreetVendorWidgetState extends State<StreetVendorWidget> {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: sv.fssaiTraining,
+                    value: sv.fssaiTranie,
                     onChanged: (val) {
                       setState(() {
                         sv = sv.copyWith(fssaiTraining: val);
@@ -292,7 +292,7 @@ class _StreetVendorWidgetState extends State<StreetVendorWidget> {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: sv.fssaiTrainingCertificate,
+                    value: sv.fssaiCertificate,
                     onChanged: (val) {
                       setState(() {
                         sv = sv.copyWith(fssaiTrainingCertificate: val);
@@ -494,7 +494,7 @@ class _WastePickerWidgetState extends State<WastePickerWidget> {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: wp.idIssueByInst,
+                    value: wp.idCardIssue,
                     onChanged: (val) {
                       setState(() {
                         wp = wp.copyWith(idIssueByInst: val);
@@ -695,7 +695,7 @@ class _HomeBasedWorkerWidgetState extends State<HomeBasedWorkerWidget> {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: hw.artisanCreditCard,
+                    value: hw.artisansCreditCard,
                     onChanged: (val) {
                       setState(() {
                         hw = hw.copyWith(artisanCreditCard: val);
@@ -714,7 +714,7 @@ class _HomeBasedWorkerWidgetState extends State<HomeBasedWorkerWidget> {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: hw.artisanAadharCard,
+                    value: hw.industryCard,
                     onChanged: (val) {
                       setState(() {
                         hw = hw.copyWith(artisanAadharCard: val);
@@ -751,7 +751,7 @@ class RickShawPullerWidget extends StatefulWidget {
 
 class _RickShawPullerWidgetState extends State<RickShawPullerWidget> {
 
-  RickShawPuller rp = RickShawPuller();
+  RickshawPuller rp = RickshawPuller();
   bool rskwLsc = false;
   bool affilOtherOrg = false;
 
@@ -779,7 +779,7 @@ class _RickShawPullerWidgetState extends State<RickShawPullerWidget> {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: rp.surveyedLabour,
+                    value: rp.surveyed,
                     onChanged: (val) {
                       setState(() {
                         rp = rp.copyWith(surveyedLabour: val);
@@ -865,10 +865,10 @@ class _AgricultureLabourWidgetState extends State<AgricultureLabourWidget> {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: al.minimumWageAware,
+                    value: al.minWageAware,
                     onChanged: (val) {
                       setState(() {
-                        al = al.copyWith(minimumWageAware: val);
+                        al = al.copyWith(minWageAware: val);
                       });
                     },
                   ),
@@ -884,10 +884,10 @@ class _AgricultureLabourWidgetState extends State<AgricultureLabourWidget> {
                 Flexible(
                   flex: 1,
                   child: Switch(
-                    value: al.getMinimumWage,
+                    value: al.minWage,
                     onChanged: (val) {
                       setState(() {
-                        al = al.copyWith(getMinimumWage: val);
+                        al = al.copyWith(minWage: val);
                       });
                     },
                   ),
@@ -903,7 +903,7 @@ class _AgricultureLabourWidgetState extends State<AgricultureLabourWidget> {
               },
               onOrgNameChange: (val) {
                 setState(() {
-                  al = al.copyWith(otherOrganization: val);
+                  al = al.copyWith(otherOrg: val);
                 });
               },
             )

@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable
-class Address  extends Equatable{
+class Address {
   final String houseNo;
   final String street;
   final String city;
@@ -27,8 +27,27 @@ class Address  extends Equatable{
     );
   }
 
-  @override
-  List<Object> get props => [houseNo, street, city, ward, municipal, district, pincode, state];
+  factory Address.fromJson(Map<String, dynamic> json) => Address(
+    houseNo: json["houseNo"],
+    street: json["street"],
+    city: json["city"],
+    ward: json["ward"],
+    municipal: json["municipal"],
+    pincode: json["pincode"],
+    district: json["district"],
+    state: json["state"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "houseNo": houseNo,
+    "street": street,
+    "city": city,
+    "ward": ward,
+    "municipal": municipal,
+    "pincode": pincode,
+    "district": district,
+    "state": state,
+  };
 
   @override
   String toString() {

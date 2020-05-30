@@ -170,9 +170,8 @@ class PersonBloc extends Bloc<PersonEvent, PersonState> {
   }
 
   Future<bool> addNewPerson(Person p) async {
-    print(p);
-    await Future.delayed(Duration(seconds: 4));
-    await workersRepo.addPerson(p);
+    print(p.toDocument());
+    await workersRepo.addNewWorker(person);
     return true;
   }
 
@@ -186,7 +185,7 @@ class PersonBloc extends Bloc<PersonEvent, PersonState> {
   Stream<PersonState> _mapAddNewPerson() async* {
     yield AddingNewPerson(person);
 //    await Future.delayed(Duration(seconds: 2));
-    await workersRepo.addPerson(person);
+    await workersRepo.addNewWorker(person);
     yield AddedNewPersonState(person);
   }
 }

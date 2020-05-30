@@ -13,7 +13,7 @@ class CloudStorageRepository {
 
   Map<String, dynamic> uploadImage({@required File image}) {
     Map<String, dynamic> out = new HashMap();
-    StorageReference storageReference = _firebaseStorage.ref().child('workers/${DateTime.now()}.jpg');
+    StorageReference storageReference = _firebaseStorage.ref().child('workers/${DateTime.now().toIso8601String()}.jpg');
     StorageUploadTask uploadTask = storageReference.putFile(image);
     out.putIfAbsent('task', () => uploadTask);
     out.putIfAbsent('storageRef', () => storageReference);

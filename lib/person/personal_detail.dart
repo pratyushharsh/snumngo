@@ -567,8 +567,8 @@ class ImagePickAndCrop extends StatelessWidget {
       aspectRatio: ratioX == null
           ? CropAspectRatio(ratioX: 3, ratioY: 2)
           : CropAspectRatio(ratioX: ratioX, ratioY: ratioY),
-      maxHeight: 512,
-      compressQuality: 30,
+      maxHeight: 200,
+      compressQuality: 15,
       cropStyle: CropStyle.rectangle,
     );
 //    image.deleteSync();
