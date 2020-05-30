@@ -25,8 +25,10 @@ class WorkersRepository {
     return _db.collection('/workers').add(p.toDocument());
   }
 
-  List<Person> getAllWorker() {
-    return _persons;
+  Stream<List<Person>> getAllWorker() {
+    return _db.collection('/workers').snapshots().map((snapshot) {
+      return snapshot.documents.map((doc) => Person.fromSnapshot(doc)).toList();
+    });
   }
 
   Person getWorker(String id) {

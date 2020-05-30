@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snumngo/person/add_person.dart';
+import 'package:snumngo/person/model/models.dart';
 import 'package:snumngo/person/view_worker.dart';
 import 'package:snumngo/screen/settings.dart';
 import 'package:snumngo/screen/user_detail.dart';
@@ -14,8 +15,8 @@ class Router {
       case '/workers':
         return MaterialPageRoute(builder: (_) => WorkersScreen());
       case '/workersDetail':
-        var sno =settings.arguments as String;
-        return MaterialPageRoute(builder: (_) => WorkersDetailScreen(sno: sno,));
+        var person = settings.arguments as Person;
+        return MaterialPageRoute(builder: (_) => WorkersDetailScreen(person: person,));
       case '/addNewPerson':
         return MaterialPageRoute(builder: (_) => AddPerson());
       case '/settings':

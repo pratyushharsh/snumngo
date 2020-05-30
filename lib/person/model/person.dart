@@ -51,7 +51,7 @@ class Person {
       name: snap.data['name'],
       profileUrl: snap.data['profile_url'],
       gender: snap.data['gender'],
-      dob: snap.data['dob'],
+      dob: snap.data['dob']?.toDate(),
       motherName: snap.data['mother_name'],
       fatherName: snap.data['father_name'],
       whatsapp: snap.data['whatsapp'],
@@ -60,8 +60,8 @@ class Person {
     Address ad = Address.fromJson(snap.data['address']);
     AadharBankDetail abd = AadharBankDetail(
       aadhaarNo: snap.data['aadhaar'],
-      frontUrl: snap.data['aadhaar_url'][0],
-      backUrl: snap.data['aadhaar_url'][1],
+      frontUrl: snap.data['aadhaar_url']['front'],
+      backUrl: snap.data['aadhaar_url']['back'],
       bankLinked: snap.data['aadhaar_bank_linked'],
       bankName: snap.data['bank_account']['name'],
       accountNumber: snap.data['bank_account']['account_no'],

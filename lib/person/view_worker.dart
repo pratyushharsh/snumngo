@@ -9,9 +9,9 @@ import 'package:snumngo/person/bloc/bloc.dart';
 import 'package:snumngo/person/model/models.dart';
 
 class WorkersDetailScreen extends StatelessWidget {
-  final String sno;
+  final Person person;
 
-  const WorkersDetailScreen({Key key, this.sno}) : super(key: key);
+  const WorkersDetailScreen({Key key, this.person}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,90 +19,79 @@ class WorkersDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Details'),
       ),
-      body: BlocProvider(
-        create: (context) =>
-            WorkerBloc(RepositoryProvider.of(context))..add(LoadWorker(sno)),
-        child: _WorkersDetail(),
-      ),
+      body: _WorkersDetail( person: person,),
     );
   }
 }
 
 class _WorkersDetail extends StatelessWidget {
+
+  final Person person;
+
+  const _WorkersDetail({Key key, @required this.person}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WorkerBloc, WorkerState>(
-      builder: (builder, state) {
-        if (state is LoadingWorker) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        if (state is LoadedWorkerSuccess) {
-          return SingleChildScrollView(
-            child: Container(
-              margin: EdgeInsets.all(12.0),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    alignment: Alignment.center,
-                    child: CircleAvatar(
-                      minRadius: 40,
-                      child: Text("PH"),
-                    ),
-                  ),
-                  HeaderTag(
-                    tag: "Personal Detail",
-                  ),
-                  PersonalDetailSection(
-                    personalInfo: state.worker.personalInfo,
-                  ),
-                  HeaderTag(
-                    tag: "Family Detail",
-                  ),
-                  FamilyDetailSection(
-                    personalInfo: state.worker.personalInfo,
-                  ),
-                  HeaderTag(
-                    tag: "Current Address",
-                  ),
-                  AddressDetailSection(
-                    address: state.worker.address,
-                  ),
-                  HeaderTag(
-                    tag: "Aadhaar Detail",
-                  ),
-                  AadhaarDetailSection(
-                    aadhaar: state.worker.aadhaarBank,
-                  ),
-                  HeaderTag(
-                    tag: "Pan Card Detail",
-                  ),
-                  PanCardDetailSection(
-                    panDetail: state.worker.panVoterDetail,
-                  ),
-                  HeaderTag(
-                    tag: "Voter Id Detail",
-                  ),
-                  VoterIdDetailSection(
-                    voterDetail: state.worker.panVoterDetail,
-                  ),
-                  HeaderTag(
-                    tag: "Occupation Detail",
-                  ),
-                  OccupationDetailSection(
-                    occupation: state.worker.occupation,
-                  )
-                ],
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.all(12.0),
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              alignment: Alignment.center,
+              child: CircleAvatar(
+                minRadius: 40,
+                child: Text("PH"),
               ),
             ),
-          );
-        }
-        return Container();
-      },
+            HeaderTag(
+              tag: "Personal Detail",
+            ),
+            PersonalDetailSection(
+              personalInfo: person.personalInfo,
+            ),
+            HeaderTag(
+              tag: "Family Detail",
+            ),
+            FamilyDetailSection(
+              personalInfo: person.personalInfo,
+            ),
+            HeaderTag(
+              tag: "Current Address",
+            ),
+            AddressDetailSection(
+              address: person.address,
+            ),
+            HeaderTag(
+              tag: "Aadhaar Detail",
+            ),
+            AadhaarDetailSection(
+              aadhaar: person.aadhaarBank,
+            ),
+            HeaderTag(
+              tag: "Pan Card Detail",
+            ),
+            PanCardDetailSection(
+              panDetail: person.panVoterDetail,
+            ),
+            HeaderTag(
+              tag: "Voter Id Detail",
+            ),
+            VoterIdDetailSection(
+              voterDetail: person.panVoterDetail,
+            ),
+            HeaderTag(
+              tag: "Occupation Detail",
+            ),
+            OccupationDetailSection(
+              occupation: person.occupation,
+            )
+          ],
+        ),
+      ),
     );
+    ;
   }
 }
 
@@ -276,7 +265,9 @@ class PanCardDetailSection extends StatelessWidget {
           SizedBox(height: 10),
           panDetail.panUrl != null && panDetail.panUrl.isNotEmpty
               ? Image.file(File(panDetail.panUrl))
-              : NoImageAvailable(height: 130,),
+              : NoImageAvailable(
+                  height: 130,
+                ),
         ],
       ),
     );
@@ -331,7 +322,10 @@ class OccupationDetailSection extends StatelessWidget {
   List<Widget> _generateMap() {
     List<KeyDesc> out = [];
     occupation.getMap().forEach((key, value) {
-      KeyDesc k = KeyDesc(tag: Intl.message(key), desc: value.toString(),);
+      KeyDesc k = KeyDesc(
+        tag: Intl.message(key),
+        desc: value.toString(),
+      );
       out.add(k);
     });
     return out;
@@ -344,7 +338,7 @@ class OccupationDetailSection extends StatelessWidget {
         children: <Widget>[
           KeyDesc(
             tag: "Occupation Type",
-            desc: occupation.type()??"",
+            desc: occupation.type() ?? "",
           ),
           ..._generateMap()
         ],
@@ -433,7 +427,6 @@ class HeaderTag extends StatelessWidget {
 }
 
 class NoImageAvailable extends StatelessWidget {
-
   final double height;
 
   const NoImageAvailable({Key key, this.height}) : super(key: key);
@@ -443,7 +436,10 @@ class NoImageAvailable extends StatelessWidget {
     return Container(
       decoration:
           BoxDecoration(border: Border.all(color: Colors.grey, width: 1)),
-      child: Image.asset('assets/no-image.png', height: height,),
+      child: Image.asset(
+        'assets/no-image.png',
+        height: height,
+      ),
     );
   }
 }

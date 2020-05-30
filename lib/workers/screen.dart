@@ -34,6 +34,10 @@ class SearchBar extends StatelessWidget {
         child: Container(
 //        padding: EdgeInsets.symmetric(horizontal: 12),
           child: TextField(
+            onSubmitted: (val) {
+              print(val);
+              BlocProvider.of<SearchBloc>(context).add(StartSearch());
+            },
             decoration: InputDecoration(
               hintText: "Search for worker using id....",
               prefixIcon: Icon(Icons.search),
@@ -72,7 +76,9 @@ class PeopleList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SearchBloc, SearchState>(
       builder: (context, state) {
-        List<Person> wks = state.person;
+
+        if (state is SearchingWorkersSuccess) {
+        List<Person> wks = state.workers;
 
         if (wks.length == 0) {
           return Card(
@@ -86,29 +92,24 @@ class PeopleList extends StatelessWidget {
             padding: EdgeInsets.only(top: 100),
             itemCount: wks.length,
             itemBuilder: (context, idx) {
-              Person p = wks[idx];
               return ListTile(
                 title: PeopleCard(
-                  sno: p.personalInfo.sno,
-                  fullname: p.personalInfo.name,
-                  gender: p.personalInfo.gender,
-                  phone: p.personalInfo.mobile,
+                  worker: wks[idx],
                 ),
               );
             });
-      },
+      }
+        return Container(child: Text('Search Workers'),);
+      }
     );
   }
 }
 
 class PeopleCard extends StatelessWidget {
 
-  final String sno;
-  final String fullname;
-  final String gender;
-  final String phone;
+  final Person worker;
 
-  const PeopleCard({Key key, this.sno, this.fullname, this.gender, this.phone}) : super(key: key);
+  const PeopleCard({Key key, this.worker}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +117,7 @@ class PeopleCard extends StatelessWidget {
       margin: EdgeInsets.all(0),
       child: GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, '/workersDetail', arguments: sno);
+          Navigator.pushNamed(context, '/workersDetail', arguments: worker);
         },
         child: Container(
           padding: EdgeInsets.all(10),
@@ -135,12 +136,12 @@ class PeopleCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('SNO# $sno'),
+                      Text('SNO# ${worker.personalInfo.sno}'),
                       Container(
                         padding: EdgeInsets.symmetric(vertical: 1),
                         child: Row(
                           children: <Widget>[
-                            gender.compareTo('M') == 0
+                            worker.personalInfo.gender.compareTo('M') == 0
                                 ? Icon(
                                     FontAwesome.mars,
                                     color: Colors.blueAccent,
@@ -152,7 +153,7 @@ class PeopleCard extends StatelessWidget {
                             SizedBox(
                               width: 5,
                             ),
-                            Text(fullname),
+                            Text(worker.personalInfo.name),
                             Text('')
                           ],
                         ),
@@ -170,7 +171,7 @@ class PeopleCard extends StatelessWidget {
                                   width: 3,
                                 ),
                                 Text(
-                                    '+91$phone')
+                                    '+91${worker.personalInfo.mobile}')
                               ],
                             ),
                           ),
@@ -185,7 +186,7 @@ class PeopleCard extends StatelessWidget {
                                   width: 3,
                                 ),
                                 Text(
-                                    '+91$phone')
+                                    '+91${worker.personalInfo.whatsapp}')
                               ],
                             ),
                           )

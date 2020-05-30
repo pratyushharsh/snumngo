@@ -187,7 +187,7 @@ class ImageUpload extends StatelessWidget {
             .then((value) =>
                 BlocProvider.of<PersonBloc>(context).addNewPerson(value))
             .then((value) {
-          BlocProvider.of<SearchBloc>(context).add(RefreshSearch());
+          BlocProvider.of<SearchBloc>(context).add(StartSearch());
           Navigator.pop(context);
         });
         return Row(

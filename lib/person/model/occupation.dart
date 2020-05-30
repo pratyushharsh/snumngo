@@ -176,7 +176,7 @@ class DomesticWorker implements Occupation {
 
   factory DomesticWorker.fromJson(Map<String, dynamic> json) => DomesticWorker(
     rwaId: json["rwa_id"],
-    verifyTime: json["police_verify_time"],
+    verifyTime: json["police_verify_time"]?.toDate(),
     otherOrg: json["other_org"],
     instituteId: json["institute_id"]
   );
@@ -333,8 +333,7 @@ class Others implements Occupation {
 
   @override
   String type() {
-    // TODO: implement type
-    throw UnimplementedError();
+    return 'Others';
   }
 }
 
