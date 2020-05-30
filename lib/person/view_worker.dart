@@ -2,10 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:intl/intl.dart';
-import 'package:snumngo/person/bloc/bloc.dart';
 import 'package:snumngo/person/model/models.dart';
 
 class WorkersDetailScreen extends StatelessWidget {
@@ -18,6 +16,14 @@ class WorkersDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Details'),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/updatePerson', arguments: person);
+            },
+            icon: Icon(Icons.edit),
+          )
+        ],
       ),
       body: _WorkersDetail( person: person,),
     );
@@ -97,7 +103,6 @@ class _WorkersDetail extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }
 

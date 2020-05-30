@@ -1,6 +1,5 @@
 import 'dart:collection';
 
-import 'package:equatable/equatable.dart';
 
 class StreetVendor implements Occupation {
   final bool surveyed;
@@ -343,7 +342,7 @@ class Others implements Occupation {
 
 class Occupation {
 
-  Occupation() {}
+  Occupation();
 
   HashMap<String, dynamic> getMap() {
     HashMap<String, dynamic> _map = HashMap<String, dynamic>();

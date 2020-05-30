@@ -33,69 +33,72 @@ class _AddPersonFormState extends State<AddPersonForm> {
         physics: ClampingScrollPhysics(),
         steps: _mySteps(),
         currentStep: this._currentStep,
-        onStepTapped: (state is FinalUploadAndSubmit) ? null : (step) {
-          setState(() {
-            // @Todo not effective on final stepper if tapped
-            _currentStep = step;
-          });
-        },
-        onStepContinue: !(state is FinalUploadAndSubmit) ? () {
-          // Todo only once for the button and when no image is uploaded
-          if (_currentStep == 6) {
+        onStepTapped: (state is FinalUploadAndSubmit)
+            ? null
+            : (step) {
+                setState(() {
+                  _currentStep = step;
+                });
+              },
+        onStepContinue: !(state is FinalUploadAndSubmit)
+            ? () {
+                if (_currentStep == 6) {
+                  Person p = BlocProvider.of<PersonBloc>(context).person;
 
-            Person p = BlocProvider.of<PersonBloc>(context).person;
+                  WorkerImageBloc wib = BlocProvider.of(context);
+                  if (p.aadhaarBank.frontUrl != null &&
+                      p.aadhaarBank.frontUrl.isNotEmpty) {
+                    wib.add(UploadAadhaarFront(File(p.aadhaarBank.frontUrl)));
+                  }
 
-            WorkerImageBloc wib = BlocProvider.of(context);
-            if (p.aadhaarBank.frontUrl != null &&
-                p.aadhaarBank.frontUrl.isNotEmpty) {
-              wib.add(UploadAadhaarFront(File(p.aadhaarBank.frontUrl)));
-            }
+                  if (p.aadhaarBank.backUrl != null &&
+                      p.aadhaarBank.backUrl.isNotEmpty) {
+                    wib.add(UploadAadhaarBack(File(p.aadhaarBank.backUrl)));
+                  }
 
-            if (p.aadhaarBank.backUrl != null &&
-                p.aadhaarBank.backUrl.isNotEmpty) {
-              wib.add(UploadAadhaarBack(File(p.aadhaarBank.backUrl)));
-            }
+                  if (p.disability.certificateUrl != null &&
+                      p.disability.certificateUrl.isNotEmpty) {
+                    wib.add(UploadDisabilityCertificate(
+                        File(p.disability.certificateUrl)));
+                  }
 
-            if (p.disability.certificateUrl != null &&
-                p.disability.certificateUrl.isNotEmpty) {
-              wib.add(UploadDisabilityCertificate(
-                  File(p.disability.certificateUrl)));
-            }
+                  if (p.panVoterDetail.panUrl != null &&
+                      p.panVoterDetail.panUrl.isNotEmpty) {
+                    wib.add(UploadPancard(File(p.panVoterDetail.panUrl)));
+                  }
 
-            if (p.panVoterDetail.panUrl != null &&
-                p.panVoterDetail.panUrl.isNotEmpty) {
-              wib.add(UploadPancard(
-                  File(p.panVoterDetail.panUrl)));
-            }
+                  if (p.panVoterDetail.voterUrlFront != null &&
+                      p.panVoterDetail.voterUrlFront.isNotEmpty) {
+                    wib.add(
+                        UploadVoterFront(File(p.panVoterDetail.voterUrlFront)));
+                  }
 
-            if (p.panVoterDetail.voterUrlFront != null &&
-                p.panVoterDetail.voterUrlFront.isNotEmpty) {
-              wib.add(UploadVoterFront(
-                  File(p.panVoterDetail.voterUrlFront)));
-            }
+                  if (p.panVoterDetail.voterUrlBack != null &&
+                      p.panVoterDetail.voterUrlBack.isNotEmpty) {
+                    wib.add(
+                        UploadVoterBack(File(p.panVoterDetail.voterUrlBack)));
+                  }
+                  BlocProvider.of<PersonBloc>(context)
+                      .add(UploadingImageAndSubmitting());
+                  wib.add(StartUploadingImages());
+                }
 
-            if (p.panVoterDetail.voterUrlBack != null &&
-                p.panVoterDetail.voterUrlBack.isNotEmpty) {
-              wib.add(UploadVoterBack(
-                  File(p.panVoterDetail.voterUrlBack)));
-            }
-            BlocProvider.of<PersonBloc>(context).add(UploadingImageAndSubmitting());
-            wib.add(StartUploadingImages());
-          }
-
-          if (validForms()) {
-            setState(() {
-              _currentStep = _currentStep + 1 < _mySteps().length
-                  ? _currentStep + 1
-                  : _mySteps().length - 1;
-            });
-          }
-        } : null,
-        onStepCancel: (state is FinalUploadAndSubmit) ? null : () {
-          setState(() {
-            _currentStep = _currentStep - 1 >= 0 ? _currentStep - 1 : 0;
-          });
-        },
+                if (validForms()) {
+                  setState(() {
+                    _currentStep = _currentStep + 1 < _mySteps().length
+                        ? _currentStep + 1
+                        : _mySteps().length - 1;
+                  });
+                }
+              }
+            : null,
+        onStepCancel: (state is FinalUploadAndSubmit)
+            ? null
+            : () {
+                setState(() {
+                  _currentStep = _currentStep - 1 >= 0 ? _currentStep - 1 : 0;
+                });
+              },
       );
     });
   }
@@ -197,12 +200,16 @@ class ImageUpload extends StatelessWidget {
         builder: (context, state) {
       var s = state.uploadImageStatus;
 
-      print('ImageUpload times ${count++} WorkerImageState $s');
-
       if (state is AllImageUploaded) {
-
         BlocProvider.of<PersonBloc>(context)
-            .updateImageUrls(disabilityUrl: s.disabilityUrl, aadharBack: s.aadhaarBackUrl, aadharFront: s.aadharFrontUrl)
+            .updateImageUrls(
+                disabilityUrl: s.disabilityUrl,
+                aadharBackUrl: s.aadhaarBackUrl,
+                aadharFrontUrl: s.aadharFrontUrl,
+                panUrl: s.pancardUrl,
+                profileUrl: s.profileUrl,
+                voterFrontUrl: s.voterFrontUrl,
+                voterBackUrl: s.voterBackUrl)
             .then((value) =>
                 BlocProvider.of<PersonBloc>(context).addNewPerson(value))
             .then((value) {
@@ -220,21 +227,18 @@ class ImageUpload extends StatelessWidget {
                 ? MyLinearProgressIndicator(
                     title: "Disability Certificate",
                     task: s.disability,
-                    ref: s.disabilityUrl,
                   )
                 : Container(),
             s.aadharFront != null
                 ? MyLinearProgressIndicator(
                     title: "Aadhaar Front",
                     task: s.aadharFront,
-                    ref: s.aadharFrontUrl,
                   )
                 : Container(),
             s.aadhaarBack != null
                 ? MyLinearProgressIndicator(
                     title: "Aadhaar Back",
                     task: s.aadhaarBack,
-                    ref: s.aadhaarBackUrl,
                   )
                 : Container(),
             s.pancard != null
@@ -244,16 +248,16 @@ class ImageUpload extends StatelessWidget {
                   )
                 : Container(),
             s.voterFront != null
-              ? MyLinearProgressIndicator(
-              title: 'Voter Id Front',
-              task: s.voterFront,
-            )
+                ? MyLinearProgressIndicator(
+                    title: 'Voter Id Front',
+                    task: s.voterFront,
+                  )
                 : Container(),
             s.voterBack != null
-              ? MyLinearProgressIndicator(
-              title: 'Voter Id Back',
-              task: s.voterBack,
-            )
+                ? MyLinearProgressIndicator(
+                    title: 'Voter Id Back',
+                    task: s.voterBack,
+                  )
                 : Container()
           ],
         ),
@@ -263,12 +267,10 @@ class ImageUpload extends StatelessWidget {
 }
 
 class MyLinearProgressIndicator extends StatelessWidget {
-  final StorageReference ref;
   final StorageUploadTask task;
   final String title;
 
-  const MyLinearProgressIndicator(
-      {Key key, @required this.task, this.title, this.ref})
+  const MyLinearProgressIndicator({Key key, @required this.task, this.title})
       : super(key: key);
 
   @override

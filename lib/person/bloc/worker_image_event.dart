@@ -12,9 +12,9 @@ abstract class WorkerImageEvent extends Equatable {
 class StartUploadingImages extends WorkerImageEvent{}
 
 class UploadProfileUrl extends WorkerImageEvent {
-  final File profile;
+  final File fileUrl;
 
-  UploadProfileUrl(this.profile);
+  UploadProfileUrl(this.fileUrl);
 }
 
 class UploadDisabilityCertificate extends WorkerImageEvent {

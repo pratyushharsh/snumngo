@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:snumngo/person/model/models.dart';
 import 'package:snumngo/person/model/occupation.dart';

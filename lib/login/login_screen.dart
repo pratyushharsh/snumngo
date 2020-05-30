@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snumngo/login/bloc/login_bloc.dart';
-import 'package:snumngo/repository/user_repository.dart';
 
 import 'login_form.dart';
 

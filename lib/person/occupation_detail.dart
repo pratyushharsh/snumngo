@@ -15,13 +15,6 @@ class OccupationalDetail extends StatefulWidget {
 class _OccupationalDetailState extends State<OccupationalDetail> {
   String occupation;
 
-  onWelfareChange(val) {
-    setState(() {
-//      ConstructionWorker cw = occp;
-//      occp = cw.copyWith(registeredNo: val);
-    });
-  }
-
   _buildOccupationDetail(context, occupation) {
     switch (occupation) {
       case "strt_vndr":

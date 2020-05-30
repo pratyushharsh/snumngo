@@ -8,11 +8,11 @@ class WorkersRepository {
   WorkersRepository({Firestore db})
   : _db = db ?? Firestore.instance;
   
-  Stream getAllUser() {
-    _db.collection('/users').snapshots().map((doc) => {
-      print(doc)
-    });
-  }
+//  Stream getAllUser() {
+//    _db.collection('/users').snapshots().map((doc) => {
+//      print(doc)
+//    });
+//  }
   
   List<Person> _persons = List<Person>();
 

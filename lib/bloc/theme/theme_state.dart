@@ -18,9 +18,6 @@ class ThemeState {
   })  : _textScaleFactor = textScaleFactor,
         _locale = locale;
 
-  @override
-  List<Object> get props => [];
-
   Locale get locale =>
       _locale;
 

@@ -6,7 +6,7 @@ import 'package:snumngo/bloc/authentication/authentication_state.dart';
 
 class UserDetail extends StatelessWidget {
 
-  GlobalKey<FormState> _userForm = GlobalKey<FormState>();
+  final GlobalKey<FormState> _userForm = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {

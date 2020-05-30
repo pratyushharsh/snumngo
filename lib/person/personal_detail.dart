@@ -12,6 +12,7 @@ import 'package:snumngo/config/constants.dart';
 import 'package:snumngo/config/validator.dart';
 import 'package:snumngo/generated/l10n.dart';
 import 'package:snumngo/person/bloc/bloc.dart';
+import 'package:snumngo/person/model/address.dart';
 
 import 'model/person.dart';
 
@@ -67,6 +68,7 @@ class PersonalInfoWidget extends StatelessWidget {
               },
             ),
             TextFormField(
+              initialValue: pi.mobile,
               maxLength: 10,
               inputFormatters: [
                 WhitelistingTextInputFormatter.digitsOnly
@@ -84,6 +86,7 @@ class PersonalInfoWidget extends StatelessWidget {
               },
             ),
             TextFormField(
+              initialValue: pi.whatsapp,
               maxLength: 10,
               inputFormatters: [
                 WhitelistingTextInputFormatter.digitsOnly
@@ -138,6 +141,7 @@ class PersonalInfoWidget extends StatelessWidget {
               },
             ),
             TextFormField(
+              initialValue: pi.fatherName,
               decoration:
                   InputDecoration(labelText: S.of(context).fathers_name),
               onChanged: (val) {
@@ -145,6 +149,7 @@ class PersonalInfoWidget extends StatelessWidget {
               },
             ),
             TextFormField(
+              initialValue: pi.motherName,
               decoration:
                   InputDecoration(labelText: S.of(context).mothers_name),
               onChanged: (val) {
@@ -163,42 +168,51 @@ class AddressWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     PersonBloc pb = BlocProvider.of(context);
     return BlocBuilder<PersonBloc, PersonState>(
-      builder: (context, state) => Column(
+      builder: (context, state) {
+        Address address = state.person.address;
+        return Column(
         children: <Widget>[
           TextFormField(
+            initialValue: address.houseNo,
             decoration: InputDecoration(labelText: S.of(context).house),
             onChanged: (val) {
               pb.add(UpdateHouseNo(val));
             },
           ),
           TextFormField(
+            initialValue: address.street,
             decoration: InputDecoration(labelText: S.of(context).street),
             onChanged: (val) {
               pb.add(UpdateStreet(val));
             },
           ),
           TextFormField(
+            initialValue: address.city,
             decoration: InputDecoration(labelText: S.of(context).city),
             onChanged: (val) {
               pb.add(UpdateCity(val));
             },
           ),
           TextFormField(
+            initialValue: address.ward,
             decoration: InputDecoration(labelText: S.of(context).ward),
             onChanged: (val) {
               pb.add(UpdateWard(val));
             },
           ),
           TextFormField(
+            initialValue: address.municipal,
             decoration: InputDecoration(labelText: S.of(context).muncipal),
             onChanged: (val) {
               pb.add(UpdateMunicipal(val));
             },
           ),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Expanded(
                 child: TextFormField(
+                  initialValue: address.district,
                   decoration:
                       InputDecoration(labelText: S.of(context).district),
                   onChanged: (val) {
@@ -211,6 +225,7 @@ class AddressWidget extends StatelessWidget {
               ),
               Expanded(
                 child: TextFormField(
+                  initialValue: address.pincode,
                   maxLength: 6,
                   inputFormatters: [
                     WhitelistingTextInputFormatter.digitsOnly
@@ -242,7 +257,7 @@ class AddressWidget extends StatelessWidget {
             onChanged: (val) {
               pb.add(UpdateState(val));
             },
-            value: state.person.address.state,
+            value: address.state,
             items: Constants.STATES.map<DropdownMenuItem<String>>((v) {
               return DropdownMenuItem<String>(
                 value: v,
@@ -251,7 +266,8 @@ class AddressWidget extends StatelessWidget {
             }).toList(),
           )
         ],
-      ),
+      );
+      },
     );
   }
 }
@@ -262,6 +278,7 @@ class DisabilityWidget extends StatelessWidget {
     PersonBloc pb = BlocProvider.of(context);
     return BlocBuilder<PersonBloc, PersonState>(
       builder: (context, state) {
+        Disability dsb = state.person.disability;
         return Column(
           children: <Widget>[
             Row(
@@ -273,7 +290,7 @@ class DisabilityWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: SwitchListTile(
-                    value: state.person.disability.disable,
+                    value: dsb.disable,
                     onChanged: (val) {
                       pb.add(IsDisableEvent(val));
                     },
@@ -281,12 +298,13 @@ class DisabilityWidget extends StatelessWidget {
                 )
               ],
             ),
-            state.person.disability.disable
+            dsb.disable
                 ? Row(
                     children: <Widget>[
                       Expanded(
                         flex: 2,
                         child: TextFormField(
+                          initialValue: dsb.certificateNo,
                           onChanged: (val) {
                             pb.add(UpdateDisabilityCertiNo(val));
                           },
@@ -300,11 +318,10 @@ class DisabilityWidget extends StatelessWidget {
                             padding: EdgeInsets.all(5),
                             alignment: Alignment.center,
                             child: ImagePickAndCrop(
-                              imageHeight: 100,
                               imageWidth: 100,
-                              ratioX: 5,
-                              ratioY: 5,
-                              imageUrl: state.person.disability.certificateUrl,
+                              ratioX: 1,
+                              ratioY: 1.4,
+                              imageUrl: dsb.certificateUrl,
                               onImageSelected: (File image) {
                                 pb.add(UpdateDisabilityCertificate(image));
                               },
@@ -399,7 +416,7 @@ class AadharBankWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: SwitchListTile(
-                    value: state.person.aadhaarBank.bankLinked,
+                    value: ab.bankLinked,
                     onChanged: (val) {
                       pb.add(AadharBankLinkedUpdate(val));
                     },
@@ -407,21 +424,24 @@ class AadharBankWidget extends StatelessWidget {
                 )
               ],
             ),
-            state.person.aadhaarBank.bankLinked
+            ab.bankLinked
                 ? Container(
                     child: Column(
                       children: <Widget>[
                         TextFormField(
+                          initialValue: ab.bankName,
                           decoration: InputDecoration(
                             labelText: S.of(context).bank_name,
                           ),
                         ),
                         TextFormField(
+                          initialValue: ab.accountNumber,
                           decoration: InputDecoration(
                             labelText: S.of(context).bank_acc_no,
                           ),
                         ),
                         TextFormField(
+                          initialValue: ab.ifscCode,
                           decoration: InputDecoration(
                             labelText: S.of(context).ifcs,
                           ),
@@ -449,6 +469,7 @@ class PanVoterWidget extends StatelessWidget {
           child: Column(
             children: <Widget>[
               TextFormField(
+                initialValue: pvd.pancard,
                 autovalidate: true,
                 textCapitalization: TextCapitalization.characters,
                 maxLength: 10,
@@ -479,6 +500,7 @@ class PanVoterWidget extends StatelessWidget {
                     )
                   : Container(),
               TextFormField(
+                initialValue: pvd.voterCard,
                 onChanged: (val) {
                   pb.add(UpdateVoteIdNo(val));
                 },
@@ -616,7 +638,7 @@ class ImagePickAndCrop extends StatelessWidget {
 //      quality: 50,
 //    );
 //    print(result.lengthSync());
-    onImageSelected(croppedImage);
+    if (croppedImage != null)  onImageSelected(croppedImage);
   }
 
   @override

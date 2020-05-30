@@ -19,6 +19,9 @@ class Router {
         return MaterialPageRoute(builder: (_) => WorkersDetailScreen(person: person,));
       case '/addNewPerson':
         return MaterialPageRoute(builder: (_) => AddPerson());
+      case '/updatePerson':
+        var person = settings.arguments as Person;
+        return MaterialPageRoute(builder: (_) => AddPerson(person: person,));
       case '/settings':
         return MaterialPageRoute(builder: (_) => Settings());
       default:

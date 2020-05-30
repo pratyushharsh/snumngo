@@ -8,21 +8,22 @@ import 'package:snumngo/repository/workers_repo.dart';
 import './bloc.dart';
 
 class PersonBloc extends Bloc<PersonEvent, PersonState> {
-
   @override
   PersonState get initialState => InitialPersonState(person);
 
   final WorkersRepository workersRepo;
 
-  Person person = Person(
-      personalInfo: PersonalInfo(),
-      address: Address(),
-      occupation: Occupation(),
-      disability: Disability(),
-      panVoterDetail: PanVoterDetail(),
-      aadhaarBank: AadharBankDetail());
+  Person person;
 
-  PersonBloc(this.workersRepo);
+  PersonBloc(this.workersRepo, {Person existingPerson})
+      : person = existingPerson ??
+            Person(
+                personalInfo: PersonalInfo(),
+                address: Address(),
+                occupation: Occupation(),
+                disability: Disability(),
+                panVoterDetail: PanVoterDetail(),
+                aadhaarBank: AadharBankDetail());
 
   updateAddress(Address address) {
     person = person.copyWith(address: address);
@@ -196,22 +197,24 @@ class PersonBloc extends Bloc<PersonEvent, PersonState> {
   }
 
   Future<Person> updateImageUrls({
+    StorageReference profileUrl,
     StorageReference disabilityUrl,
-    StorageReference aadharFront,
-    StorageReference aadharBack,
+    StorageReference aadharFrontUrl,
+    StorageReference aadharBackUrl,
     StorageReference panUrl,
     StorageReference voterFrontUrl,
     StorageReference voterBackUrl,
   }) async {
     person = await person.copyWith(
+      personalInfo: person.personalInfo.copyWith(profileUrl: modifyUri(await profileUrl?.getDownloadURL())?.toString()),
         disability: person.disability.copyWith(
             certificateUrl:
                 modifyUri(await disabilityUrl?.getDownloadURL())?.toString()),
         aadhaarBank: person.aadhaarBank.copyWith(
             frontUrl:
-                modifyUri(await aadharFront?.getDownloadURL())?.toString(),
+                modifyUri(await aadharFrontUrl?.getDownloadURL())?.toString(),
             backUrl:
-                modifyUri(await aadharBack?.getDownloadURL())?.toString()),
+                modifyUri(await aadharBackUrl?.getDownloadURL())?.toString()),
         panVoterDetail: person.panVoterDetail.copyWith(
           panUrl: modifyUri(await panUrl?.getDownloadURL())?.toString(),
           voterUrlFront: modifyUri(await voterFrontUrl?.getDownloadURL())?.toString(),
@@ -224,6 +227,7 @@ class PersonBloc extends Bloc<PersonEvent, PersonState> {
   Uri modifyUri(String s) {
     if (s == null || s.isEmpty) return null;
     Uri uri = Uri.parse(s);
+    return uri;
     List<String> paths = uri.pathSegments;
     List<String> newPaths = [];
     for (String t in paths) {
