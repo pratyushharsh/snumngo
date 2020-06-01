@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:snumngo/config/constants.dart';
 import 'package:snumngo/config/validator.dart';
 import 'package:snumngo/generated/l10n.dart';
@@ -23,7 +25,7 @@ class PersonalInfoWidget extends StatelessWidget {
 
     return BlocBuilder<PersonBloc, PersonState>(
       builder: (context, state) {
-        PersonalInfo pi = state.person.personalInfo;
+        WorkerInfo pi = state.person.personalInfo;
 
         return Column(
           children: <Widget>[
@@ -321,6 +323,9 @@ class DisabilityWidget extends StatelessWidget {
                               imageWidth: 100,
                               ratioX: 1,
                               ratioY: 1.4,
+                              imgQuality: 10,
+                              xres: 900,
+                              yres: 900,
                               imageUrl: dsb.certificateUrl,
                               onImageSelected: (File image) {
                                 pb.add(UpdateDisabilityCertificate(image));
@@ -603,6 +608,9 @@ class ImagePickAndCrop extends StatelessWidget {
   final double ratioY;
   final double imageHeight;
   final double imageWidth;
+  final int xres;
+  final int yres;
+  final int imgQuality;
   ImagePickAndCrop(
       {Key key,
       @required this.onImageSelected,
@@ -610,7 +618,9 @@ class ImagePickAndCrop extends StatelessWidget {
       this.ratioX,
       this.ratioY,
       this.imageHeight,
-      this.imageWidth})
+      this.imageWidth, this.imgQuality,
+      this.xres,
+      this.yres})
       : assert(!((ratioX != null) ^ (ratioY != null))),
         super(key: key);
 
@@ -620,25 +630,23 @@ class ImagePickAndCrop extends StatelessWidget {
 //    print(image.lengthSync());
     File croppedImage = await ImageCropper.cropImage(
       sourcePath: image.path,
-//      aspectRatioPresets: [
-//        CropAspectRatioPreset.ratio4x3,
-//        CropAspectRatioPreset.square,
-//      ],
       aspectRatio: ratioX == null
           ? CropAspectRatio(ratioX: 3, ratioY: 2)
           : CropAspectRatio(ratioX: ratioX, ratioY: ratioY),
-      maxHeight: 400,
-      compressQuality: 50,
+      compressQuality: 100,
       cropStyle: CropStyle.rectangle,
     );
-//    image.deleteSync();
-
-//    File result = await FlutterImageCompress.compressAndGetFile(
-//      croppedImage.path, croppedImage.path,
-//      quality: 50,
-//    );
-//    print(result.lengthSync());
-    if (croppedImage != null)  onImageSelected(croppedImage);
+    print(croppedImage.lengthSync());
+    var tmpDir = await getTemporaryDirectory();
+    File tmp = File ('${tmpDir.absolute.path}_${new DateTime.now().toIso8601String()}.jpg');
+    File result = await FlutterImageCompress.compressAndGetFile(
+      croppedImage.path, tmp.path,
+      quality: imgQuality??10,
+      minHeight: xres??600,
+      minWidth: yres??600
+    );
+    print(result.lengthSync());
+    if (result != null)  onImageSelected(result);
   }
 
   @override

@@ -11,7 +11,7 @@ class StartSearch extends SearchEvent {}
 class SearchData extends SearchEvent {}
 
 class SearchSuccess extends SearchEvent {
-  final List<Person> workers;
+  final List<Worker> workers;
 
   SearchSuccess(this.workers);
 }

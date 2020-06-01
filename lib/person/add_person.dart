@@ -7,9 +7,10 @@ import 'package:snumngo/person/model/models.dart';
 
 class AddPerson extends StatelessWidget {
 
-  final Person person;
+  final Worker person;
+  final bool updateMode;
 
-  const AddPerson({Key key, this.person}) : super(key: key);
+  const AddPerson({Key key, this.person, this.updateMode}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +21,10 @@ class AddPerson extends StatelessWidget {
       body: MultiBlocProvider(
         providers: [
           BlocProvider<PersonBloc>(
-            create: (BuildContext context) => PersonBloc(RepositoryProvider.of(context), existingPerson: person),
+            create: (BuildContext context) => PersonBloc(RepositoryProvider.of(context), existingPerson: person, updatingWorker: updateMode),
           ),
           BlocProvider<WorkerImageBloc>(create: (BuildContext context) => WorkerImageBloc(
+            personBloc: BlocProvider.of(context),
             cloudStorageRepository: RepositoryProvider.of(context)
           ),
           )

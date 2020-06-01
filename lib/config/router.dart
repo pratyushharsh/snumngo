@@ -7,22 +7,29 @@ import 'package:snumngo/screen/user_detail.dart';
 import 'package:snumngo/workers/screen.dart';
 
 class Router {
+  
+  static const String SETTINGS = '/settings';
+  static const String USER_DETAIL = '/userDetail';
+  static const String WORKERS = '/workers';
+  static const String WORKERS_DETAIL = '/workersDetail';
+  static const String ADD_NEW_WORKERS = '/addNewPerson';
+  static const String UPDATE_WORKERS = '/updatePerson';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case '/userDetail':
+      case USER_DETAIL:
         return MaterialPageRoute(builder: (_) => UserDetail());
-      case '/workers':
+      case WORKERS:
         return MaterialPageRoute(builder: (_) => WorkersScreen());
-      case '/workersDetail':
-        var person = settings.arguments as Person;
+      case WORKERS_DETAIL:
+        var person = settings.arguments as Worker;
         return MaterialPageRoute(builder: (_) => WorkersDetailScreen(person: person,));
-      case '/addNewPerson':
+      case ADD_NEW_WORKERS:
         return MaterialPageRoute(builder: (_) => AddPerson());
-      case '/updatePerson':
-        var person = settings.arguments as Person;
-        return MaterialPageRoute(builder: (_) => AddPerson(person: person,));
-      case '/settings':
+      case UPDATE_WORKERS:
+        var args = settings.arguments as Map;
+        return MaterialPageRoute(builder: (_) => AddPerson(person: args['person'], updateMode: args['updateMode'],));
+      case SETTINGS:
         return MaterialPageRoute(builder: (_) => Settings());
       default:
         return MaterialPageRoute(builder: (_) => Scaffold(

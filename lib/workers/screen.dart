@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:snumngo/config/router.dart';
 
 import 'package:snumngo/person/model/person.dart';
 import 'package:snumngo/workers/search/bloc.dart';
@@ -13,7 +14,7 @@ class WorkersScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.pushNamed(context, '/addNewPerson');
+          Navigator.pushNamed(context, Router.ADD_NEW_WORKERS);
         },
       ),
       body: SafeArea(
@@ -78,7 +79,7 @@ class PeopleList extends StatelessWidget {
       builder: (context, state) {
 
         if (state is SearchingWorkersSuccess) {
-        List<Person> wks = state.workers;
+        List<Worker> wks = state.workers;
 
         if (wks.length == 0) {
           return Card(
@@ -107,7 +108,7 @@ class PeopleList extends StatelessWidget {
 
 class PeopleCard extends StatelessWidget {
 
-  final Person worker;
+  final Worker worker;
 
   const PeopleCard({Key key, this.worker}) : super(key: key);
 

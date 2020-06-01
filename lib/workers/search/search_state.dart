@@ -14,7 +14,7 @@ class InitialSearchState extends SearchState {}
 class LoadSearchState extends SearchState {}
 
 class SearchingWorkersSuccess extends SearchState {
-  final List<Person> workers;
+  final List<Worker> workers;
 
   SearchingWorkersSuccess(this.workers);
 

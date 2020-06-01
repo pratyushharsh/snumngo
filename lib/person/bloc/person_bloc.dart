@@ -8,17 +8,20 @@ import 'package:snumngo/repository/workers_repo.dart';
 import './bloc.dart';
 
 class PersonBloc extends Bloc<PersonEvent, PersonState> {
+
+  final bool updatingWorker;
+
   @override
   PersonState get initialState => InitialPersonState(person);
 
   final WorkersRepository workersRepo;
 
-  Person person;
+  Worker person;
 
-  PersonBloc(this.workersRepo, {Person existingPerson})
+  PersonBloc(this.workersRepo, {Worker existingPerson, this.updatingWorker = false})
       : person = existingPerson ??
-            Person(
-                personalInfo: PersonalInfo(),
+            Worker(
+                personalInfo: WorkerInfo(),
                 address: Address(),
                 occupation: Occupation(),
                 disability: Disability(),
@@ -188,15 +191,29 @@ class PersonBloc extends Bloc<PersonEvent, PersonState> {
       yield* _updateOccupationEvent(event.occupation);
     } else if (event is UploadingImageAndSubmitting) {
       yield FinalUploadAndSubmit(state.person);
+    } else if (event is AddNewWorker) {
+      yield* _mapAddNewWorker(event);
     }
   }
 
-  Future<bool> addNewPerson(Person p) async {
+  Stream<PersonState> _mapAddNewWorker(AddNewWorker event) async* {
+    yield AddedNewPersonState(event.worker);
+    try {
+      await workersRepo.addNewWorker(event.worker);
+      yield AddedNewPersonSuccess(event.worker);
+    } catch(_) {
+      print(_);
+      yield AddingNewPersonFailure(event.worker);
+    }
+
+  }
+
+  Future<bool> addNewPerson(Worker p) async {
     await workersRepo.addNewWorker(person);
     return true;
   }
 
-  Future<Person> updateImageUrls({
+  Future<Worker> updateImageUrls({
     StorageReference profileUrl,
     StorageReference disabilityUrl,
     StorageReference aadharFrontUrl,

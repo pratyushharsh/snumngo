@@ -6,30 +6,34 @@ import 'package:snumngo/person/model/occupation.dart';
 import 'address.dart';
 
 @immutable
-class Person {
-  final PersonalInfo personalInfo;
+class Worker {
+  final String uuid;
+  final WorkerInfo personalInfo;
   final Address address;
   final Occupation occupation;
   final AadharBankDetail aadhaarBank;
   final PanVoterDetail panVoterDetail;
   final Disability disability;
 
-  Person(
-      {this.personalInfo,
+  Worker(
+      {this.uuid,
+      this.personalInfo,
       this.address,
       this.occupation,
       this.aadhaarBank,
       this.panVoterDetail,
       this.disability});
 
-  Person copyWith(
-      {PersonalInfo personalInfo,
+  Worker copyWith(
+      {String uuid,
+      WorkerInfo personalInfo,
       Address address,
       Occupation occupation,
       AadharBankDetail aadhaarBank,
       PanVoterDetail panVoterDetail,
       Disability disability}) {
-    return Person(
+    return Worker(
+        uuid: uuid ?? this.uuid,
         personalInfo: personalInfo ?? this.personalInfo,
         address: address ?? this.address,
         occupation: occupation ?? this.occupation,
@@ -42,30 +46,27 @@ class Person {
   String toString() {
     return 'Person{personalInfo: $personalInfo, address: $address, occupation: $occupation, aadhaarBank: $aadhaarBank, panVoterDetail: $panVoterDetail, disability: $disability}';
   }
-  
-  static Person fromSnapshot(DocumentSnapshot snap) {
 
-    PersonalInfo pI = PersonalInfo(
-      sno: snap.documentID,
-      name: snap.data['name'],
-      profileUrl: snap.data['profile_url'],
-      gender: snap.data['gender'],
-      dob: snap.data['dob']?.toDate(),
-      motherName: snap.data['mother_name'],
-      fatherName: snap.data['father_name'],
-      whatsapp: snap.data['whatsapp'],
-      mobile: snap.data['primary_no']
-    );
+  static Worker fromSnapshot(DocumentSnapshot snap) {
+    WorkerInfo pI = WorkerInfo(
+        sno: snap.documentID,
+        name: snap.data['name'],
+        profileUrl: snap.data['profile_url'],
+        gender: snap.data['gender'],
+        dob: snap.data['dob']?.toDate(),
+        motherName: snap.data['mother_name'],
+        fatherName: snap.data['father_name'],
+        whatsapp: snap.data['whatsapp'],
+        mobile: snap.data['primary_no']);
     Address ad = Address.fromJson(snap.data['address']);
     AadharBankDetail abd = AadharBankDetail(
-      aadhaarNo: snap.data['aadhaar'],
-      frontUrl: snap.data['aadhaar_url']['front'],
-      backUrl: snap.data['aadhaar_url']['back'],
-      bankLinked: snap.data['aadhaar_bank_linked'],
-      bankName: snap.data['bank_account']['name'],
-      accountNumber: snap.data['bank_account']['account_no'],
-      ifscCode: snap.data['bank_account']['ifsc']
-    );
+        aadhaarNo: snap.data['aadhaar'],
+        frontUrl: snap.data['aadhaar_url']['front'],
+        backUrl: snap.data['aadhaar_url']['back'],
+        bankLinked: snap.data['aadhaar_bank_linked'],
+        bankName: snap.data['bank_account']['name'],
+        accountNumber: snap.data['bank_account']['account_no'],
+        ifscCode: snap.data['bank_account']['ifsc']);
     PanVoterDetail pvd = PanVoterDetail(
       pancard: snap.data['pan_no'],
       panUrl: snap.data['pan_url'],
@@ -74,26 +75,25 @@ class Person {
       voterUrlBack: snap.data['voter_id_url']['back'],
     );
     Disability disability = Disability(
-      disable: snap.data['disable'],
-      certificateUrl: snap.data['disablity_cert_url'],
-      certificateNo: snap.data['disablity_cert_no']
-    );
+        disable: snap.data['disable'],
+        certificateUrl: snap.data['disablity_cert_url'],
+        certificateNo: snap.data['disablity_cert_no']);
 
-    Occupation occp = Occupation.fromSnapShot(snap.data['occupation_type'], snap.data['occupation']);
+    Occupation occp = Occupation.fromSnapShot(
+        snap.data['occupation_type'], snap.data['occupation']);
 
-    return Person(
-      personalInfo: pI,
-      address: ad,
-      aadhaarBank: abd,
-      panVoterDetail: pvd,
-      disability: disability,
-      occupation: occp
-    );
+    return Worker(
+      uuid: snap.documentID,
+        personalInfo: pI,
+        address: ad,
+        aadhaarBank: abd,
+        panVoterDetail: pvd,
+        disability: disability,
+        occupation: occp);
   }
 
   //@TODO RAtion Card detail
   Map<String, Object> toDocument() {
-
     String occType = 'others';
 
     if (occupation is StreetVendor) {
@@ -116,7 +116,7 @@ class Person {
       'created_by': 'createdby',
       'created_on': '6523432',
       'updated_on': 'update_date',
-      'sno' : personalInfo.sno,
+      'sno': personalInfo.sno,
       'name': personalInfo.name,
       'profile_url': personalInfo.profileUrl,
       'primary_no': personalInfo.mobile,
@@ -126,9 +126,9 @@ class Person {
       'father_name': personalInfo.fatherName,
       'mother_name': personalInfo.motherName,
       'disable': disability.disable,
-      'disablity_cert_url' : disability.certificateUrl,
+      'disablity_cert_url': disability.certificateUrl,
       'disablity_cert_no': disability.certificateNo,
-      'aadhaar' : aadhaarBank.aadhaarNo,
+      'aadhaar': aadhaarBank.aadhaarNo,
       'aadhaar_bank_linked': aadhaarBank.bankLinked,
       'aadhaar_url': aadhaarBank.aadhaarUrl(),
       'bank_account': aadhaarBank.bankDetail(),
@@ -138,13 +138,13 @@ class Person {
       'voter_id_url': panVoterDetail.getVoterUrl(),
       'occupation_type': occType,
       'address': address.toJson(),
-      'occupation' : occupation.toJson()
+      'occupation': occupation.toJson()
     };
   }
 }
 
 @immutable
-class PersonalInfo {
+class WorkerInfo {
   final String sno;
   final String name;
   final String mobile;
@@ -155,7 +155,7 @@ class PersonalInfo {
   final String motherName;
   final String profileUrl;
 
-  PersonalInfo(
+  WorkerInfo(
       {this.sno,
       this.name,
       this.mobile,
@@ -164,9 +164,9 @@ class PersonalInfo {
       this.dob,
       this.fatherName,
       this.motherName,
-        this.profileUrl});
+      this.profileUrl});
 
-  PersonalInfo copyWith(
+  WorkerInfo copyWith(
       {String sno,
       String name,
       String mobile,
@@ -176,17 +176,16 @@ class PersonalInfo {
       String fatherName,
       String motherName,
       String profileUrl}) {
-    return PersonalInfo(
-      sno: sno ?? this.sno,
-      name: name ?? this.name,
-      mobile: mobile ?? this.mobile,
-      whatsapp: whatsapp ?? this.whatsapp,
-      gender: gender ?? this.gender,
-      dob: dob ?? this.dob,
-      fatherName: fatherName ?? this.fatherName,
-      motherName: motherName ?? this.motherName,
-      profileUrl: profileUrl ?? this.profileUrl
-    );
+    return WorkerInfo(
+        sno: sno ?? this.sno,
+        name: name ?? this.name,
+        mobile: mobile ?? this.mobile,
+        whatsapp: whatsapp ?? this.whatsapp,
+        gender: gender ?? this.gender,
+        dob: dob ?? this.dob,
+        fatherName: fatherName ?? this.fatherName,
+        motherName: motherName ?? this.motherName,
+        profileUrl: profileUrl ?? this.profileUrl);
   }
 
   @override
@@ -210,16 +209,10 @@ class AadharBankDetail {
     return 'AadharBankDetail{aadhaarNo: $aadhaarNo, frontUrl: $frontUrl, backUrl: $backUrl, bankLinked: $bankLinked, bankName: $bankName, accountNumber: $accountNumber, ifscCode: $ifscCode}';
   }
 
-  Map<String, String> aadhaarUrl() => {
-    'front': frontUrl,
-    'back': backUrl
-  };
+  Map<String, String> aadhaarUrl() => {'front': frontUrl, 'back': backUrl};
 
-  Map<String, String> bankDetail() => {
-    'name': bankName,
-    'account_no': accountNumber,
-    'ifsc': ifscCode
-  };
+  Map<String, String> bankDetail() =>
+      {'name': bankName, 'account_no': accountNumber, 'ifsc': ifscCode};
 
   AadharBankDetail(
       {this.aadhaarNo,
@@ -248,7 +241,6 @@ class AadharBankDetail {
       ifscCode: ifscCode ?? this.ifscCode,
     );
   }
-
 }
 
 @immutable
@@ -286,10 +278,8 @@ class PanVoterDetail {
     );
   }
 
-  Map<String, String> getVoterUrl() => {
-    'front' : voterUrlFront,
-    'back': voterUrlBack
-  };
+  Map<String, String> getVoterUrl() =>
+      {'front': voterUrlFront, 'back': voterUrlBack};
 }
 
 class Disability {

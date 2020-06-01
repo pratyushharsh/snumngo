@@ -7,8 +7,9 @@ import './bloc.dart';
 class WorkerImageBloc extends Bloc<WorkerImageEvent, WorkerImageState> {
 
   final CloudStorageRepository cloudStorageRepository;
+  final PersonBloc _personBloc;
 
-  WorkerImageBloc({@required this.cloudStorageRepository});
+  WorkerImageBloc({@required this.cloudStorageRepository, PersonBloc personBloc}) : _personBloc = personBloc;
 
   @override
   WorkerImageState get initialState => InitialWorkerImageState(UploadImageStatus());
@@ -47,13 +48,24 @@ class WorkerImageBloc extends Bloc<WorkerImageEvent, WorkerImageState> {
 
   Stream<WorkerImageState> _mapAllImageUploaded() async* {
     UploadImageStatus s = state.uploadImageStatus;
-
     if ((s.disability != null ? s.disability.isSuccessful : true) &&
         (s.aadharFront != null ? s.aadharFront.isSuccessful : true) &&
         (s.aadhaarBack != null ? s.aadhaarBack.isSuccessful : true) &&
         (s.voterFront != null ? s.voterFront.isSuccessful : true) &&
         (s.voterBack != null ? s.voterBack.isSuccessful : true) &&
         (s.pancard != null ? s.pancard.isSuccessful : true)) {
+
+      var s = state.uploadImageStatus;
+      _personBloc.updateImageUrls(
+          disabilityUrl: s.disabilityUrl,
+          aadharBackUrl: s.aadhaarBackUrl,
+          aadharFrontUrl: s.aadharFrontUrl,
+          panUrl: s.pancardUrl,
+          profileUrl: s.profileUrl,
+          voterFrontUrl: s.voterFrontUrl,
+          voterBackUrl: s.voterBackUrl)
+          .then((value) => _personBloc.add(AddNewWorker(value)));
+
       yield AllImageUploaded(state.uploadImageStatus);
     }
   }

@@ -7,31 +7,22 @@ class WorkersRepository {
 
   WorkersRepository({Firestore db})
   : _db = db ?? Firestore.instance;
-  
-//  Stream getAllUser() {
-//    _db.collection('/users').snapshots().map((doc) => {
-//      print(doc)
-//    });
-//  }
-  
-  List<Person> _persons = List<Person>();
 
-  addPerson(Person p) {
-    _persons.add(p);
-    return p;
-  }
-
-  Future<void> addNewWorker(Person p) {
+  Future<void> addNewWorker(Worker p) {
     return _db.collection('/workers').add(p.toDocument());
   }
 
-  Stream<List<Person>> getAllWorker() {
-    return _db.collection('/workers').snapshots().map((snapshot) {
-      return snapshot.documents.map((doc) => Person.fromSnapshot(doc)).toList();
-    });
+  Future<void> updateWorker(Worker p) {
+    return _db.collection('/workers').document(p.uuid).updateData(p.toDocument());
   }
 
-  Person getWorker(String id) {
-    return _persons.firstWhere((element) => element.personalInfo.sno.compareTo(id) == 0);
+  Future<void> deleteWorker(Worker p) {
+    return _db.collection('/workers').document(p.uuid).delete();
+  }
+
+  Stream<List<Worker>> getAllWorker() {
+    return _db.collection('/workers').snapshots().map((snapshot) {
+      return snapshot.documents.map((doc) => Worker.fromSnapshot(doc)).toList();
+    });
   }
 }

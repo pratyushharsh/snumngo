@@ -4,10 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:intl/intl.dart';
+import 'package:snumngo/config/router.dart';
 import 'package:snumngo/person/model/models.dart';
 
 class WorkersDetailScreen extends StatelessWidget {
-  final Person person;
+  final Worker person;
 
   const WorkersDetailScreen({Key key, this.person}) : super(key: key);
 
@@ -19,7 +20,10 @@ class WorkersDetailScreen extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/updatePerson', arguments: person);
+              Navigator.pushNamed(context, Router.UPDATE_WORKERS, arguments: {
+                'person': person,
+                'updateMode': true
+              },);
             },
             icon: Icon(Icons.edit),
           )
@@ -32,7 +36,7 @@ class WorkersDetailScreen extends StatelessWidget {
 
 class _WorkersDetail extends StatelessWidget {
 
-  final Person person;
+  final Worker person;
 
   const _WorkersDetail({Key key, @required this.person}) : super(key: key);
 
@@ -107,7 +111,7 @@ class _WorkersDetail extends StatelessWidget {
 }
 
 class PersonalDetailSection extends StatelessWidget {
-  final PersonalInfo personalInfo;
+  final WorkerInfo personalInfo;
 
   const PersonalDetailSection({Key key, this.personalInfo}) : super(key: key);
   @override
@@ -145,7 +149,7 @@ class PersonalDetailSection extends StatelessWidget {
 }
 
 class FamilyDetailSection extends StatelessWidget {
-  final PersonalInfo personalInfo;
+  final WorkerInfo personalInfo;
 
   const FamilyDetailSection({Key key, this.personalInfo}) : super(key: key);
 

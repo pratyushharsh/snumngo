@@ -9,6 +9,20 @@ abstract class PersonEvent {}
 
 class PersonalInfoEvent extends PersonEvent{}
 
+class AddNewWorker extends PersonEvent {
+  final Worker worker;
+
+  AddNewWorker(this.worker);
+}
+
+class UpdateWorker extends PersonEvent {
+  final Worker worker;
+
+  UpdateWorker(this.worker);
+}
+
+class UpdateWorkerSuccess extends PersonEvent {}
+
 class UpdateSno extends PersonalInfoEvent {
   final String sno;
   UpdateSno(this.sno);
@@ -215,7 +229,5 @@ class UpdateOccupation extends OccupationEvent {
 
   UpdateOccupation(this.occupation);
 }
-
-// class AddNewPerson extends PersonEvent {}
 
 class UploadingImageAndSubmitting extends PersonEvent {}
