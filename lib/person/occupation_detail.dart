@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:snumngo/config/constants.dart';
 import 'package:snumngo/generated/l10n.dart';
 import 'package:snumngo/person/bloc/bloc.dart';
 import 'package:snumngo/person/model/models.dart';
@@ -13,25 +12,33 @@ class OccupationalDetail extends StatefulWidget {
 }
 
 class _OccupationalDetailState extends State<OccupationalDetail> {
-  String occupation;
+  OccupationTypes occupationType;
+  Occupation occp;
 
-  _buildOccupationDetail(context, occupation) {
-    switch (occupation) {
-      case "strt_vndr":
-        return StreetVendorWidget();
-      case "cns_wkr":
-        return ConstructionWorkerWidget();
-      case "wst_pkr":
+
+  @override
+  void initState() {
+    occp = BlocProvider.of<PersonBloc>(context).person.occupation;
+    occupationType = occp?.type();
+  }
+
+  _buildOccupationDetail(BuildContext context, OccupationTypes occupationTypes) {
+    switch (occupationTypes) {
+      case OccupationTypes.STREET_VENDOR:
+        return StreetVendorWidget(occupation: occp,);
+      case OccupationTypes.CONSTRUCTION_WORKER:
+        return ConstructionWorkerWidget(occupation: occp,);
+      case OccupationTypes.WASTE_PICKER:
         return WastePickerWidget();
-      case "doms_wkr":
+      case OccupationTypes.DOMESTIC_WORKER:
         return DomesticWorkerWidget();
-      case "home_wkr":
+      case OccupationTypes.HOME_BASED_WORKER:
         return HomeBasedWorkerWidget();
-      case "rskw_pllr":
+      case OccupationTypes.RICKSHAW_PULLER:
         return RickShawPullerWidget();
-      case "agri_lbr":
+      case OccupationTypes.AGRICULTURE_LABOUR:
         return AgricultureLabourWidget();
-      case "others":
+      case OccupationTypes.OTHERS:
       default:
         return Card(
           margin: EdgeInsets.only(top: 10),
@@ -62,22 +69,22 @@ class _OccupationalDetailState extends State<OccupationalDetail> {
             },
             onChanged: (val) {
               setState(() {
-                occupation = val;
+                occupationType = val;
                 FocusScope.of(context).requestFocus(FocusNode());
               });
             },
             hint: Text(S.of(context).select_occupation),
-            value: occupation,
-            items: Constants.OCCUPATIONS.map((f) {
+            value: occupationType,
+            items: OccupationTypes.values.map((f) {
               return DropdownMenuItem(
                 value: f,
-                child: Text(Intl.message(f)),
+                child: Text(Intl.message(f.toString())),
               );
             }).toList(),
           ),
           AnimatedSwitcher(
             duration: Duration(milliseconds: 500),
-            child: _buildOccupationDetail(context, occupation),
+            child: _buildOccupationDetail(context, occupationType),
           )
         ],
       ),
@@ -127,6 +134,11 @@ class _Affiliated extends StatelessWidget {
 }
 
 class StreetVendorWidget extends StatefulWidget {
+
+  final Occupation occupation;
+
+  const StreetVendorWidget({Key key, this.occupation}) : super(key: key);
+
   @override
   _StreetVendorWidgetState createState() => _StreetVendorWidgetState();
 }
@@ -136,8 +148,12 @@ class _StreetVendorWidgetState extends State<StreetVendorWidget> {
   bool municipalId = false;
   bool municipalCertificate = false;
   bool affilOtherOrg = false;
+  StreetVendor sv;
 
-  StreetVendor sv = StreetVendor();
+  @override
+  void initState() {
+    sv = widget.occupation ?? StreetVendor();
+  }
 
   onIdChange(val) {
     setState(() {
@@ -204,6 +220,7 @@ class _StreetVendorWidgetState extends State<StreetVendorWidget> {
               ],
             ),
             municipalId ? TextFormField(
+              initialValue: sv.certificateNo,
               onChanged: onIdChange,
               decoration:
                   InputDecoration(labelText: S.of(context).strt_vndr_id_no),
@@ -233,6 +250,7 @@ class _StreetVendorWidgetState extends State<StreetVendorWidget> {
                   labelText: S.of(context).strt_vndr_muni_cert_no),
             ) : Container(),
             TextFormField(
+              initialValue: sv.placeOfEmp,
               onChanged: (val) {
                 setState(() {
                   sv = sv.copyWith(placeEmployee: val);
@@ -320,6 +338,10 @@ class _StreetVendorWidgetState extends State<StreetVendorWidget> {
 
 class ConstructionWorkerWidget extends StatefulWidget {
 
+  final Occupation occupation;
+
+  const ConstructionWorkerWidget({Key key, this.occupation}) : super(key: key);
+
   @override
   _ConstructionWorkerWidgetState createState() =>
       _ConstructionWorkerWidgetState();
@@ -330,7 +352,12 @@ class _ConstructionWorkerWidgetState extends State<ConstructionWorkerWidget> {
   bool haveLabourCard = false;
   bool affilOtherOrg = false;
 
-  ConstructionWorker consWkr = ConstructionWorker();
+  ConstructionWorker consWkr;
+
+  @override
+  void initState() {
+    consWkr = widget.occupation ?? ConstructionWorker();
+  }
 
   @override
   void setState(fn) {
@@ -428,6 +455,11 @@ class _ConstructionWorkerWidgetState extends State<ConstructionWorkerWidget> {
 }
 
 class WastePickerWidget extends StatefulWidget {
+
+  final Occupation occupation;
+
+  const WastePickerWidget({Key key, this.occupation}) : super(key: key);
+
   @override
   _WastePickerWidgetState createState() => _WastePickerWidgetState();
 }
@@ -436,7 +468,12 @@ class _WastePickerWidgetState extends State<WastePickerWidget> {
   bool affilOtherOrg = false;
   bool municipalRegistered = false;
 
-  WastePicker wp = WastePicker();
+  WastePicker wp;
+
+  @override
+  void initState() {
+    wp = widget.occupation ?? WastePicker();
+  }
 
   @override
   void setState(fn) {
@@ -522,6 +559,10 @@ class _WastePickerWidgetState extends State<WastePickerWidget> {
 
 class DomesticWorkerWidget extends StatefulWidget {
 
+  final Occupation occupation;
+
+  const DomesticWorkerWidget({Key key, this.occupation}) : super(key: key);
+
   @override
   _DomesticWorkerWidgetState createState() => _DomesticWorkerWidgetState();
 }
@@ -532,6 +573,11 @@ class _DomesticWorkerWidgetState extends State<DomesticWorkerWidget> {
   bool rwaRgst = false;
 
   DomesticWorker dw = DomesticWorker();
+
+  @override
+  void initState() {
+    dw = widget.occupation ?? DomesticWorker();
+  }
 
   @override
   void setState(fn) {
@@ -629,6 +675,11 @@ class _DomesticWorkerWidgetState extends State<DomesticWorkerWidget> {
 }
 
 class HomeBasedWorkerWidget extends StatefulWidget {
+
+  final Occupation occupation;
+
+  const HomeBasedWorkerWidget({Key key, this.occupation}) : super(key: key);
+
   @override
   _HomeBasedWorkerWidgetState createState() => _HomeBasedWorkerWidgetState();
 }
@@ -638,6 +689,11 @@ class _HomeBasedWorkerWidgetState extends State<HomeBasedWorkerWidget> {
   bool artisianCard = false;
 
   HomeBasedWorker hw = HomeBasedWorker();
+
+  @override
+  void initState() {
+    hw = widget.occupation ?? HomeBasedWorker();
+  }
 
   @override
   void setState(fn) {
@@ -741,15 +797,25 @@ class _HomeBasedWorkerWidgetState extends State<HomeBasedWorkerWidget> {
 }
 
 class RickShawPullerWidget extends StatefulWidget {
+
+  final Occupation occupation;
+
+  const RickShawPullerWidget({Key key, this.occupation}) : super(key: key);
+
   @override
   _RickShawPullerWidgetState createState() => _RickShawPullerWidgetState();
 }
 
 class _RickShawPullerWidgetState extends State<RickShawPullerWidget> {
 
-  RickshawPuller rp = RickshawPuller();
+  RickshawPuller rp;
   bool rskwLsc = false;
   bool affilOtherOrg = false;
+
+  @override
+  void initState() {
+    rp = widget.occupation ?? RickshawPuller();
+  }
 
   @override
   void setState(fn) {
@@ -829,6 +895,11 @@ class _RickShawPullerWidgetState extends State<RickShawPullerWidget> {
 }
 
 class AgricultureLabourWidget extends StatefulWidget {
+
+  final Occupation occupation;
+
+  const AgricultureLabourWidget({Key key, this.occupation}) : super(key: key);
+
   @override
   _AgricultureLabourWidgetState createState() => _AgricultureLabourWidgetState();
 }
@@ -837,6 +908,11 @@ class _AgricultureLabourWidgetState extends State<AgricultureLabourWidget> {
   bool affilOtherOrg = false;
 
   AgricultureLabour al = AgricultureLabour();
+
+  @override
+  void initState() {
+    al = widget.occupation ?? AgricultureLabour();
+  }
 
   @override
   void setState(fn) {

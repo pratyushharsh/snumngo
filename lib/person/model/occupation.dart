@@ -1,5 +1,15 @@
 import 'dart:collection';
 
+enum OccupationTypes {
+  STREET_VENDOR,
+  CONSTRUCTION_WORKER,
+  WASTE_PICKER,
+  DOMESTIC_WORKER,
+  HOME_BASED_WORKER,
+  RICKSHAW_PULLER,
+  AGRICULTURE_LABOUR,
+  OTHERS
+}
 
 class StreetVendor implements Occupation {
   final bool surveyed;
@@ -40,8 +50,8 @@ class StreetVendor implements Occupation {
   }
 
   @override
-  String type() {
-    return "Street Vendor";
+  OccupationTypes type() {
+    return OccupationTypes.STREET_VENDOR;
   }
 
   factory StreetVendor.fromJson(Map<String, dynamic> json) => StreetVendor(
@@ -83,8 +93,8 @@ class ConstructionWorker implements Occupation {
   }
 
   @override
-  String type() {
-    return "Construction Worker";
+  OccupationTypes type() {
+    return OccupationTypes.CONSTRUCTION_WORKER;
   }
 
   @override
@@ -123,8 +133,8 @@ class WastePicker implements Occupation {
   }
 
   @override
-  String type() {
-    return "Waste Picker";
+  OccupationTypes type() {
+    return OccupationTypes.WASTE_PICKER;
   }
 
   @override
@@ -173,8 +183,8 @@ class DomesticWorker implements Occupation {
   }
 
   @override
-  String type() {
-    return "Domestic Worker";
+  OccupationTypes type() {
+    return OccupationTypes.DOMESTIC_WORKER;
   }
 
   factory DomesticWorker.fromJson(Map<String, dynamic> json) => DomesticWorker(
@@ -216,8 +226,8 @@ class HomeBasedWorker implements Occupation {
   }
 
   @override
-  String type() {
-    return "Home Based Worker";
+  OccupationTypes type() {
+    return OccupationTypes.HOME_BASED_WORKER;
   }
 
   factory HomeBasedWorker.fromJson(Map<String, dynamic> json) => HomeBasedWorker(
@@ -251,8 +261,8 @@ class RickshawPuller implements Occupation {
   }
 
   @override
-  String type() {
-    return "Risckhaw Puller";
+  OccupationTypes type() {
+    return OccupationTypes.RICKSHAW_PULLER;
   }
 
   @override
@@ -290,8 +300,8 @@ class AgricultureLabour implements Occupation {
   }
 
   @override
-  String type() {
-    return "Agriculture Labour";
+  OccupationTypes type() {
+    return OccupationTypes.AGRICULTURE_LABOUR;
   }
 
   @override
@@ -335,8 +345,8 @@ class Others implements Occupation {
   }
 
   @override
-  String type() {
-    return 'Others';
+  OccupationTypes type() {
+    return OccupationTypes.OTHERS;
   }
 }
 
@@ -371,7 +381,7 @@ class Occupation {
 
   Map<String, dynamic> toJson() => {};
 
-  String type() {
-    return "None";
+  OccupationTypes type() {
+    return null;
   }
 }

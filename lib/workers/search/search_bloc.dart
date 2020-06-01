@@ -32,6 +32,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       _workersSubscription?.cancel();
       _workersSubscription = _wrksRepo.getAllWorker().listen((wks) => add(SearchSuccess(wks)));
     } catch (_) {
+      print(_);
       yield SearchFailure();
     }
   }

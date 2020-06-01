@@ -18,15 +18,18 @@ class PersonBloc extends Bloc<PersonEvent, PersonState> {
 
   Worker person;
 
+  Worker _initialState;
+
   PersonBloc(this.workersRepo, {Worker existingPerson, this.updatingWorker = false})
-      : person = existingPerson ??
-            Worker(
-                personalInfo: WorkerInfo(),
-                address: Address(),
-                occupation: Occupation(),
-                disability: Disability(),
-                panVoterDetail: PanVoterDetail(),
-                aadhaarBank: AadharBankDetail());
+    : person = existingPerson ??
+    Worker(
+    personalInfo: WorkerInfo(),
+    address: Address(),
+//    occupation: Occupation(),
+    disability: Disability(),
+    panVoterDetail: PanVoterDetail(),
+    aadhaarBank: AadharBankDetail()),
+    _initialState = existingPerson;
 
   updateAddress(Address address) {
     person = person.copyWith(address: address);

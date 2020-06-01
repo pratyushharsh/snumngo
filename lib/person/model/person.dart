@@ -42,9 +42,10 @@ class Worker {
         disability: disability ?? this.disability);
   }
 
+
   @override
   String toString() {
-    return 'Person{personalInfo: $personalInfo, address: $address, occupation: $occupation, aadhaarBank: $aadhaarBank, panVoterDetail: $panVoterDetail, disability: $disability}';
+    return 'Worker{uuid: $uuid, personalInfo: $personalInfo, address: $address, occupation: $occupation, aadhaarBank: $aadhaarBank, panVoterDetail: $panVoterDetail, disability: $disability}';
   }
 
   static Worker fromSnapshot(DocumentSnapshot snap) {
@@ -190,7 +191,7 @@ class WorkerInfo {
 
   @override
   String toString() {
-    return 'PersonalInfo{sno: $sno, name: $name, mobile: $mobile, whatsapp: $whatsapp, gender: $gender, dob: $dob, fatherName: $fatherName, motherName: $motherName, profileUrl: $profileUrl}';
+    return 'WorkerInfo{sno: $sno, name: $name, mobile: $mobile, whatsapp: $whatsapp, gender: $gender, dob: $dob, fatherName: $fatherName, motherName: $motherName, profileUrl: $profileUrl}';
   }
 }
 
@@ -203,6 +204,7 @@ class AadharBankDetail {
   final String bankName;
   final String accountNumber;
   final String ifscCode;
+
 
   @override
   String toString() {
@@ -250,6 +252,7 @@ class PanVoterDetail {
   final String voterCard;
   final String voterUrlFront;
   final String voterUrlBack;
+
 
   @override
   String toString() {

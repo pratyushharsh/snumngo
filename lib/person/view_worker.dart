@@ -303,7 +303,7 @@ class PanCardDetailSection extends StatelessWidget {
           ),
           SizedBox(height: 10),
           panDetail.panUrl != null && panDetail.panUrl.isNotEmpty
-              ? Image.file(File(panDetail.panUrl))
+              ? Image.network(panDetail.panUrl)
               : NoImageAvailable(
                   height: 130,
                 ),
@@ -335,7 +335,7 @@ class VoterIdDetailSection extends StatelessWidget {
               Expanded(
                   child: voterDetail.voterUrlFront != null &&
                           voterDetail.voterUrlFront.isNotEmpty
-                      ? Image.file(File(voterDetail.voterUrlFront))
+                      ? Image.network(voterDetail.voterUrlFront)
                       : NoImageAvailable()),
               SizedBox(
                 width: 10,
@@ -343,7 +343,7 @@ class VoterIdDetailSection extends StatelessWidget {
               Expanded(
                   child: voterDetail.voterUrlBack != null &&
                           voterDetail.voterUrlBack.isNotEmpty
-                      ? Image.file(File(voterDetail.voterUrlBack))
+                      ? Image.network(voterDetail.voterUrlBack)
                       : NoImageAvailable()),
             ],
           )
@@ -377,7 +377,7 @@ class OccupationDetailSection extends StatelessWidget {
         children: <Widget>[
           KeyDesc(
             tag: "Occupation Type",
-            desc: occupation.type() ?? "",
+            desc: occupation.type().toString() ?? "",
           ),
           ..._generateMap()
         ],
