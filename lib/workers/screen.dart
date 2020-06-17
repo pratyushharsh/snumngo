@@ -1,8 +1,10 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:snumngo/config/router.dart';
+import 'package:snumngo/person/add_person.dart';
 
 import 'package:snumngo/person/model/person.dart';
 import 'package:snumngo/workers/search/bloc.dart';
@@ -11,11 +13,17 @@ class WorkersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.pushNamed(context, Router.ADD_NEW_WORKERS);
+      floatingActionButton: OpenContainer(
+        transitionDuration: Duration(seconds: 1),
+        openBuilder: (BuildContext context, VoidCallback _) {
+          return AddPerson();
         },
+        closedBuilder: (context, _) {
+          return FloatingActionButton(
+            child: Icon(Icons.add),
+          );
+        },
+        openShape: CircleBorder(),
       ),
       body: SafeArea(
         child: Stack(

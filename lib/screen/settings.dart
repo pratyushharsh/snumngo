@@ -23,7 +23,11 @@ class Settings extends StatelessWidget {
                   Expanded(
                     child: BlocBuilder<ThemeBloc, ThemeState>(
                       builder: (context, state) {
-                        return DropdownButton(
+                        return DropdownButtonFormField(
+                          decoration: InputDecoration(
+                            labelText: "Choose Your Language",
+                            border: OutlineInputBorder()
+                          ),
                           isExpanded: true,
                           hint: Text(S.of(context).select_language),
                           value: state.locale,

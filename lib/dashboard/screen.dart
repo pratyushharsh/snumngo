@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:snumngo/bloc/authentication/authentication_bloc.dart';
 import 'package:snumngo/bloc/authentication/bloc.dart';
+import 'package:snumngo/config/router.dart';
 
 class DashBoard extends StatelessWidget {
 
@@ -67,7 +68,7 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             title: Text("Persons"),
             onTap: () {
-              Navigator.pushNamed(context, '/workers');
+              Navigator.pushNamed(context, Router.WORKERS);
             },
           ),
           SizedBox(height: 60,),
